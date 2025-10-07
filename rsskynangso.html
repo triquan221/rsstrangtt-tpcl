@@ -1,180 +1,177 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <title>Tin Kỹ năng số</title>
-  <style>
-    body {
-      font-family: "Arial", sans-serif;
-      margin: 0;
-      background: #fff;
-    }
-
-    .rss-section {
-      border: 2px solid #0F5AB1;
-      border-radius: 10px;
-      overflow: hidden;
-      max-height: 600px;
-      box-sizing: border-box;
-    }
-
-    .rss-header {
-      background-color: #0F5AB1;
-      color: white;
-      text-align: center;
-      font-weight: bold;
-      font-size: 20px;
-      padding: 12px;
-      border-bottom: 2px solid #0F5AB1;
-    }
-
-    .rss-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      padding: 15px;
-      background: #fff;
-      overflow-y: auto;
-      height: 490px;
-    }
-
-    .rss-item {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 10px;
-      background: #fff;
-      transition: box-shadow 0.2s;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .rss-item:hover {
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .rss-item h3 {
-      font-size: 15px;
-      margin: 0 0 8px 0;
-      color: #0F5AB1;
-      line-height: 1.3em;
-    }
-
-    .rss-item a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .rss-item p {
-      font-size: 13px;
-      color: #333;
-      line-height: 1.4em;
-      flex-grow: 1;
-    }
-
-    .rss-pagination {
-      text-align: center;
-      padding: 10px;
-      background: #fff;
-      border-top: 1px solid #eee;
-    }
-
-    .rss-pagination button {
-      background-color: #0F5AB1;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 6px 12px;
-      margin: 0 5px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .rss-pagination button:hover {
-      background-color: #0d4b94;
-    }
-
-    @media (max-width: 900px) {
-      .rss-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .rss-container {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tin Kỹ năng số</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #fff;
+}
+.rss-wrapper {
+  border: 2px solid #0F5AB1;
+  border-radius: 6px;
+  max-height: 600px;
+  overflow: hidden;
+}
+.rss-header {
+  background: #0F5AB1;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 20px;
+  border-bottom: 2px solid #0F5AB1;
+}
+.rss-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 530px;
+  background: #fff;
+}
+.rss-item {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.rss-thumb {
+  text-align: center;
+  margin-bottom: 8px;
+}
+.rss-thumb img {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.rss-item h3 {
+  font-size: 15px;
+  color: #0F5AB1;
+  margin: 5px 0;
+}
+.rss-item p {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+}
+.rss-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  border-top: 1px solid #0F5AB1;
+}
+.rss-pagination button {
+  background: #0F5AB1;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin: 0 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.rss-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>
 </head>
 <body>
-  <div class="rss-section">
-    <div class="rss-header">TIN KỸ NĂNG SỐ</div>
-    <div id="rss-container" class="rss-container"></div>
-    <div class="rss-pagination">
-      <button id="prev-page">&laquo; Trang trước</button>
-      <button id="next-page">Trang sau &raquo;</button>
-    </div>
+<div class="rss-wrapper">
+  <div class="rss-header">TIN KỸ NĂNG SỐ</div>
+  <div id="rss-feed" class="rss-container"></div>
+  <div class="rss-pagination">
+    <button id="prev">« Trước</button>
+    <button id="next">Sau »</button>
   </div>
+</div>
 
-  <script>
-    const RSS_URL = "https://mst.gov.vn/rss/ky-nang-so.rss";
-    const ITEMS_PER_PAGE = 9;
-    let items = [];
-    let currentPage = 1;
+<script>
+const RSS_URL = "https://mst.gov.vn/rss/ky-nang-so.rss"; // URL RSS
 
-    async function loadRSS() {
-      try {
-        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`);
-        const data = await res.json();
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(data.contents, "application/xml");
-        const list = xml.querySelectorAll("item");
+async function loadRSS() {
+  try {
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`);
+    const data = await res.json();
+    const xml = new DOMParser().parseFromString(data.contents, "text/xml");
+    const list = xml.querySelectorAll("item");
 
-        items = Array.from(list).map(el => ({
-          title: el.querySelector("title")?.textContent ?? "Không có tiêu đề",
-          link: el.querySelector("link")?.textContent ?? "#",
-          description: (el.querySelector("description")?.textContent.replace(/<[^>]+>/g, "") ?? "").slice(0, 120) + "..."
-        }));
-
-        renderPage(1);
-      } catch (err) {
-        document.getElementById("rss-container").innerHTML = `<p>Lỗi tải dữ liệu RSS.</p>`;
-        console.error(err);
+    let items = Array.from(list).map(el => {
+      let img = el.querySelector("enclosure")?.getAttribute("url");
+      if (!img) img = el.querySelector("media\\:content, content")?.getAttribute("url");
+      if (!img) {
+        const descHtml = el.querySelector("description")?.textContent || "";
+        const imgMatch = descHtml.match(/<img[^>]+src=["']([^"']+)["']/i);
+        img = imgMatch ? imgMatch[1] : null;
       }
-    }
+
+      return {
+        title: el.querySelector("title")?.textContent ?? "Không có tiêu đề",
+        link: el.querySelector("link")?.textContent ?? "#",
+        description: (el.querySelector("description")?.textContent.replace(/<[^>]+>/g, "") ?? "").slice(0, 120) + "...",
+        image: img
+      };
+    });
+
+    const container = document.getElementById("rss-feed");
+    let currentPage = 1;
+    const itemsPerPage = 9;
+    const totalPages = Math.ceil(items.length / itemsPerPage);
 
     function renderPage(page) {
-      const container = document.getElementById("rss-container");
       container.innerHTML = "";
-      const start = (page - 1) * ITEMS_PER_PAGE;
-      const end = start + ITEMS_PER_PAGE;
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
       const pageItems = items.slice(start, end);
-
       for (const item of pageItems) {
         const div = document.createElement("div");
         div.className = "rss-item";
+        let imgPart = "";
+        if (item.image) {
+          imgPart = `<div class='rss-thumb'><img src='${item.image}' alt=''></div>`;
+        }
         div.innerHTML = `
-          <a href="${item.link}" target="_blank" rel="noopener noreferrer">
-            <h3>${item.title}</h3>
-          </a>
+          ${imgPart}
+          <a href="${item.link}" target="_blank" rel="noopener noreferrer"><h3>${item.title}</h3></a>
           <p>${item.description}</p>
         `;
         container.appendChild(div);
       }
-
-      currentPage = page;
+      document.getElementById("prev").disabled = (page === 1);
+      document.getElementById("next").disabled = (page === totalPages);
     }
 
-    document.getElementById("prev-page").addEventListener("click", () => {
-      if (currentPage > 1) renderPage(currentPage - 1);
+    document.getElementById("prev").addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPage(currentPage);
+      }
     });
 
-    document.getElementById("next-page").addEventListener("click", () => {
-      if ((currentPage * ITEMS_PER_PAGE) < items.length) renderPage(currentPage + 1);
+    document.getElementById("next").addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderPage(currentPage);
+      }
     });
 
-    loadRSS();
-  </script>
+    renderPage(currentPage);
+  } catch (e) {
+    console.error("Không thể tải RSS:", e);
+  }
+}
+
+loadRSS();
+</script>
 </body>
 </html>
