@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tin Multimedia</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #fff; }
+    .rss-wrapper { border: 2px solid #0F5AB1; border-radius: 6px; max-height: 600px; overflow: hidden; }
+    .rss-header { background: #0F5AB1; color: #fff; text-align: center; padding: 10px; font-size: 20px; border-bottom: 2px solid #0F5AB1; }
+    .rss-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 10px;
+      overflow-y: auto;
+      max-height: 530px;
+      background: #fff;
+    }
+    .rss-item {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 8px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .rss-thumb { text-align: center; margin-bottom: 8px; }
+    .rss-thumb img { max-width: 100%; max-height: 120px; object-fit: cover; border-radius: 4px; }
+    .rss-item h3 { font-size: 15px; color: #0F5AB1; margin: 5px 0; }
+    .rss-item p { font-size: 13px; color: #333; line-height: 1.4; }
+    .rss-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      background: #fff;
+      border-top: 1px solid #0F5AB1;
+    }
+    .rss-pagination button {
+      background: #0F5AB1;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      margin: 0 4px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .rss-pagination button:disabled {
+      opacity: 0.5; cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="rss-wrapper">
+    <div class="rss-header">MULTIMEDIA</div>
+    <div id="rss-feed" class="rss-container"></div>
+    <div class="rss-pagination">
+      <button id="prev">« Trước</button>
+      <button id="next">Sau »</button>
+    </div>
+  </div>
+
+  <script>
+    const RSS_URL = "https://mst.gov.vn/rss/multimedia.rss";
+    const DEFAULT_IMG = ""; // bạn có thể đặt ảnh mặc định nếu muốn
+
+    async function loadRSS() {
+      try {
+        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`);
+        const data = await res.json();
+        const xml = new DOMParser().parseFromString(data.contents, "text/xml");
+        const list = xml.querySelectorAll("item");
+
+        let items = Array.from(list).map(el => {
+          let img = el.querySelector("enclosure")?.getAttribute("url");
+          if (!img) img = el.querySelector("media\\:content, content")?.getAttribute("url");
+          if (!img) {
+            const descHtml = el.querySelector("description")?.textContent || "";
+            const imgMatch = descHtml.match(/<img[^>]+src=["']([^"']+)["']/i);
+            img = imgMatch ? imgMatch[1] : null;
+          }
+
+          return {
+            title: el.querySelector("title")?.textContent ?? "Không có tiêu đề",
+            link: el.querySelector("link")?.textContent ?? "#",
+            description: (el.querySelector("description")?.textContent.replace(/<[^>]+>/g, "") ?? "").slice(0, 120) + "...",
+            image: img || DEFAULT_IMG
+          };
+        });
+
+        const container = document.getElementById("rss-feed");
+        let currentPage = 1;
+        const itemsPerPage = 9;
+        const totalPages = Math.ceil(items.length / itemsPerPage);
+
+        function renderPage(page) {
+          container.innerHTML = "";
+          const start = (page - 1) * itemsPerPage;
+          const end = start + itemsPerPage;
+          const pageItems = items.slice(start, end);
+          for (const item of pageItems) {
+            const div = document.createElement("div");
+            div.className = "rss-item";
+            let imgPart = "";
+            if (item.image) {
+              imgPart = `<div class='rss-thumb'><img src='${item.image}' alt=''></div>`;
+            }
+            div.innerHTML = `
+              ${imgPart}
+              <a href="${item.link}" target="_blank" rel="noopener noreferrer"><h3>${item.title}</h3></a>
+              <p>${item.description}</p>
+            `;
+            container.appendChild(div);
+          }
+          document.getElementById("prev").disabled = (page === 1);
+          document.getElementById("next").disabled = (page === totalPages);
+        }
+
+        document.getElementById("prev").addEventListener("click", () => {
+          if (currentPage > 1) { currentPage--; renderPage(currentPage); }
+        });
+        document.getElementById("next").addEventListener("click", () => {
+          if (currentPage < totalPages) { currentPage++; renderPage(currentPage); }
+        });
+
+        renderPage(currentPage);
+      } catch (e) {
+        console.error("Không thể tải RSS:", e);
+      }
+    }
+
+    loadRSS();
+  </script>
+</body>
+</html>
