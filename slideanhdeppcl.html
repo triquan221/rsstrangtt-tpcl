@@ -1,0 +1,192 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<div class="slider-wrapper-pcl">
+  <!-- Tiêu đề -->
+  <h2 class="slider-title-pcl">Ảnh đẹp phường Cao Lãnh</h2>
+
+  <!-- Khung slider -->
+  <div class="slider-container-pcl">
+    <!-- Ảnh lớn -->
+  <div class="slides-pcl"> <img src="https://lh3.googleusercontent.com/d/1-4W0Tuvjvi5cgf_uGkcjRk9dxbQBB1N0=s0" class="active-pcl"> 
+    <img src="https://lh3.googleusercontent.com/d/12lOPx-Du6zZa4VGEMmtXWNVgny1M0Qk8=s0">
+    <img src="https://lh3.googleusercontent.com/d/19DHBTGyWVI2DdTBx8zZByAmTYl1aQ_EX=s0">
+    <img src="https://lh3.googleusercontent.com/d/1CGGcWIIqB40oy0v6MlJ-oZdvlGtHqlXF=s0">
+    <img src="https://lh3.googleusercontent.com/d/1NiL4XWv6KnXc5hx5svGZ88aRXEO9muua=s0">
+    <img src="https://lh3.googleusercontent.com/d/1W6yb2XcD2ZaZEzH7RCjJVwlwPbXAtshV=s0">
+    <img src="https://lh3.googleusercontent.com/d/1WZTQW8_1fRfXc78ZYayu_zsnkuuRRXvH=s0"> 
+    <img src="https://lh3.googleusercontent.com/d/1eOnfgWAqBigz2KOzStZCMlQCJ0mGQRw3=s0"> 
+    <img src="https://lh3.googleusercontent.com/d/1n3_MSgLPAOIrZ5ypslBrPzS9WIbTgysW=s0"> 
+    <img src="https://lh3.googleusercontent.com/d/1n7O6idDZKa73Q3Eifrw2M4ALrcbOT6S2=s0"> 
+    <img src="https://lh3.googleusercontent.com/d/1nZc1MWkeZzbO3h5CRTKxYk31ouousJR7=s0">
+    <img src="https://lh3.googleusercontent.com/d/1qPeKWDEePTMKpiGyOuishv2UIkBHkqqz=s0"> 
+    <img src="https://lh3.googleusercontent.com/d/1yKYifPsvUSU3pfYihCIs_Z0OHf7q215h=s0"> </div>
+
+    <!-- Thumbnail nhỏ ngang -->
+    <div class="thumbnails-pcl">
+      <img src="https://lh3.googleusercontent.com/d/1-4W0Tuvjvi5cgf_uGkcjRk9dxbQBB1N0=s0" class="active-pcl">
+      <img src="https://lh3.googleusercontent.com/d/12lOPx-Du6zZa4VGEMmtXWNVgny1M0Qk8=s0">
+      <img src="https://lh3.googleusercontent.com/d/19DHBTGyWVI2DdTBx8zZByAmTYl1aQ_EX=s0">
+      <img src="https://lh3.googleusercontent.com/d/1CGGcWIIqB40oy0v6MlJ-oZdvlGtHqlXF=s0">
+      <img src="https://lh3.googleusercontent.com/d/1NiL4XWv6KnXc5hx5svGZ88aRXEO9muua=s0">
+      <img src="https://lh3.googleusercontent.com/d/1W6yb2XcD2ZaZEzH7RCjJVwlwPbXAtshV=s0">
+      <img src="https://lh3.googleusercontent.com/d/1WZTQW8_1fRfXc78ZYayu_zsnkuuRRXvH=s0">
+      <img src="https://lh3.googleusercontent.com/d/1eOnfgWAqBigz2KOzStZCMlQCJ0mGQRw3=s0">
+      <img src="https://lh3.googleusercontent.com/d/1n3_MSgLPAOIrZ5ypslBrPzS9WIbTgysW=s0">
+      <img src="https://lh3.googleusercontent.com/d/1n7O6idDZKa73Q3Eifrw2M4ALrcbOT6S2=s0">
+      <img src="https://lh3.googleusercontent.com/d/1nZc1MWkeZzbO3h5CRTKxYk31ouousJR7=s0">
+      <img src="https://lh3.googleusercontent.com/d/1qPeKWDEePTMKpiGyOuishv2UIkBHkqqz=s0">
+      <img src="https://lh3.googleusercontent.com/d/1yKYifPsvUSU3pfYihCIs_Z0OHf7q215h=s0">
+    </div>
+  </div>
+
+  <!-- Chú thích -->
+  <div class="caption-pcl">Tượng đài sự kiện Tập kết năm 1954</div>
+</div>
+
+<style>
+  .slider-wrapper-pcl {
+    max-width: 1014px;
+    width: 100%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .slider-title-pcl {
+    margin: 0;
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+    background-color: #1d5c9a;
+    color: #fff;
+  }
+
+  .slider-container-pcl {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Ảnh lớn */
+  .slides-pcl {
+    position: relative;
+    width: 100%;
+    height: 527px; /* Cố định chiều cao */
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .slides-pcl img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    background: rgba(255,255,255,0.8);
+  }
+
+  .slides-pcl img.active-pcl {
+    display: block;
+    animation: fadeInPcl 0.8s ease-in-out;
+  }
+
+  @keyframes fadeInPcl {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Thumbnail */
+  .thumbnails-pcl {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px;
+    overflow-x: auto;
+    background: #fafafa;
+  }
+
+  .thumbnails-pcl img {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.6;
+    border-radius: 4px;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .thumbnails-pcl img.active-pcl,
+  .thumbnails-pcl img:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  .caption-pcl {
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    background: #f5f5f5;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .slider-title-pcl { font-size: 18px; }
+    .thumbnails-pcl img { width: 70px; height: 52px; }
+  }
+
+  @media (max-width: 480px) {
+    .slider-title-pcl { font-size: 16px; }
+    .caption-pcl { font-size: 12px; }
+    .thumbnails-pcl img { width: 55px; height: 40px; }
+  }
+</style>
+
+<script>
+(function(){
+  let indexPcl = 0;
+  const slidesPcl = document.querySelectorAll(".slides-pcl img");
+  const thumbsPcl = document.querySelectorAll(".thumbnails-pcl img");
+  const captionPcl = document.querySelector(".caption-pcl");
+
+  const captionsPcl = [
+    "Ảnh đẹp phường Cao Lãnh số 01","Hoạt động dỡ chà","Tượng đài sự kiện Tập kết năm 1954","Công viên Hai Bà Trưng","Công viên Văn miếu",
+    "Khu di tích Nguyễn Sinh Sắc -  Khu lăng mộ, đền thờ của cụ Phó bảng Nguyễn Sinh Sắc","Quang cánh Lễ giỗ Ông Bà Đỗ Công Tường","Khu Chi bộ An Nam Cộng sản Đảng","Khu di tích Nguyễn Sinh Sắc - Khu nhà sàn Bác Hồ","Hoạt động dỡ chà",
+    "Công viên Văn miếu","Chợ quê Tân Thuận Đông","Đền thờ Thương Ông Bà Đỗ Công Tường"
+  ];
+
+  function showSlidePcl(i) {
+    slidesPcl.forEach((img, idx) => img.classList.toggle("active-pcl", idx === i));
+    thumbsPcl.forEach((img, idx) => img.classList.toggle("active-pcl", idx === i));
+    captionPcl.textContent = captionsPcl[i];
+    indexPcl = i;
+  }
+
+  thumbsPcl.forEach((thumb, i) => {
+    thumb.addEventListener("click", () => {
+      clearTimeout(timerPcl);
+      showSlidePcl(i);
+      autoSlidePcl();
+    });
+  });
+
+  let timerPcl;
+  function autoSlidePcl() {
+    clearTimeout(timerPcl);
+    timerPcl = setTimeout(() => {
+      let next = (indexPcl + 1) % slidesPcl.length;
+      showSlidePcl(next);
+      autoSlidePcl();
+    }, 5000);
+  }
+
+  showSlidePcl(indexPcl);
+  autoSlidePcl();
+})();
+</script>
