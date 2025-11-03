@@ -1,10 +1,17 @@
-<div style="border:1px solid #90caf9; border-radius:6px; width:100%;  font-family:'Tahoma, sans-serif'; background:#fff;">
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<div style="border:1px solid #90caf9; border-radius:6px; width:100%; font-family:'Tahoma, sans-serif'; background:#fff;">
   <div style="background:#0f5ab1; color:#fff; font-weight:600; padding:10px 10px; border-radius:6px 6px 0 0; font-size:18px;">
     Tin tức Chuyển đổi số nổi bật
   </div>
 
   <div id="news-ticker" style="height:180px; overflow:hidden; position:relative; background:#fff; padding:6px 10px;">
-    <ul id="news-list" style="list-style-type:disc; padding-left:18px; margin:0; color:#232323; font-size:18px;font-family:'Tahoma, sans-serif'; line-height:1.6;">
+    <ul id="news-list" style="list-style-type:disc; padding-left:18px; margin:0; color:#232323; font-size:18px; font-family:'Tahoma, sans-serif'; line-height:1.6;">
       <li>⏳ Đang tải thông báo...</li>
     </ul>
   </div>
@@ -12,7 +19,9 @@
 
 <script>
 (function() {
-  const rssUrl = 'https://rss.app/feeds/qxzSWL52u4wuEm5k.rss';
+  const rssUrl = 'https://mst.gov.vn/rss/trien-khai-thuc-hien-nghi-quyet-57.rss';
+  const proxy = 'https://api.allorigins.win/get?url=';
+
   let newsItems = [];
   let position = 0;
   let tickerInterval = null;
@@ -22,12 +31,23 @@
 
   async function loadNews() {
     stopTicker();
-    try {
-      const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
-      const data = await res.json();
-      newsItems = (data.items || []).slice(0, 10); // lấy 10 tin mới nhất
+    const ul = document.getElementById('news-list');
+    ul.innerHTML = '<li>⏳ Đang tải thông báo...</li>';
 
-      const ul = document.getElementById('news-list');
+    try {
+      const res = await fetch(`${proxy}${encodeURIComponent(rssUrl)}`);
+      const data = await res.json();
+
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(data.contents, "application/xml");
+      const items = xml.querySelectorAll("item");
+      newsItems = Array.from(items).slice(0, 10).map(item => ({
+        title: item.querySelector("title")?.textContent || "",
+        link: item.querySelector("link")?.textContent || "#"
+      }));
+
+      if (newsItems.length === 0) throw new Error("Không có tin RSS");
+
       ul.innerHTML = newsItems.map(item => `
         <li style="margin-bottom:8px;">
           <a href="${item.link}" target="_blank" style="text-decoration:none; color:#0b3a4a;">
@@ -35,17 +55,20 @@
           </a>
         </li>
       `).join('');
-      ul.innerHTML += ul.innerHTML; // nhân đôi để cuộn liên tục
+
+      // Nhân đôi danh sách để cuộn liên tục
+      ul.innerHTML += ul.innerHTML;
 
       position = 0;
       startTicker();
     } catch (e) {
-      document.getElementById('news-list').innerHTML = '<li>Lỗi tải thông báo.</li>';
+      console.error(e);
+      ul.innerHTML = '<li>Lỗi tải thông báo.</li>';
     }
   }
 
   function startTicker() {
-    if (tickerInterval) return; // tránh khởi tạo trùng
+    if (tickerInterval) return;
     const list = document.getElementById('news-list');
     const listHeight = list.scrollHeight / 2;
 
@@ -71,3 +94,7 @@
   setInterval(loadNews, refreshInterval);
 })();
 </script>
+
+</body>
+</html>
+
