@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới thiệu Khu lưu niệm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. THIẾT LẬP CHUNG --- */
+        body { 
+            margin: 0; padding: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+            background: #fff; 
+            color: #333;
+        }
+        .intro-container {
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 30px;
+            padding: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto;
+            align-items: flex-start; /* Căn hàng trên cùng */
+        }
+        
+        /* --- 2. CỘT TRÁI: SLIDER ẢNH (55%) --- */
+        .col-left { 
+            flex: 1 1 55%; 
+            min-width: 320px; 
+            position: relative; 
+        }
+        
+        .slider-wrapper {
+            width: 100%;
+            aspect-ratio: 16/9; 
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            position: relative;
+            background: #eee;
+        }
+
+        .slide {
+            position: absolute; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 0.8s ease; z-index: 0;
+        }
+        .slide.active { opacity: 1; z-index: 1; }
+        .slide img {
+            width: 100%; height: 100%; object-fit: cover;
+            animation: zoomEffect 10s infinite alternate; 
+        }
+        @keyframes zoomEffect { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+
+        /* Nút điều hướng Slide */
+        .nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.3); color: #fff;
+            border: none; width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; z-index: 2; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: #d32f2f; }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+
+        /* --- 3. CỘT PHẢI: THÔNG TIN TĨNH (40%) --- */
+        .col-right-static { 
+            flex: 1 1 40%; 
+            min-width: 300px;
+            padding-left: 10px;
+        }
+
+        /* Tiêu đề "Giới thiệu" */
+        .section-header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+            color: #333;
+            display: inline-block;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #e64a19; /* Gạch chân màu cam đỏ */
+        }
+
+        /* Lưới thông tin (Grid) */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Mặc định 1 cột */
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .info-item i {
+            color: #e64a19; /* Màu cam đỏ cho icon */
+            font-size: 18px;
+            margin-top: 3px;
+            width: 20px; /* Cố định chiều rộng để thẳng hàng text */
+            text-align: center;
+        }
+
+        .info-item span {
+            color: #555;
+        }
+        
+        .info-item strong {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .contact-link {
+            color: #555; text-decoration: none; transition: 0.2s;
+        }
+        .contact-link:hover { color: #e64a19; }
+
+        /* Responsive */
+        @media (min-width: 992px) {
+             /* Trên màn hình lớn, chia thông tin thành 2 cột như ảnh mẫu */
+            .info-grid {
+                grid-template-columns: 1fr 1fr; 
+            }
+            /* Riêng địa chỉ và email cho trải dài 2 cột */
+            .full-width {
+                grid-column: span 2;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .slider-wrapper { aspect-ratio: 4/3; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="intro-container">
+        
+        <div class="col-left">
+            <div class="slider-wrapper">
+                <div class="slide active">
+                    <img src="https://img.nhandan.com.vn/Files/Images/2024/09/23/ndo_br_chibo-02.jpg" alt="Lễ khánh thành">
+                </div>
+                <div class="slide">
+                    <img src="https://img.nhandan.com.vn/Files/Images/2024/09/23/ndo_br_chibo-04.jpg" alt="Trồng cây lưu niệm">
+                </div>
+                <div class="slide">
+                    <img src="https://img.nhandan.com.vn/Files/Images/2024/09/23/ndo_br_chibo-03.jpg" alt="Dâng hương">
+                </div>
+
+                <button class="nav-btn prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+                <button class="nav-btn next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div class="col-right-static">
+            <div class="section-header">
+                <h2>Giới thiệu</h2>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Giá: <strong>Miễn phí</strong></span>
+                </div>
+
+                <div class="info-item">
+                    <i class="far fa-clock"></i>
+                    <span>Mở cửa: <strong>7:00 SA</strong> - Đóng cửa: <strong>6:00 CH</strong></span>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Số điện thoại: <a href="tel:02773851259" class="contact-link"><strong>02773 851 259</strong></a></span>
+                </div>
+
+                <div class="info-item full-width">
+                    <i class="far fa-envelope"></i>
+                    <span>Email: <a href="mailto:banqlkdt@dongthap.gov.vn" class="contact-link">banqlkdt@dongthap.gov.vn</a></span>
+                    </div>
+
+                <div class="info-item full-width">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>Thời gian tham quan tại một điểm: <strong>Không giới hạn</strong></span>
+                </div>
+
+                <div class="info-item full-width">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Địa chỉ: <strong>Phường 4, TP. Cao Lãnh, Tỉnh Đồng Tháp</strong></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll(".slide");
+        
+        function showSlide(n) {
+            if (n >= slides.length) slideIndex = 0;
+            if (n < 0) slideIndex = slides.length - 1;
+            slides.forEach(slide => slide.classList.remove("active"));
+            slides[slideIndex].classList.add("active");
+        }
+
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlide(slideIndex);
+            resetTimer();
+        }
+
+        let autoTimer = setInterval(() => { moveSlide(1); }, 4000);
+
+        function resetTimer() {
+            clearInterval(autoTimer);
+            autoTimer = setInterval(() => { moveSlide(1); }, 4000);
+        }
+    </script>
+
+</body>
+</html>
