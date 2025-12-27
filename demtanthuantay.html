@@ -7,9 +7,9 @@
     <style>
         /* --- CẤU HÌNH GIAO DIỆN --- */
         :root {
-            --primary-color: #c0392b; /* Màu đỏ gạch/đất nung (Hợp với chủ đề đêm hội/du lịch) */
-            --bg-color: #fff7ef;      /* MÀU NỀN THEO YÊU CẦU */
-            --text-color: #5d4037;    /* Màu nâu đất (dễ đọc trên nền kem) */
+            --primary-color: #c0392b; /* Màu đỏ đất */
+            --bg-color: #fff7ef;      /* MÀU NỀN KEM */
+            --text-color: #5d4037;    /* Màu nâu */
             --card-shadow: 0 10px 30px rgba(93, 64, 55, 0.15);
         }
 
@@ -19,10 +19,9 @@
             width: 100%; height: 100%;
             background-color: var(--bg-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; /* Ẩn thanh cuộn của body */
+            overflow: hidden; 
         }
 
-        /* Container chính căn giữa */
         .wrapper {
             display: flex;
             flex-direction: column;
@@ -32,28 +31,25 @@
             align-items: center;
         }
 
-        /* --- PHẦN TIÊU ĐỀ --- */
+        /* --- TIÊU ĐỀ --- */
         .header-title {
             width: 100%;
-            background-color: #fff7ef; /* Nền tiêu đề */
             text-align: center;
-            padding: 10px 0 15px 0;
-            z-index: 10;
+            padding: 5px 0 10px 0;
+            flex-shrink: 0; 
         }
 
         .header-title h1 {
             color: var(--primary-color);
-            font-size: 22px;
+            font-size: 22px; 
             text-transform: uppercase;
-            letter-spacing: 1px;
             font-weight: 700;
             margin-bottom: 5px;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
-        
+
         .header-deco {
-            width: 60px;
-            height: 3px;
+            width: 80px; height: 3px;
             background-color: var(--text-color);
             margin: 0 auto;
             border-radius: 2px;
@@ -62,17 +58,17 @@
 
         /* --- KHUNG SLIDE --- */
         .gallery-card {
-            flex: 1; /* Chiếm toàn bộ chiều cao còn lại */
+            flex: 1; 
             width: 100%;
-            max-width: 1000px; /* Giới hạn chiều rộng để ảnh không bị vỡ trên màn hình quá to */
+            max-width: 1000px;
             background: #ffffff;
-            border-radius: 15px;
+            border-radius: 12px;
             box-shadow: var(--card-shadow);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
-            border: 4px solid #fff; /* Viền trắng mỏng bao quanh */
+            border: 4px solid #fff;
         }
 
         /* Màn hình hiển thị ảnh lớn */
@@ -91,8 +87,8 @@
             max-height: 100%;
             object-fit: contain;
             opacity: 0;
-            transform: scale(1.02);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(1.05);
+            transition: opacity 0.6s ease, transform 0.6s ease;
             position: absolute;
         }
 
@@ -102,42 +98,35 @@
             z-index: 2;
         }
 
-        /* Chú thích ảnh (Caption) */
+        /* --- CHÚ THÍCH (CAPTION) - ĐÃ SỬA --- */
         .caption-overlay {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            padding: 30px 20px 10px 20px;
+            bottom: 0; left: 0; width: 100%;
+            /* Nền gradient đen mờ để chữ trắng luôn nổi bật */
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            padding: 50px 20px 20px 20px; /* Padding trên cao để gradient mềm mại */
             color: white;
             text-align: center;
+            font-size: 18px; /* Chữ to hơn một chút cho rõ */
+            font-weight: 500;
             z-index: 5;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none; /* Để click xuyên qua */
+            
+            /* SỬA: Luôn hiện (Opacity 1), không cần hover */
+            opacity: 1; 
+            transition: all 0.3s ease;
+            pointer-events: none; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Đổ bóng chữ cho dễ đọc */
         }
         
-        /* Chỉ hiện caption khi ảnh đã load xong */
-        .main-stage:hover .caption-overlay, 
-        .caption-overlay.show {
-            opacity: 1;
-        }
-
         /* Nút điều hướng */
         .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            position: absolute; top: 50%; transform: translateY(-50%);
             width: 40px; height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255,255,255,0.8);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            cursor: pointer;
-            color: var(--primary-color);
-            font-size: 20px;
-            z-index: 10;
+            border-radius: 50%; border: none;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer; color: var(--primary-color);
+            font-size: 20px; z-index: 10;
             transition: all 0.2s;
             display: flex; justify-content: center; align-items: center;
         }
@@ -145,17 +134,25 @@
         .prev-btn { left: 15px; }
         .next-btn { right: 15px; }
 
-        /* Thanh Thumbnail */
-        .thumb-strip {
-            height: 70px;
+        /* --- THANH THUMBNAIL --- */
+        .thumb-strip-container {
+            height: 80px;
             background: #fff;
             border-top: 1px solid #f0f0f0;
-            padding: 8px;
-            display: flex;
-            justify-content: center; /* Căn giữa thumbnail */
-            gap: 8px;
-            overflow-x: auto;
+            padding: 10px;
+            width: 100%;
         }
+
+        .thumb-strip {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto; 
+            scroll-behavior: smooth;
+            height: 100%;
+            align-items: center;
+            scrollbar-width: none; 
+        }
+        .thumb-strip::-webkit-scrollbar { display: none; }
 
         .thumb {
             height: 100%;
@@ -166,12 +163,14 @@
             opacity: 0.5;
             transition: all 0.2s;
             border: 2px solid transparent;
+            flex-shrink: 0; 
         }
 
         .thumb:hover { opacity: 1; }
         .thumb.selected {
             opacity: 1;
             border-color: var(--primary-color);
+            transform: scale(0.95);
         }
 
     </style>
@@ -194,15 +193,16 @@
                 </div>
             </div>
 
-            <div class="thumb-strip" id="thumbStrip">
-                </div>
+            <div class="thumb-strip-container">
+                <div class="thumb-strip" id="thumbStrip">
+                    </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- DỮ LIỆU CẤU HÌNH ---
-        // Bạn hãy sửa nội dung chú thích (text) bên dưới cho phù hợp từng ảnh
-        const slideData = [
+        // --- DỮ LIỆU ẢNH VÀ CHÚ THÍCH ---
+    const slideData = [
             { url: "https://lh3.googleusercontent.com/d/11mlIsH5sNLKFfhysas8UrmNUWNuYhUfT=s0", text: "Trải nghiệm nhà cổ 100 năm tuổi" },
             { url: "https://lh3.googleusercontent.com/d/12b7Mrh2msQDmI18syLwjHeOv8DQFp9Kt=s0", text: "Du khách tham quan" },
             { url: "https://lh3.googleusercontent.com/d/148kzYn99E8s746kDbZ2jMbY7mH-q-4_S=s0", text: "Không gian ẩm thực chợ quê" },
@@ -237,24 +237,18 @@
         const mainStage = document.getElementById('mainStage');
         const thumbStrip = document.getElementById('thumbStrip');
         const captionText = document.getElementById('captionText');
-        const captionOverlay = document.querySelector('.caption-overlay');
 
         function initGallery() {
             slideData.forEach((item, index) => {
-                // 1. Tạo ảnh lớn
+                // 1. Ảnh lớn
                 const img = document.createElement('img');
                 img.src = item.url;
                 img.id = `slide-${index}`;
-                
-                // Placeholder khi lỗi
-                img.onerror = function() { 
-                    this.src = "https://via.placeholder.com/800x600/eee/999?text=Đang+cập+nhật"; 
-                };
-
+                img.onerror = function() { this.src = "https://via.placeholder.com/800x600/eee/999?text=Đang+cập+nhật"; };
                 if (index === 0) img.classList.add('active');
                 mainStage.appendChild(img);
 
-                // 2. Tạo Thumbnail
+                // 2. Thumbnail
                 const thumb = document.createElement('img');
                 thumb.src = item.url;
                 thumb.className = 'thumb';
@@ -271,12 +265,11 @@
             
             // Set caption đầu tiên
             captionText.innerText = slideData[0].text;
-            captionOverlay.classList.add('show');
-            
             startAutoPlay();
         }
 
         function goToSlide(index) {
+            // Xóa active cũ
             document.getElementById(`slide-${currentIndex}`).classList.remove('active');
             thumbStrip.children[currentIndex].classList.remove('selected');
 
@@ -284,11 +277,19 @@
             if (currentIndex >= slideData.length) currentIndex = 0;
             if (currentIndex < 0) currentIndex = slideData.length - 1;
 
+            // Set active mới
             document.getElementById(`slide-${currentIndex}`).classList.add('active');
-            thumbStrip.children[currentIndex].classList.add('selected');
+            const activeThumb = thumbStrip.children[currentIndex];
+            activeThumb.classList.add('selected');
             
-            thumbStrip.children[currentIndex].scrollIntoView({ 
-                behavior: 'smooth', block: 'nearest', inline: 'center' 
+            // Cuộn thanh thumbnail (không cuộn trang web)
+            const containerWidth = thumbStrip.offsetWidth;
+            const thumbLeft = activeThumb.offsetLeft;
+            const thumbWidth = activeThumb.offsetWidth;
+            
+            thumbStrip.scrollTo({
+                left: thumbLeft - (containerWidth / 2) + (thumbWidth / 2),
+                behavior: 'smooth'
             });
 
             // Update Caption
