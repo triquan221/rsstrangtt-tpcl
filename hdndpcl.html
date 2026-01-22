@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách lãnh đạo HĐND Phường Cao Lãnh</title>
+    <style>
+        :root {
+            --primary-color: #005a89;
+            --primary-light: #e6eff4;
+            --text-color: #333;
+            --border-color: #ddd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px; /* Đảm bảo bảng không bị co quá nhỏ trên mobile */
+        }
+
+        thead {
+            background-color: #00456b; /* Màu đậm hơn một chút cho header bảng */
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        th {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Cột STT nhỏ */
+        th:first-child, td:first-child {
+            text-align: center;
+            width: 50px;
+        }
+
+        /* Làm đậm tên lãnh đạo */
+        td:nth-child(2) {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 180px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        tr:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 18px;
+            }
+            body {
+                padding: 10px;
+            }
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Danh Sách Lãnh Đạo Hội Đồng Nhân Dân Phường Cao Lãnh</h1>
+        </header>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ và tên</th>
+                        <th>Chức vụ</th>
+                        <th>Ngày sinh</th>
+                        <th>Quê quán</th>
+                        <th>Trình độ chuyên môn</th>
+                        <th>Lý luận chính trị</th>
+                        <th>Số điện thoại</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>01</td>
+                        <td>Nguyễn Hùng Tráng</td>
+                        <td>Bí thư Đảng ủy/ Chủ tịch HĐND</td>
+                        <td>26/11/1969</td>
+                        <td>Ấp Thượng, xã Thường Phước, tỉnh Đồng Tháp</td>
+                        <td>Cử nhân Luật</td>
+                        <td>Cao cấp</td>
+                        <td>0944 999 303</td>
+                    </tr>
+                    <tr>
+                        <td>02</td>
+                        <td>Phan Thị Hồng Thanh</td>
+                        <td>UV BTV Đảng ủy/ Phó Chủ tịch HĐND</td>
+                        <td>21/12/1979</td>
+                        <td>Xã Thạch Lâm, huyện Thạch Hà, tỉnh Hà Tĩnh</td>
+                        <td>Đại học Quản trị kinh doanh; Thạc sĩ Chính trị học</td>
+                        <td>Cao cấp</td>
+                        <td>0908 525 697</td>
+                    </tr>
+                    <tr>
+                        <td>03</td>
+                        <td>Phan Thanh Bình</td>
+                        <td>UV BTV/ Chủ nhiệm UBKT Đảng ủy/ Trưởng Ban Kinh tế - Ngân sách HĐND</td>
+                        <td>15/05/1973</td>
+                        <td>Xã Thường Phước, tỉnh Đồng Tháp</td>
+                        <td>Cử nhân Luật</td>
+                        <td>Cao cấp</td>
+                        <td>0919 090 933</td>
+                    </tr>
+                    <tr>
+                        <td>04</td>
+                        <td>Nguyễn Thị Thu Hiền</td>
+                        <td>UV BTV/ Trưởng Ban Xây dựng Đảng/ Trưởng Ban Văn hóa – Xã hội HĐND</td>
+                        <td>19/07/1979</td>
+                        <td>Xã Phong Mỹ, tỉnh Đồng Tháp</td>
+                        <td>Cử nhân Kinh tế Chính trị</td>
+                        <td>Cao cấp</td>
+                        <td>0939 899 234</td>
+                    </tr>
+                    <tr>
+                        <td>05</td>
+                        <td>Lê Văn Nhiên</td>
+                        <td>Phó Trưởng Ban Kinh tế - Ngân sách HĐND</td>
+                        <td>27/05/1984</td>
+                        <td>Phường Mỹ Trà, tỉnh Đồng Tháp</td>
+                        <td>Đại học Hành chính</td>
+                        <td>Trung cấp</td>
+                        <td>0939 935 287</td>
+                    </tr>
+                    <tr>
+                        <td>06</td>
+                        <td>Lê Việt Mỹ</td>
+                        <td>Đảng ủy viên/ Phó Trưởng Ban Văn hóa – Xã hội HĐND</td>
+                        <td>10/07/1976</td>
+                        <td>Phường Mỹ Ngãi, tỉnh Đồng Tháp</td>
+                        <td>Cử nhân Luật</td>
+                        <td>Cao cấp</td>
+                        <td>0989 627 759</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
