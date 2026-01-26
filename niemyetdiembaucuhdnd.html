@@ -10,7 +10,7 @@
         
         body {
             font-family: 'Times New Roman', Times, serif;
-            line-height: 1.6; /* Tăng giãn dòng cho dễ đọc */
+            line-height: 1.5;
             color: #333;
             margin: 0;
             padding: 10px;
@@ -67,7 +67,7 @@
         
         .header p {
             color: #FFEB3B;
-            font-size: 15px;
+            font-size: 14px;
             font-style: italic;
             font-weight: normal;
             margin: 0;
@@ -89,14 +89,14 @@
             width: 100%;
             border-collapse: collapse;
             background-color: #fff;
-            font-size: 16px; /* Cỡ chữ đồng bộ */
+            font-size: 17px;
             table-layout: fixed;
         }
         
         thead th {
             background-color: #DA251D;
             color: #FFFF00;
-            padding: 16px 12px; /* Tăng padding header */
+            padding: 16px 12px;
             text-align: center;
             font-weight: 900;
             border: 1px solid #fff; 
@@ -106,10 +106,10 @@
         }
         
         tbody td {
-            padding: 14px 15px; /* Tăng padding nội dung */
+            padding: 15px;
             border: 1px solid #ccc;
             vertical-align: middle;
-            color: #333; /* Màu chữ đồng bộ */
+            color: #333;
         }
 
         /* Zebra Striping */
@@ -119,15 +119,15 @@
 
         /* Column Config */
         th:nth-child(1) { width: 60px; }
-        td:nth-child(1) { width: 60px; text-align: center; font-weight: 900; color: #DA251D; font-size: 18px; } /* STT */
+        td:nth-child(1) { width: 60px; text-align: center; font-weight: 900; color: #DA251D; font-size: 18px; }
         
-        td:nth-child(2) { font-weight: bold; } /* Tên khu vực */
+        td:nth-child(2) { font-weight: bold; }
         
-        th:nth-child(3) { width: 110px; }
-        td:nth-child(3) { text-align: center; font-weight: bold; } /* Số cử tri */
+        th:nth-child(3) { width: 100px; }
+        td:nth-child(3) { text-align: center; font-weight: bold; }
         
         th:nth-child(6) { width: 150px; }
-        td:nth-child(6) { text-align: center; } /* Cột bản đồ */
+        td:nth-child(6) { text-align: center; }
 
         /* --- BUTTONS --- */
         .btn-map {
@@ -147,7 +147,6 @@
         }
         .btn-map:hover { background-color: #ffeb3b; transform: translateY(1px); box-shadow: 1px 1px 0 #b71c1c; }
         
-        /* Nút Manual (Màu Xám) */
         .btn-map.manual {
             background-color: #e0e0e0;
             color: #666;
@@ -155,27 +154,22 @@
             box-shadow: none;
             font-weight: 600;
         }
-        .btn-map.manual:hover {
-            background-color: #d0d0d0;
-            color: #333;
-        }
 
-        /* --- TEXT FORMAT --- */
+        /* --- TEXT FORMAT (Đồng bộ màu sắc) --- */
         .location { 
             display: block; 
             font-weight: 800; 
-            color: #b71c1c; /* Giữ tên địa điểm màu đỏ để nhấn mạnh */
-            margin-bottom: 6px; 
-            font-size: 16px; 
+            color: #333; /* Chuyển về màu đậm đồng bộ */
+            margin-bottom: 4px; 
+            font-size: 17px; 
         }
         .address { 
             display: block; 
             color: #333; 
-            font-size: 16px;
-            /* Không in nghiêng để dễ đọc và đồng bộ */
+            font-size: 17px;
         }
 
-        /* --- MOBILE RESPONSIVE (Card View - Layout Ngang) --- */
+        /* --- MOBILE RESPONSIVE (Card View - Căn lề thẳng tắp) --- */
         @media (max-width: 768px) {
             thead { display: none; }
             table, tbody, tr, td { display: block; width: 100%; box-sizing: border-box; }
@@ -188,7 +182,7 @@
                 box-shadow: 0 4px 8px rgba(0,0,0,0.1);
                 position: relative;
                 padding-left: 60px; /* Chừa chỗ cho cột STT */
-                min-height: 130px;
+                min-height: 140px; /* Đảm bảo chiều cao tối thiểu */
                 overflow: hidden;
             }
             
@@ -207,58 +201,67 @@
                 border-right: 2px solid #DA251D;
                 z-index: 1;
                 padding: 0;
+                border-bottom: none; /* Bỏ viền dưới của STT */
             }
             td:first-child:before { content: none; }
 
             /* Các dòng dữ liệu */
             td:not(:first-child) {
-                padding: 12px 15px; /* Padding thoáng */
+                padding: 12px 15px; 
                 border: none;
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid #eee; /* Viền mờ ngăn cách các dòng */
                 
-                /* Flexbox: Label bên trái, Nội dung bên phải */
+                /* Flexbox: Căn chỉnh Nhãn và Nội dung */
                 display: flex; 
                 flex-direction: row; 
-                align-items: flex-start; /* Căn trên cùng */
+                align-items: flex-start; /* Căn đỉnh trên để thẳng hàng */
             }
             
-            /* Label (Tiêu đề dòng) */
+            /* Label (Tiêu đề dòng) - CỐ ĐỊNH ĐỘ RỘNG */
             td:not(:first-child):before {
                 content: attr(data-label);
-                font-weight: 900;
-                color: #b71c1c;
+                font-weight: 700;
+                color: #b71c1c; /* Màu đỏ cho tiêu đề nhỏ */
                 font-size: 14px;
                 text-transform: uppercase;
-                flex: 0 0 110px; /* Chiều rộng cố định để thẳng hàng */
+                
+                /* Cố định chiều rộng để cột nội dung bên phải thẳng tắp */
+                flex: 0 0 110px; 
+                width: 110px;
+                
                 margin-right: 10px;
-                margin-top: 2px; /* Tinh chỉnh vị trí */
+                padding-top: 2px; /* Tinh chỉnh nhỏ để thẳng với text */
             }
             
-            /* Nội dung */
-            td:not(:first-child) > *:not(:first-child), /* Chọn các thẻ con */
-            td:not(:first-child) { /* Chọn text trực tiếp */
-                 font-size: 16px; /* Cỡ chữ đồng bộ 16px */
-                 color: #333;
-                 flex: 1;
-                 line-height: 1.5;
+            /* Phần nội dung bên phải */
+            .content-wrapper, 
+            td:not(:first-child) { 
+                flex: 1; /* Chiếm toàn bộ phần còn lại */
+                text-align: left;
+                font-size: 16px; 
+                color: #333; 
+                line-height: 1.5;
             }
             
             /* Xử lý riêng cho ô Địa điểm */
-            .location { color: #b71c1c; font-size: 16px; margin-bottom: 4px; }
-            .address { color: #333; font-size: 16px; }
+            .location { font-size: 16px; margin-bottom: 2px; color: #000; } /* Tên địa điểm đậm đen */
+            .address { font-size: 15px; color: #444; } /* Địa chỉ xám đậm */
 
             /* Ô cuối cùng (Nút bấm) */
             td:last-child { 
                 border-bottom: none; 
                 padding: 15px;
-                background-color: #fff8e1; /* Nền nhẹ */
-                align-items: center; /* Canh giữa dọc */
+                background-color: #fff8e1; /* Nền kem nhẹ */
+                
+                /* Canh giữa nút bấm */
+                display: flex;
+                justify-content: center;
             }
             
-            .btn-map { width: 100%; text-align: center; }
+            /* Ẩn label "BẢN ĐỒ" ở ô cuối để nút bấm nằm giữa đẹp hơn */
+            td:last-child:before { display: none; }
             
-            /* Màu sắc riêng cho Số liệu */
-            td:nth-child(3) { color: #333; font-weight: bold; }
+            .btn-map { width: 100%; text-align: center; max-width: 250px; }
         }
     </style>
 </head>
@@ -326,7 +329,7 @@
                     <span class="location">Chi nhánh VP ĐKĐĐ khu vực XVIII</span>
                     <span class="address">Số 72 Hùng Vương, Khóm 6</span>
                 </td>
-                <td data-label="Bản đồ"><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td data-label="Bản đồ"><a href="https://www.google.com/maps/dir/?api=1&destination=10.460833,105.638056" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>5</td>
@@ -337,7 +340,7 @@
                     <span class="location">Trung tâm Văn hóa Học tập cộng đồng P2 cũ</span>
                     <span class="address">130 Lê Lợi, Khóm 8</span>
                 </td>
-                <td data-label="Bản đồ"><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td data-label="Bản đồ"><a href="https://www.google.com/maps/dir/?api=1&destination=10.463333,105.635833" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>6</td>
@@ -755,7 +758,7 @@
                     <span class="location">Hội trường Phòng Tham mưu</span>
                     <span class="address">Số 755 Phạm Hữu Lầu, Khóm Tân Việt Hòa</span>
                 </td>
-                <td data-label="Bản đồ"><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td data-label="Bản đồ"><a href="https://www.google.com/maps/dir/?api=1&destination=10.441000,105.618000" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
         </tbody>
     </table>
