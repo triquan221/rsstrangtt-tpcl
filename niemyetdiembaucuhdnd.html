@@ -3,277 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách Khu vực Bỏ phiếu - Phường Cao Lãnh</title>
+    <title>Bảng Niêm Yết Khu vực Bỏ phiếu - Phường Cao Lãnh</title>
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
-            line-height: 1.4;
+            line-height: 1.3;
             color: #333;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #eee;
+            width: 100%; 
+            max-width: 100%;
+            margin: 0;
+            padding: 10px;
+            background-color: #f4f4f4;
+            box-sizing: border-box;
         }
 
-        .poster-container {
+        .board-container {
             background-color: #fff;
-            border: 5px solid #DA251D;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            border-radius: 0;
-            overflow: hidden;
+            border: 4px solid #b71c1c;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            margin: 0 auto;
+            width: 100%;
+            overflow-x: auto; 
         }
         
+        /* --- HEADER --- */
         .header {
             text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(to bottom, #DA251D, #b71c1c);
+            padding: 20px 10px;
+            background-color: #DA251D;
             color: #FFFF00;
-            border-bottom: 5px solid #FFFF00;
-            position: relative;
+            border-bottom: 4px solid #FFFF00;
         }
         
         .logo {
-            width: 130px;
+            width: 100px;
             height: auto;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
         
         .header h1 {
             color: #FFFF00;
-            margin: 10px 0;
-            font-size: 36px;
+            margin: 5px 0;
+            font-size: 24px;
             font-weight: 900;
             text-transform: uppercase;
-            text-shadow: 3px 3px 0 #800000;
-            letter-spacing: 1px;
-            line-height: 1.2;
+            text-shadow: 2px 2px 0 #8b0000;
         }
         
         .header h2 {
             color: #fff;
-            margin: 10px 0 20px 0;
-            font-size: 22px;
+            margin: 5px 0 15px 0;
+            font-size: 16px;
             font-weight: 700;
             text-transform: uppercase;
         }
         
         .header p {
             color: #FFEB3B;
-            font-size: 16px;
+            font-size: 14px;
             font-style: italic;
             font-weight: normal;
+            margin: 0;
         }
         
+        @media (min-width: 768px) {
+            .header h1 { font-size: 32px; }
+            .header h2 { font-size: 20px; }
+            .header p { font-size: 16px; }
+            .header { padding: 30px 15px; }
+            .logo { width: 110px; }
+        }
+        
+        /* --- LEGEND --- */
         .legend-bar {
-            background-color: #fff8e1;
-            padding: 10px;
+            background-color: #fffde7;
+            padding: 8px;
             text-align: center;
-            border-bottom: 1px solid #ffecb3;
+            border-bottom: 1px solid #ddd;
             font-size: 14px;
             color: #b71c1c;
-            font-weight: bold;
+            font-style: italic;
         }
 
+        /* --- TABLE STYLE --- */
         table {
             width: 100%;
             border-collapse: collapse;
             background-color: #fff;
+            font-size: 15px;
+            min-width: 1000px; 
             table-layout: fixed;
         }
         
+        /* Tiêu đề chung cho tất cả các cột (bao gồm STT) */
         thead th {
-            background-color: #DA251D;
-            color: #FFFF00;
-            padding: 15px 10px;
+            background-color: #DA251D; /* Nền Đỏ */
+            color: #FFFF00; /* Chữ Vàng */
+            padding: 12px 8px;
             text-align: center;
             font-weight: 900;
-            border: 1px solid #fff;
+            border: 1px solid #fff; 
             text-transform: uppercase;
-            font-size: 16px;
             vertical-align: middle;
         }
         
         tbody td {
-            padding: 12px 10px;
-            border: 1px solid #e0e0e0;
+            padding: 10px 8px;
+            border: 1px solid #ccc;
             vertical-align: middle;
-            font-size: 16px;
         }
 
-        /* --- HIỆU ỨNG MÀU SẮC (CỘT & DÒNG) --- */
-        
-        /* 1. Nền xen kẽ theo DÒNG (Hàng ngang) */
-        tbody tr:nth-child(odd) {
-            background-color: #FFFDE7; /* Vàng rất nhạt */
+        /* --- ZEBRA STRIPING (Áp dụng cho TOÀN BỘ dòng) --- */
+        tbody tr:nth-child(odd) td {
+            background-color: #fff; /* Nền trắng */
         }
-        tbody tr:nth-child(even) {
-            background-color: #FFFFFF; /* Trắng */
+        tbody tr:nth-child(even) td {
+            background-color: #fdf5e6; /* Nền kem nhạt */
         }
         
-        /* 2. Hiệu ứng xen kẽ CỘT đậm nhạt */
-        /* Cột 2 (Tên) và Cột 4 (Khóm) có nền đậm hơn */
-        tbody tr:nth-child(odd) td:nth-child(2),
-        tbody tr:nth-child(odd) td:nth-child(4) {
-            background-color: #FFF9C4; 
-        }
-        tbody tr:nth-child(even) td:nth-child(2),
-        tbody tr:nth-child(even) td:nth-child(4) {
-            background-color: #F5F5F5; 
-        }
-
-        /* Hiệu ứng Hover */
+        /* Hiệu ứng Hover cho toàn bộ dòng */
         tbody tr:hover td {
-            background-color: #FFECB3 !important;
+            background-color: #fff9c4 !important;
             transition: 0.2s;
         }
 
-        /* --- ĐỊNH DẠNG CHI TIẾT CỘT --- */
+        /* --- COLUMN STYLES --- */
         
-        /* Cột 1: STT */
-        th:nth-child(1), td:nth-child(1) { 
-            width: 60px; 
+        /* Cột 1: STT - Đã đồng bộ màu nền, chỉ giữ chữ đậm màu đỏ để nổi bật số */
+        th:nth-child(1) { width: 50px; }
+        td:nth-child(1) { 
+            width: 50px; 
             text-align: center; 
-        }
-        td:nth-child(1) {
             font-weight: 900;
-            color: #DA251D; 
-            font-size: 18px;
+            color: #DA251D; /* Số màu đỏ */
+            font-size: 16px;
         }
 
-        /* Cột 2: Tên khu vực */
-        td:nth-child(2) {
-            font-weight: bold;
-            color: #000;
-        }
+        /* Cột 2: Tên Khu vực */
+        td:nth-child(2) { font-weight: bold; }
 
-        /* Cột 3: Số cử tri */
-        th:nth-child(3), td:nth-child(3) { width: 110px; text-align: center; }
-        td:nth-child(3) {
-            color: #DA251D;
-            font-weight: 900;
-            font-size: 18px;
+        /* Cột 3: Số Cử tri */
+        th:nth-child(3) { width: 90px; }
+        td:nth-child(3) { 
+            text-align: center; 
+            color: #b71c1c; 
+            font-weight: bold; 
+            font-size: 16px;
         }
         
-        /* Cột 6: Chỉ đường (Vị trí Cuối cùng) */
-        th:nth-child(6), td:nth-child(6) { 
-            width: 140px;
-            text-align: center; 
-        }
+        /* Cột 6: Chỉ đường */
+        th:nth-child(6) { width: 130px; }
+        td:nth-child(6) { text-align: center; }
 
-        .location {
-            display: block;
-            font-weight: 800;
-            color: #b71c1c;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
-        .address {
-            display: block;
-            color: #333;
-        }
-
+        /* --- BUTTON STYLE --- */
         .btn-map {
             display: inline-block;
             background-color: #FFC107;
             color: #b71c1c;
-            padding: 8px 12px;
-            border-radius: 5px;
+            padding: 6px 10px;
+            border-radius: 4px;
             text-decoration: none;
             font-weight: 800;
             text-transform: uppercase;
-            font-size: 12px;
-            border: 2px solid #b71c1c;
-            box-shadow: 2px 2px 0 #b71c1c;
-            transition: all 0.1s;
+            font-size: 11px;
+            border: 1px solid #b71c1c;
+            box-shadow: 1px 1px 0 #b71c1c;
             white-space: nowrap;
         }
         .btn-map:hover {
-            transform: translate(2px, 2px);
-            box-shadow: none;
             background-color: #ffeb3b;
+            transform: translateY(1px);
+            box-shadow: none;
         }
-        .btn-map:active {
-            background-color: #fbc02d;
+        
+        /* --- TEXT STYLES --- */
+        .location {
+            display: block;
+            font-weight: 800;
+            color: #b71c1c;
+            margin-bottom: 3px;
+            font-size: 15px;
         }
-
-        @media (max-width: 768px) {
-            .poster-container { border-width: 2px; }
-            .header { padding: 20px 10px; }
-            .header h1 { font-size: 24px; }
-            .header h2 { font-size: 16px; }
-            
-            table, thead, tbody, th, td, tr { display: block; }
-            thead tr { position: absolute; top: -9999px; left: -9999px; }
-            
-            tbody tr {
-                border: 2px solid #DA251D;
-                margin-bottom: 15px;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                overflow: hidden; 
-            }
-            
-            /* Reset màu nền cột trên mobile */
-            tbody tr:nth-child(odd) td { background-color: #FFFDE7 !important; }
-            tbody tr:nth-child(even) td { background-color: #FFFFFF !important; }
-            
-            /* Cột STT mobile */
-            td:first-child {
-                background-color: #DA251D !important;
-                color: #FFFF00 !important;
-                display: block;
-                width: 100%;
-                text-align: left;
-                padding: 10px 15px;
-                font-size: 16px;
-                border-bottom: 2px solid #fff;
-            }
-            td:first-child:before {
-                content: "SỐ THỨ TỰ: ";
-                color: #FFFF00;
-                font-weight: normal;
-            }
-
-            tbody td:not(:first-child) {
-                border: none;
-                border-bottom: 1px solid #eee;
-                position: relative;
-                padding-left: 40%;
-                text-align: left;
-            }
-            
-            td:not(:first-child):before {
-                position: absolute;
-                top: 12px;
-                left: 10px;
-                width: 35%;
-                padding-right: 10px;
-                white-space: nowrap;
-                font-weight: bold;
-                color: #DA251D;
-                text-transform: uppercase;
-                font-size: 12px;
-            }
-            
-            /* Cập nhật nhãn mobile theo thứ tự mới */
-            td:nth-of-type(2):before { content: "KHU VỰC"; }
-            td:nth-of-type(3):before { content: "SỐ CỬ TRI"; }
-            td:nth-of-type(4):before { content: "GỒM CÁC KHÓM"; }
-            td:nth-of-type(5):before { content: "ĐỊA ĐIỂM"; }
-            td:nth-of-type(6):before { content: "BẢN ĐỒ"; }
-            
-            td:nth-last-child(1) { text-align: left; }
+        .address {
+            display: block;
+            color: #444;
+            font-size: 15px;
         }
     </style>
 </head>
 <body>
 
-<div class="poster-container">
+<div class="board-container">
     <div class="header">
         <img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/logo_pCL-removebg-preview.png" alt="Logo Phường Cao Lãnh" class="logo">
         <h1>DANH SÁCH KHU VỰC BỎ PHIẾU</h1>
@@ -282,7 +206,7 @@
     </div>
 
     <div class="legend-bar">
-        📍 Bấm vào nút <strong>"CHỈ ĐƯỜNG"</strong> để xem vị trí chính xác trên Google Maps
+        * Bấm vào nút <strong>"CHỈ ĐƯỜNG"</strong> để xem bản đồ hướng dẫn đi đến địa điểm bỏ phiếu
     </div>
 
     <table>
@@ -303,7 +227,7 @@
                 <td>2391</td>
                 <td>Khóm 3, Khóm 5</td>
                 <td><span class="location">Trụ sở Khóm 3</span><span class="address">Số 382 Trần Hưng Đạo, Tổ 33, Khóm 3, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.4688978,105.6372015" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.4688978,105.6372015" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>2</td>
@@ -311,7 +235,7 @@
                 <td>2445</td>
                 <td>Khóm 1</td>
                 <td><span class="location">Trụ sở Khóm 1</span><span class="address">Số 02 Nguyễn Quang Diêu, Tổ 7, Khóm 1, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.4615846,105.6311853" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.4615846,105.6311853" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>3</td>
@@ -319,7 +243,7 @@
                 <td>1962</td>
                 <td>Khóm 4</td>
                 <td><span class="location">Trụ sở Khóm 4</span><span class="address">Số 414/12 Trần Hưng Đạo, Tổ 35, Khóm 4, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.4665242,105.637674" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.4665242,105.637674" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>4</td>
@@ -327,7 +251,7 @@
                 <td>2907</td>
                 <td>Khóm 6, Khóm 7</td>
                 <td><span class="location">Chi nhánh VP ĐKĐĐ khu vực XVIII</span><span class="address">Số 72 Hùng Vương, Khóm 6, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.460833,105.638056" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.460833,105.638056" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>5</td>
@@ -335,7 +259,7 @@
                 <td>2156</td>
                 <td>Khóm 8</td>
                 <td><span class="location">Trung tâm Văn hóa Học tập cộng đồng P2 cũ</span><span class="address">130 Lê Lợi, Khóm 8, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.463333,105.635833" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.463333,105.635833" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>6</td>
@@ -343,7 +267,7 @@
                 <td>1889</td>
                 <td>Khóm 2</td>
                 <td><span class="location">Trụ sở Khóm 2</span><span class="address">Số 18 Nguyễn Thị Minh Khai, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.4696087,105.6256534" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.4696087,105.6256534" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>7</td>
@@ -351,7 +275,7 @@
                 <td>2521</td>
                 <td>Khóm Thuận Trung, Khóm Thuận An</td>
                 <td><span class="location">Trụ sở Khóm Thuận Trung</span><span class="address">Số 701 Lê Văn Cử, Tổ 2, Khóm Thuận Trung, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.463584,105.606277" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.463584,105.606277" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>8</td>
@@ -359,7 +283,7 @@
                 <td>2966</td>
                 <td>Khóm Hòa Long</td>
                 <td><span class="location">Trụ sở Khóm Hòa Long</span><span class="address">Đường Sáu Quốc, Tổ 13, Khóm Hòa Long, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.490587,105.626019" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.490587,105.626019" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>9</td>
@@ -367,7 +291,7 @@
                 <td>2830</td>
                 <td>Khóm Hòa Mỹ, Khóm Hòa Hưng</td>
                 <td><span class="location">Trụ sở Khóm Hòa Mỹ</span><span class="address">Số 487 Lộ Hòa Tây, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.491322,105.607172" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.491322,105.607172" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>10</td>
@@ -375,7 +299,7 @@
                 <td>2677</td>
                 <td>Khóm 9</td>
                 <td><span class="location">Trụ sở Khóm 9</span><span class="address">Số 82 Bà Triệu, Khóm 9, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.470876,105.629352" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.470876,105.629352" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>11</td>
@@ -383,7 +307,7 @@
                 <td>2744</td>
                 <td>Khóm Mỹ Hưng</td>
                 <td><span class="location">Trụ sở Khóm Mỹ Hưng</span><span class="address">189 Chi Lăng, Tổ 4, Khóm Mỹ Hưng, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.459392,105.642011" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.459392,105.642011" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>12</td>
@@ -391,7 +315,7 @@
                 <td>3101</td>
                 <td>Khóm Mỹ Phước, Khóm Mỹ Đức</td>
                 <td><span class="location">Trụ sở Khóm Mỹ Phước</span><span class="address">Tổ 37 Cách Mạng Tháng 8, Khóm Mỹ Phước, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.457017,105.648171" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.457017,105.648171" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>13</td>
@@ -399,7 +323,7 @@
                 <td>1797</td>
                 <td>Khóm Mỹ Long</td>
                 <td><span class="location">Trụ sở Khóm Mỹ Long</span><span class="address">Tổ 59 Ngô Quyền, Khóm Mỹ Long, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.460492,105.654877" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.460492,105.654877" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>14</td>
@@ -407,7 +331,7 @@
                 <td>2340</td>
                 <td>Khóm Mỹ Thiện</td>
                 <td><span class="location">Trụ sở Khóm Mỹ Thiện</span><span class="address">Tổ 74, Khóm Mỹ Thiện, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.463309,105.651787" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.463309,105.651787" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>15</td>
@@ -415,7 +339,7 @@
                 <td>1237</td>
                 <td>Khóm Thuận Phú</td>
                 <td><span class="location">Trụ sở Khóm Thuận Phú</span><span class="address">Số 387 Nguyễn Thái Học, Khóm Thuận Phú, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.468894,105.614603" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.468894,105.614603" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>16</td>
@@ -423,7 +347,7 @@
                 <td>2260</td>
                 <td>Khóm Thuận Nghĩa, Khóm Thuận Phát</td>
                 <td><span class="location">Trụ sở Khóm Thuận Nghĩa</span><span class="address">Đường D2, KDC Trường CĐ Cộng đồng Đồng Tháp, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.462319,105.612044" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.462319,105.612044" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>17</td>
@@ -431,7 +355,7 @@
                 <td>2784</td>
                 <td>Khóm Hòa Thuận, Khóm Hòa Lạc</td>
                 <td><span class="location">Trung tâm Cung ứng Dịch vụ công</span><span class="address">Số 01 Nguyễn Thị Lựu, Khóm Hoà Thuận, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.470556,105.631944" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.470556,105.631944" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>18</td>
@@ -439,7 +363,7 @@
                 <td>2197</td>
                 <td>Khóm Hòa An</td>
                 <td><span class="location">Trung tâm VH HTCĐ Phường 4 cũ</span><span class="address">Số 02B Thiên Hộ Dương, Khóm Hoà An, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.472778,105.630556" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.472778,105.630556" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>19</td>
@@ -447,7 +371,7 @@
                 <td>2243</td>
                 <td>Khóm Hòa Lợi</td>
                 <td><span class="location">Trụ sở Khóm Hòa Lợi</span><span class="address">Số 438A Huyện Thanh Quan, Khóm Hòa Lợi, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.482084,105.651586" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.482084,105.651586" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>20</td>
@@ -455,7 +379,7 @@
                 <td>2840</td>
                 <td>Khóm Hòa Khánh</td>
                 <td><span class="location">Trụ sở Khóm Hòa Khánh</span><span class="address">Số 19 đường D3, Tổ 19, Khóm Hòa Khánh, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.486252,105.645065" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.486252,105.645065" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>21</td>
@@ -463,7 +387,7 @@
                 <td>2412</td>
                 <td>Khóm Hòa Hiệp</td>
                 <td><span class="location">Trụ sở Khóm Hòa Hiệp</span><span class="address">Số 295 Bùi Hữu Nghĩa, Tổ 35, Khóm Hòa Hiệp, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.478952,105.622619" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.478952,105.622619" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>22</td>
@@ -471,7 +395,7 @@
                 <td>3317</td>
                 <td>Khóm Đông Bình</td>
                 <td><span class="location">Trụ sở Khóm Đông Bình</span><span class="address">Tổ 1 Cái Tắc Thông Lưu, Khóm Đông Bình, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.488390,105.658257" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.488390,105.658257" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>23</td>
@@ -479,7 +403,7 @@
                 <td>2960</td>
                 <td>Khóm Phú An</td>
                 <td><span class="location">Trụ sở Khóm Phú An</span><span class="address">Số 174 Đường Miễu Ngói, Tổ 34, Khóm Phú An, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.456209,105.609459" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.456209,105.609459" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>24</td>
@@ -487,7 +411,7 @@
                 <td>2518</td>
                 <td>Khóm An Nhơn</td>
                 <td><span class="location">Trụ sở Khóm An Nhơn</span><span class="address">C69, Tổ 48, Khóm An Nhơn, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.444983,105.627705" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.444983,105.627705" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>25</td>
@@ -495,7 +419,7 @@
                 <td>1788</td>
                 <td>Khóm Bến Bắc</td>
                 <td><span class="location">Trụ sở Khóm Bến Bắc</span><span class="address">Số 1112 Phạm Hữu Lầu, Tổ 56, Khóm Bến Bắc, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.437976,105.628795" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.437976,105.628795" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>26</td>
@@ -503,7 +427,7 @@
                 <td>1867</td>
                 <td>Khóm Tân Tịch</td>
                 <td><span class="location">Trụ sở Khóm Tân Tịch</span><span class="address">Tổ 5 Nguyễn Hương, Khóm Tân Tịch, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.424367,105.612015" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.424367,105.612015" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>27</td>
@@ -511,7 +435,7 @@
                 <td>1678</td>
                 <td>Khóm Tân Thuận</td>
                 <td><span class="location">Trụ sở Khóm Tân Thuận</span><span class="address">Số 785 Phạm Hữu Lầu, Tổ 02, Khóm Tân Thuận, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.460773,105.617495" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.460773,105.617495" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>28</td>
@@ -519,7 +443,7 @@
                 <td>2020</td>
                 <td>Khóm Tân Việt Hòa</td>
                 <td><span class="location">Trụ sở Khóm Tân Việt Hòa</span><span class="address">Số 142 Tân Việt Hoà, Tổ 18, Khóm Tân Việt Hòa, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.455243,105.619053" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.455243,105.619053" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>29</td>
@@ -527,7 +451,7 @@
                 <td>3619</td>
                 <td>Khóm Tịnh Thới</td>
                 <td><span class="location">Trụ sở Khóm Tịnh Thới</span><span class="address">Số 423/02 Phạm Hữu Lầu, Tổ 29, Khóm Tịnh Thới, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.452652,105.624734" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.452652,105.624734" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>30</td>
@@ -535,7 +459,7 @@
                 <td>3144</td>
                 <td>Khóm Tịnh Châu</td>
                 <td><span class="location">Trụ sở Khóm Tịnh Châu</span><span class="address">Số 442 Tân Việt Hoà, Tổ 2, Khóm Tịnh Châu, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.445217,105.618037" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.445217,105.618037" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>31</td>
@@ -543,7 +467,7 @@
                 <td>1246</td>
                 <td>Khóm Tịnh Đông</td>
                 <td><span class="location">Trụ sở Khóm Tịnh Đông</span><span class="address">Số 678/540 Trần Trọng Khiêm, Khóm Tịnh Đông, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.439169,105.637651" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.439169,105.637651" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>32</td>
@@ -551,7 +475,7 @@
                 <td>1702</td>
                 <td>Khóm Tịnh Long</td>
                 <td><span class="location">Trụ sở Khóm Tịnh Long</span><span class="address">Số 586 Tân Việt Hòa, Khóm Tịnh Long, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.449767,105.627885" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.449767,105.627885" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>33</td>
@@ -559,7 +483,7 @@
                 <td>2641</td>
                 <td>Khóm Tịnh Mỹ</td>
                 <td><span class="location">Đình Tịnh Thới</span><span class="address">Đường Đình Tịnh Thới, Tổ 12, Khóm Tịnh Mỹ, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.456111,105.633889" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.456111,105.633889" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>34</td>
@@ -567,7 +491,7 @@
                 <td>1910</td>
                 <td>Khóm Tịnh Hưng</td>
                 <td><span class="location">Trụ sở Khóm Tịnh Hưng</span><span class="address">Đường Hồ Thị Trầm, Tổ 04, Khóm Tịnh Hưng, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.433430,105.603058" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.433430,105.603058" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>35</td>
@@ -575,7 +499,7 @@
                 <td>2894</td>
                 <td>Khóm Tân Chủ</td>
                 <td><span class="location">Trụ sở Khóm Tân Chủ</span><span class="address">Tổ 5, Đường Nguyễn Công Nhân, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.448755,105.594105" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.448755,105.594105" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>36</td>
@@ -583,7 +507,7 @@
                 <td>3567</td>
                 <td>Khóm Tân Hùng</td>
                 <td><span class="location">Trụ sở Khóm Tân Hùng</span><span class="address">Tổ 6 Nguyễn Hữu Kiến, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.483767,105.581768" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.483767,105.581768" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>37</td>
@@ -591,7 +515,7 @@
                 <td>2106</td>
                 <td>Khóm Tân Dân</td>
                 <td><span class="location">Trung tâm HTCĐ xã Tân Thuận Tây cũ</span><span class="address">Tổ 4, Khóm Tân Dân, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.463924,105.585870" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.463924,105.585870" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>38</td>
@@ -599,7 +523,7 @@
                 <td>2238</td>
                 <td>Khóm Tân Hậu</td>
                 <td><span class="location">Tâm Quê Hội quán</span><span class="address">Tổ 7, Khóm Tân Hậu, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.461018,105.580490" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.461018,105.580490" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>39</td>
@@ -607,7 +531,7 @@
                 <td>3121</td>
                 <td>Khóm Đông Định</td>
                 <td><span class="location">Trường tiểu học Trần Phú</span><span class="address">Số 310 Cồn Lân, Tổ 10, Khóm Đông Định, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.409385,105.641829" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.409385,105.641829" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>40</td>
@@ -615,7 +539,7 @@
                 <td>2520</td>
                 <td>Khóm Đông Hòa</td>
                 <td><span class="location">Trường THCS Tân Thuận Đông</span><span class="address">Số 221, Tổ 6, Khóm Đông Hòa, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.415000,105.635000" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.415000,105.635000" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>41</td>
@@ -623,7 +547,7 @@
                 <td>2787</td>
                 <td>Khóm Đông Thạnh</td>
                 <td><span class="location">Trụ sở Khóm Đông Thạnh</span><span class="address">Số 19 Phạm Thị Trọng, Tổ 17, Khóm Đông Thạnh, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.413233,105.629161" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.413233,105.629161" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>42</td>
@@ -631,7 +555,7 @@
                 <td>1655</td>
                 <td>Khóm Tân Phát</td>
                 <td><span class="location">Trường tiểu học Lý Thường Kiệt</span><span class="address">Số 257 Trần Thị Lầu, Tổ 7, Khóm Tân Phát, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.435000,105.625000" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.435000,105.625000" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
                 <td>43</td>
@@ -639,7 +563,7 @@
                 <td>460</td>
                 <td>Ban Chỉ huy Phòng thủ Khu vực 3</td>
                 <td><span class="location">Hội trường Phòng Tham mưu</span><span class="address">Số 755 Phạm Hữu Lầu, Khóm Tân Việt Hòa, phường Cao Lãnh, tỉnh Đồng Tháp</span></td>
-                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.441000,105.618000" target="_blank" class="btn-map">🗺️ Chỉ đường</a></td>
+                <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.441000,105.618000" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
         </tbody>
     </table>
