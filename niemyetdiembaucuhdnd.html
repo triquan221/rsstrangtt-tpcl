@@ -77,24 +77,6 @@
             .header { padding: 30px 15px; }
             .logo { width: 110px; }
         }
-        
-        /* --- LEGEND --- */
-        .legend-bar {
-            background-color: #fffde7;
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-            font-size: 14px;
-            color: #333;
-        }
-        
-        .legend-item {
-            margin: 0 10px;
-            display: inline-block;
-        }
-
-        .dot-yellow { display: inline-block; width: 12px; height: 12px; background: #FFC107; border: 1px solid #b71c1c; margin-right: 5px; }
-        .dot-gray { display: inline-block; width: 12px; height: 12px; background: #e0e0e0; border: 1px solid #999; margin-right: 5px; }
 
         /* --- TABLE STYLE --- */
         table {
@@ -144,8 +126,6 @@
         td:nth-child(6) { text-align: center; }
 
         /* --- BUTTON STYLES --- */
-        
-        /* 1. Nút đã có tọa độ (Vàng) */
         .btn-map {
             display: inline-block;
             background-color: #FFC107;
@@ -166,18 +146,13 @@
             box-shadow: none;
         }
         
-        /* 2. Nút chưa có tọa độ trong CSV (Xám - Manual) */
-        .btn-map.manual {
-            background-color: #e0e0e0;
-            color: #555;
-            border: 1px solid #999;
+        /* Style cho nút chưa có dữ liệu */
+        .btn-map.empty {
+            background-color: #f0f0f0;
+            color: #999;
+            border: 1px dashed #ccc;
             box-shadow: none;
-            font-weight: 600;
-        }
-        .btn-map.manual:hover {
-            background-color: #d0d0d0;
-            color: #333;
-            cursor: text; /* Biểu thị cần chỉnh sửa */
+            cursor: default;
         }
 
         /* --- TEXT STYLES --- */
@@ -203,11 +178,6 @@
         <h1>DANH SÁCH KHU VỰC BỎ PHIẾU</h1>
         <h2>BẦU CỬ ĐẠI BIỂU QUỐC HỘI KHÓA XVI VÀ ĐẠI BIỂU HĐND CÁC CẤP NHIỆM KỲ 2026 - 2031</h2>
         <p>(Kèm theo Quyết định số 333/QĐ-UBND ngày 19/01/2026 của UBND Phường Cao Lãnh)</p>
-    </div>
-
-    <div class="legend-bar">
-        <span class="legend-item"><span class="dot-yellow"></span>Đã có tọa độ</span>
-        <span class="legend-item"><span class="dot-gray"></span>Cần điền thủ công</span>
     </div>
 
     <table>
@@ -252,7 +222,7 @@
                 <td>2907</td>
                 <td>Khóm 6, Khóm 7</td>
                 <td><span class="location">Chi nhánh VP ĐKĐĐ khu vực XVIII</span><span class="address">Số 72 Hùng Vương, Khóm 6</span></td>
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
             <tr>
                 <td>5</td>
@@ -260,7 +230,7 @@
                 <td>2156</td>
                 <td>Khóm 8</td>
                 <td><span class="location">Trung tâm Văn hóa Học tập cộng đồng P2 cũ</span><span class="address">130 Lê Lợi, Khóm 8</span></td>
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
             <tr>
                 <td>6</td>
@@ -356,7 +326,6 @@
                 <td>2784</td>
                 <td>Khóm Hòa Thuận, Khóm Hòa Lạc</td>
                 <td><span class="location">Trung tâm Cung ứng Dịch vụ công</span><span class="address">Số 01 Nguyễn Thị Lựu, Khóm Hoà Thuận</span></td>
-                <!-- Khóm Hòa Thuận có trong CSV tại 01 Nguyễn Thị Lựu, nên dùng link đó -->
                 <td><a href="https://www.google.com/maps/dir/?api=1&destination=10.470556,105.631944" target="_blank" class="btn-map">📍 Chỉ đường</a></td>
             </tr>
             <tr>
@@ -365,8 +334,7 @@
                 <td>2197</td>
                 <td>Khóm Hòa An</td>
                 <td><span class="location">Trung tâm VH HTCĐ Phường 4 cũ</span><span class="address">Số 02B Thiên Hộ Dương, Khóm Hoà An</span></td>
-                <!-- Địa chỉ này khác với trụ sở khóm Hòa An trong CSV -->
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
             <tr>
                 <td>19</td>
@@ -487,7 +455,7 @@
                 <td>Khóm Tịnh Mỹ</td>
                 <td><span class="location">Đình Tịnh Thới</span><span class="address">Đường Đình Tịnh Thới, Tổ 12, Khóm Tịnh Mỹ</span></td>
                 <!-- Địa chỉ trong CSV khác (Nguyễn Thị Trà vs Đình Tịnh Thới), cần kiểm tra -->
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
             <tr>
                 <td>34</td>
@@ -529,7 +497,7 @@
                 <td>Khóm Tân Hậu</td>
                 <td><span class="location">Tâm Quê Hội quán</span><span class="address">Tổ 7, Khóm Tân Hậu</span></td>
                 <!-- CSV: Tổ 4, đường Kênh Ngang. HTML: Tổ 7. Khác nhau -->
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
             <tr>
                 <td>39</td>
@@ -538,7 +506,7 @@
                 <td>Khóm Đông Định</td>
                 <td><span class="location">Trường tiểu học Trần Phú</span><span class="address">Số 310 Cồn Lân, Tổ 10, Khóm Đông Định</span></td>
                 <!-- CSV: Tổ 20. HTML: 310 Cồn Lân. Khác nhau -->
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
             <tr>
                 <td>40</td>
@@ -547,7 +515,7 @@
                 <td>Khóm Đông Hòa</td>
                 <td><span class="location">Trường THCS Tân Thuận Đông</span><span class="address">Số 221, Tổ 6, Khóm Đông Hòa</span></td>
                  <!-- CSV: Tổ 04. HTML: Số 221, Tổ 6. Khác nhau -->
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
             <tr>
                 <td>41</td>
@@ -564,7 +532,7 @@
                 <td>Khóm Tân Phát</td>
                 <td><span class="location">Trường tiểu học Lý Thường Kiệt</span><span class="address">Số 257 Trần Thị Lầu, Tổ 7, Khóm Tân Phát</span></td>
                 <!-- CSV: Tổ 01. HTML: Trường TH Lý Thường Kiệt. Khác nhau -->
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
             <tr>
                 <td>43</td>
@@ -572,7 +540,7 @@
                 <td>460</td>
                 <td>Ban Chỉ huy Phòng thủ Khu vực 3</td>
                 <td><span class="location">Hội trường Phòng Tham mưu</span><span class="address">Số 755 Phạm Hữu Lầu, Khóm Tân Việt Hòa</span></td>
-                <td><a href="#" class="btn-map manual">Cập nhật sau</a></td>
+                <td><a href="" class="btn-map empty">Cập nhật sau</a></td>
             </tr>
         </tbody>
     </table>
