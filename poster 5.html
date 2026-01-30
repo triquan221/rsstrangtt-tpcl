@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poster Hoạt Động Xuân Bính Ngọ 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #fdf6e3;
+        }
+        .tet-bg-pattern {
+            background: linear-gradient(180deg, #c62828 0%, #b71c1c 100%);
+            background-image: radial-gradient(#e53935 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .grad-orange { background: linear-gradient(135deg, #fb923c 0%, #ffedd5 100%); }
+        .grad-red { background: linear-gradient(135deg, #f87171 0%, #fee2e2 100%); }
+        .grad-blue { background: linear-gradient(135deg, #60a5fa 0%, #dbeafe 100%); }
+        .grad-purple { background: linear-gradient(135deg, #a78bfa 0%, #ede9fe 100%); }
+        .grad-green { background: linear-gradient(135deg, #34d399 0%, #d1fae5 100%); }
+        .grad-yellow { background: linear-gradient(135deg, #facc15 0%, #fef9c3 100%); }
+        .num-circle {
+            background: rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.6);
+            backdrop-filter: blur(4px);
+        }
+        .font-display {
+            font-family: 'Times New Roman', Times, serif;
+        }
+        @media print {
+            #control-panel { display: none !important; }
+            .placeholder-text { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center">
+
+    <!-- CONTROL PANEL -->
+    <div id="control-panel" class="w-full bg-white shadow-md p-4 sticky top-0 z-50 flex flex-col gap-4 border-b border-gray-200">
+        
+        <!-- Row 1: Header & Logo Settings -->
+        <div class="flex flex-wrap justify-center gap-4 border-b pb-4 border-gray-100 items-center">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wide">Cài đặt:</span>
+            
+            <div class="flex gap-2">
+                <label for="logo-upload" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-3 rounded cursor-pointer transition shadow flex items-center gap-2 text-xs font-sans">Logo</label>
+                <input id="logo-upload" type="file" accept="image/*" class="hidden">
+                <label for="tet-icon-upload" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-3 rounded cursor-pointer transition shadow flex items-center gap-2 text-xs font-sans">Icon</label>
+                <input id="tet-icon-upload" type="file" accept="image/*" class="hidden">
+            </div>
+
+            <!-- Font Controls -->
+            <div class="flex items-center bg-gray-100 rounded-lg p-1 border border-gray-300 font-sans">
+                <span class="text-xs font-bold text-gray-500 mr-1 ml-1">Tiêu đề:</span>
+                <button onclick="changeMainTitleSize(-1)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-l transition text-xs">-</button>
+                <button onclick="changeMainTitleSize(1)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-r transition text-xs">+</button>
+            </div>
+            <div class="flex items-center bg-gray-100 rounded-lg p-1 border border-gray-300 font-sans">
+                <span class="text-xs font-bold text-gray-500 mr-1 ml-1">Dòng Hoạt động:</span>
+                <button onclick="changeSubTitleSize(-1)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-l transition text-xs">-</button>
+                <button onclick="changeSubTitleSize(1)" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-r transition text-xs">+</button>
+            </div>
+
+            <!-- Header BG -->
+            <div class="flex items-center gap-1 bg-red-50 px-2 py-1 rounded-lg border border-red-200 shadow-sm font-sans">
+                <label for="header-bg-color-picker" class="text-xs font-bold text-red-700 cursor-pointer select-none">Màu:</label>
+                <input id="header-bg-color-picker" type="color" value="#991b1b" class="w-5 h-5 rounded cursor-pointer border-none p-0 bg-transparent" title="Màu nền tiêu đề">
+                <label for="header-upload" class="cursor-pointer text-xs font-bold text-blue-600 hover:underline ml-1">[Ảnh]</label>
+                <input id="header-upload" type="file" accept="image/*" class="hidden">
+            </div>
+
+            <button onclick="toggleHeaderText()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded transition shadow text-xs flex items-center gap-1 font-sans">Ẩn Chữ</button>
+        </div>
+
+        <!-- Row 2: Content & Download -->
+        <div class="flex flex-wrap justify-center gap-4 items-center">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wide">Nội dung & Khác:</span>
+
+            <!-- Card Controls -->
+            <div class="flex items-center bg-blue-50 rounded-lg p-1 border border-blue-200 font-sans">
+                <span class="text-xs font-bold text-blue-700 mr-1 ml-1">Thẻ:</span>
+                <button onclick="changeCardFontSize(-1)" class="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-1 px-2 rounded-l transition text-xs">-</button>
+                <button onclick="changeCardFontSize(1)" class="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-1 px-2 rounded-r transition text-xs border-l border-blue-300">+</button>
+                <div class="w-px h-3 bg-blue-300 mx-1"></div>
+                <button onclick="toggleCardBold()" class="bg-blue-200 hover:bg-blue-300 text-blue-800 font-bold py-1 px-2 rounded transition text-xs">Đậm</button>
+            </div>
+
+            <!-- Uploads -->
+            <label for="left-flower-upload" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-3 rounded cursor-pointer transition shadow flex items-center gap-2 text-xs font-sans">Đào</label>
+            <input id="left-flower-upload" type="file" accept="image/*" class="hidden" onchange="previewFlower(this, 'left-flower-svg', 'left-flower-img')">
+            <label for="right-flower-upload" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-3 rounded cursor-pointer transition shadow flex items-center gap-2 text-xs font-sans">Mai</label>
+            <input id="right-flower-upload" type="file" accept="image/*" class="hidden" onchange="previewFlower(this, 'right-flower-svg', 'right-flower-img')">
+            <label for="bg-upload" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-3 rounded cursor-pointer transition shadow flex items-center gap-2 text-xs font-sans">Nền Trang</label>
+            <input id="bg-upload" type="file" accept="image/*" class="hidden">
+
+             <!-- Fireworks -->
+             <div class="flex gap-1">
+                <input type="file" id="fw-bottom-left-upload" class="hidden" accept="image/*" onchange="previewFlower(this, 'fw-bl-svg', 'fw-bl-img')">
+                <button onclick="document.getElementById('fw-bottom-left-upload').click()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-2 rounded text-xs">Pháo Trái</button>
+                <input type="file" id="fw-top-right-upload" class="hidden" accept="image/*" onchange="previewFlower(this, 'fw-tr-svg', 'fw-tr-img')">
+                <button onclick="document.getElementById('fw-top-right-upload').click()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-2 rounded text-xs">Pháo Phải</button>
+            </div>
+
+            <button onclick="downloadPoster()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 rounded transition shadow flex items-center gap-2 text-xs font-sans ml-2">TẢI VỀ</button>
+        </div>
+    </div>
+
+    <!-- POSTER AREA -->
+    <div id="poster-capture-area" class="w-full flex justify-center p-4 md:p-8 overflow-hidden min-h-screen bg-gray-200">
+        
+        <!-- Main Container -->
+        <div id="main-poster" class="tet-bg-pattern relative w-full max-w-[1200px] rounded-3xl overflow-hidden shadow-2xl flex flex-col items-center pb-12 border-4 border-yellow-500/30 transition-colors duration-300">
+            
+            <!-- User Background -->
+            <img id="user-bg-img" src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nen%20poster%20xuan1.png" class="absolute inset-0 w-full h-full object-cover z-0">
+
+            <!-- HEADER -->
+            <header id="poster-header" class="relative bg-gradient-to-r from-red-800 via-red-700 to-red-800 text-yellow-300 border-b-4 border-yellow-500 overflow-hidden min-h-[220px] flex items-stretch w-full transition-colors duration-300">
+                <div id="uploaded-header-container" class="hidden absolute inset-0 z-0">
+                    <img id="header-image-preview" src="" alt="Header Image" class="w-full h-full object-cover opacity-100">
+                    <div class="absolute inset-0 bg-black/30"></div>
+                </div>
+
+                <!-- Flowers -->
+                <div class="absolute top-0 left-0 h-full w-[20%] max-w-[200px] z-10 flex items-start justify-start upload-placeholder group cursor-pointer" onclick="document.getElementById('left-flower-upload').click()">
+                    <svg id="left-flower-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/300" class="h-full w-full text-pink-400 fill-current opacity-80 hidden" style="transform: scaleX(-1);"><path d="M20,180 Q60,100 120,80 T180,20" fill="none" stroke="#5d4037" stroke-width="4"/><circle cx="120" cy="80" r="10" class="text-pink-500" /><circle cx="100" cy="90" r="6" class="text-pink-300" /><circle cx="180" cy="20" r="12" class="text-pink-600" /><circle cx="160" cy="40" r="8" class="text-pink-400" /><circle cx="140" cy="60" r="5" class="text-pink-300" /></svg>
+                    <img id="left-flower-img" src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/hoa-dao-tet%20(1)%20(Custom).webp" class="h-full w-full object-contain object-left-top drop-shadow-lg">
+                    <div class="placeholder-text absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 text-white text-xs font-bold text-center transition-opacity rounded">Bấm tải<br>Hoa Đào</div>
+                </div>
+                <div class="absolute top-0 right-0 h-full w-[20%] max-w-[200px] z-10 flex items-start justify-end upload-placeholder group cursor-pointer" onclick="document.getElementById('right-flower-upload').click()">
+                    <svg id="right-flower-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/300" class="h-full w-full text-yellow-500 fill-current opacity-80 hidden"><path d="M20,180 Q60,100 120,80 T180,20" fill="none" stroke="#5d4037" stroke-width="4"/><circle cx="120" cy="80" r="10" class="text-yellow-400" /><circle cx="100" cy="90" r="6" class="text-yellow-200" /><circle cx="180" cy="20" r="12" class="text-yellow-500" /></svg>
+                    <img id="right-flower-img" src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/hoa_mai-removebg-preview.png" class="h-full w-full object-contain object-right-top drop-shadow-lg">
+                    <div class="placeholder-text absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 text-white text-xs font-bold text-center transition-opacity rounded">Bấm tải<br>Hoa Mai</div>
+                </div>
+
+                <!-- Text -->
+                <div id="header-text-content" class="relative z-10 w-[60%] mx-auto py-6 px-2 flex flex-col items-center justify-center text-center">
+                    <div class="flex items-center justify-center mb-4 gap-3 cursor-pointer group relative" onclick="document.getElementById('logo-upload').click()">
+                        <div class="relative w-14 h-14 md:w-16 md:h-16 flex-shrink-0">
+                            <img id="header-logo" src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/logo_pCL-removebg-preview.png" alt="" class="w-full h-full object-contain relative z-10 drop-shadow-md">
+                        </div>
+                        <h2 class="text-sm md:text-lg font-bold uppercase tracking-widest text-yellow-200 opacity-90 drop-shadow-md border-b-2 border-yellow-500/50 pb-1">UBND Phường Cao Lãnh</h2>
+                    </div>
+                    <div id="header-titles" class="font-display font-black uppercase leading-tight drop-shadow-md w-full">
+                        <div id="header-line-1" class="text-base md:text-xl lg:text-2xl mb-3 text-white leading-snug" style="font-size: 1.25rem;">Các hoạt động văn hóa, nghệ thuật, thể thao,<br class="hidden md:inline" /> du lịch, vui chơi giải trí</div>
+                        <div id="header-line-2" class="text-xs md:text-base lg:text-lg mb-4 text-yellow-100 font-sans font-bold tracking-wide" style="font-size: 1rem;">Kỷ niệm 96 năm Ngày thành lập Đảng Cộng sản Việt Nam<br><span class="text-yellow-200">(03/02/1930 - 03/02/2026)</span></div>
+                        <div class="flex items-center justify-center mt-2 border-t border-red-500/50 pt-3">
+                            <div class="w-8 h-8 md:w-12 md:h-12 mr-3 flex-shrink-0 cursor-pointer group relative" onclick="document.getElementById('tet-icon-upload').click()">
+                                <img id="tet-icon" src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguoi-tuoi-ngo-3.png" alt="" class="w-full h-full object-contain relative z-10 drop-shadow-md">
+                            </div>
+                            <div id="header-line-3" class="text-lg md:text-2xl lg:text-3xl text-yellow-400 font-bold tracking-wider" style="font-size: 2rem;">Mừng Xuân Bính Ngọ 2026</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- GRID CONTENT (Cards) -->
+            <div class="relative z-10 w-full px-4 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 mt-6">
+                <!-- Card 1 -->
+                <div class="card-shadow grad-orange rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">01</div>
+                    <div class="flex-1 card-content"><h3 class="text-orange-900 font-black text-xl uppercase leading-tight card-title">Khai mạc Đường hoa Xuân Bính Ngọ 2026</h3><p class="text-orange-800 text-base mt-1 font-bold card-detail">18 giờ 30 phút, Ngày 13/02/2026 (26 Tết)</p><p class="text-orange-700 text-sm font-bold card-detail">Đường Lý Thường Kiệt</p></div>
+                </div>
+                <!-- Card 2 -->
+                <div class="card-shadow grad-red rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">02</div>
+                    <div class="flex-1 card-content"><h3 class="text-red-900 font-black text-xl uppercase leading-tight card-title">Chương trình Văn nghệ </br> "Vũ điệu trẻ"</h3><p class="text-red-800 text-base mt-1 font-bold card-detail">18 giờ 00 phút, Ngày 13/02/2026 (26 Tết)</p><p class="text-red-700 text-sm font-bold card-detail">Công viên Văn Miếu</p></div>
+                </div>
+                <!-- Card 3 -->
+                <div class="card-shadow grad-blue rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">03</div>
+                    <div class="flex-1 card-content"><h3 class="text-blue-900 font-black text-xl uppercase leading-tight card-title">Chương trình nghệ thuật chào năm mới và bắn pháo hoa</h3><p class="text-blue-800 text-base mt-1 font-bold card-detail">20 giờ 00 phút, Ngày 16/02/2026 (Đêm 29 Tết)</p><p class="text-blue-700 text-sm font-bold card-detail">Quảng trường Văn Miếu</p></div>
+                </div>
+                <!-- Card 4 -->
+                <div class="card-shadow grad-purple rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">04</div>
+                    <div class="flex-1 card-content"><h3 class="text-purple-900 font-black text-xl uppercase leading-tight card-title">Trò chơi dân gian, đêm hoa đăng và biểu diễn Acoustic</h3><p class="text-purple-800 text-base mt-1 font-bold card-detail">17 giờ 00 phút, Ngày 17/02/2026 (Mùng 1 Tết)</p><p class="text-purple-700 text-sm font-bold card-detail">Công viên Hai Bà Trưng</p></div>
+                </div>
+                <!-- Card 5 -->
+                <div class="card-shadow grad-green rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">05</div>
+                    <div class="flex-1 card-content"><h3 class="text-teal-900 font-black text-xl uppercase leading-tight card-title">Chương trình nghệ thuật tổng hợp mừng Xuân mới</h3><p class="text-teal-800 text-base mt-1 font-bold card-detail">18 giờ 30 phút, Ngày 17/02/2026 (Mùng 1 Tết)</p><p class="text-teal-700 text-sm font-bold card-detail">Quảng trường Văn Miếu</p></div>
+                </div>
+                <!-- Card 6 -->
+                <div class="card-shadow grad-yellow rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">06</div>
+                    <div class="flex-1 card-content"><h3 class="text-yellow-900 font-black text-xl uppercase leading-tight card-title">Giải Cờ tướng vận động mừng Đảng - mừng Xuân Bính Ngọ 2026</h3><p class="text-yellow-800 text-base mt-1 font-bold card-detail">08 giờ 00 phút, Ngày 18/02/2026 (Mùng 2 Tết)</p><p class="text-yellow-700 text-sm font-bold card-detail">Khu vực Văn Thánh Miếu</p></div>
+                </div>
+                <!-- Card 7 -->
+                <div class="card-shadow grad-orange rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">07</div>
+                    <div class="flex-1 card-content"><h3 class="text-orange-900 font-black text-xl uppercase leading-tight card-title">Giao lưu, biểu diễn Lân - Sư - Rồng</h3><p class="text-orange-800 text-base mt-1 font-bold card-detail">19 giờ 00 phút, Ngày 18/02 (Mùng 2 Tết) & Ngày 19/02 (Mùng 3 Tết)</p><p class="text-orange-700 text-sm font-bold card-detail">Công viên Văn Miếu (Đường Đặng Văn Bình)</p></div>
+                </div>
+                <!-- Card 8 -->
+                <div class="card-shadow grad-red rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">08</div>
+                    <div class="flex-1 card-content"><h3 class="text-red-900 font-black text-xl uppercase leading-tight card-title">Chương trình văn nghệ</br> "Sắc màu tuổi trẻ"</h3><p class="text-red-800 text-base mt-1 font-bold card-detail">Ngày 18/02/2026 (Mùng 2 Tết)</p><p class="text-red-700 text-sm font-bold card-detail">Quảng trường Văn Miếu</p></div>
+                </div>
+                 <div class="card-shadow grad-blue rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">09</div>
+                    <div class="flex-1 card-content"><h3 class="text-blue-900 font-black text-xl uppercase leading-tight card-title">Chương trình Đờn ca tài tử, Hát dân ca và Hò Đồng Tháp</h3><p class="text-blue-800 text-base mt-1 font-bold card-detail">18 giờ 00 phút, Ngày 18/02/2026 (Mùng 2 Tết)</p><p class="text-blue-700 text-sm font-bold card-detail">Công viên Hai Bà Trưng</p></div>
+                </div>
+                 <div class="card-shadow grad-purple rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">10</div>
+                    <div class="flex-1 card-content"><h3 class="text-purple-900 font-black text-xl uppercase leading-tight card-title">Đá gà nghệ thuật và Hội thi Gà đẹp</h3><p class="text-purple-800 text-base mt-1 font-bold card-detail">07 giờ 30 phút, Ngày 19/02/2026 (Mùng 3 Tết)</p><p class="text-purple-700 text-sm font-bold card-detail">Công viên Văn Miếu (Đường Đặng Văn Bình)</p></div>
+                </div>
+                 <div class="card-shadow grad-green rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">11</div>
+                    <div class="flex-1 card-content"><h3 class="text-teal-900 font-black text-xl uppercase leading-tight card-title">Liên hoan Dân vũ thể thao mừng Đảng - mừng Xuân Bính Ngọ 2026</h3><p class="text-teal-800 text-base mt-1 font-bold card-detail">Ngày 19/02/2026 (Mùng 3 Tết)</p><p class="text-teal-700 text-sm font-bold card-detail">Quảng trường Văn Miếu</p></div>
+                </div>
+                 <div class="card-shadow grad-yellow rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01]">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">12</div>
+                    <div class="flex-1 card-content"><h3 class="text-yellow-900 font-black text-xl uppercase leading-tight card-title">Chương trình biểu diễn </br>“Vũ hội phố Xuân 2026”</h3><p class="text-yellow-800 text-base mt-1 font-bold card-detail">18 giờ 00 phút, Ngày 20/02/2026 (Mùng 4 Tết)</p><p class="text-yellow-700 text-sm font-bold card-detail">Đường Lý Thường Kiệt (Phía trước khu vực đường hoa Xuân)</p></div>
+                </div>
+
+                <!-- FULL WIDTH Card 13 -->
+                <div class="card-shadow grad-orange rounded-2xl p-4 flex items-center gap-4 transition hover:scale-[1.01] col-span-1 md:col-span-2">
+                    <div class="num-circle flex-shrink-0 w-16 h-16 rounded-full grid place-content-center text-white font-black text-2xl shadow-inner border-white/50 border-4 font-sans leading-none pb-1">13</div>
+                    <div class="flex-1 card-content"><h3 class="text-orange-900 font-black text-xl uppercase leading-tight card-title">Không gian văn hóa Xuân: Viết thư pháp, trà đạo, văn hóa trầu cau</h3><p class="text-orange-800 text-base mt-1 font-bold card-detail">08 giờ 00 phút đến 17 giờ 00 phút, Từ ngày 17/02 - 19/02/2026 (Mùng 1 - Mùng 3 Tết)</p><p class="text-orange-700 text-sm font-bold card-detail">Khu vực Văn Thánh Miếu</p></div>
+                </div>
+            </div>
+
+            <!-- FIREWORKS BOX -->
+            <div class="relative z-10 w-full px-4 md:px-12 mt-8">
+                <div class="bg-gradient-to-r from-red-200 via-orange-100 to-red-200 rounded-2xl p-6 border-4 border-yellow-500 shadow-xl text-center transform hover:scale-[1.02] transition-transform relative overflow-hidden">
+                    
+                    <div class="absolute bottom-0 left-0 w-16 h-16 md:w-24 md:h-24 cursor-pointer z-20 group" onclick="document.getElementById('fw-bottom-left-upload').click()">
+                        <input type="file" id="fw-bottom-left-upload" class="hidden" accept="image/*" onchange="previewFlower(this, 'fw-bl-svg', 'fw-bl-img')">
+                        <svg id="fw-bl-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full text-red-500 opacity-30 group-hover:opacity-60 transition-opacity"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                        <img id="fw-bl-img" src="" class="w-full h-full object-contain hidden">
+                    </div>
+
+                    <div class="absolute top-0 right-0 w-16 h-16 md:w-24 md:h-24 cursor-pointer z-20 group" onclick="document.getElementById('fw-top-right-upload').click()">
+                        <input type="file" id="fw-top-right-upload" class="hidden" accept="image/*" onchange="previewFlower(this, 'fw-tr-svg', 'fw-tr-img')">
+                        <svg id="fw-tr-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full text-red-500 opacity-30 group-hover:opacity-60 transition-opacity"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                        <img id="fw-tr-img" src="" class="w-full h-full object-contain hidden">
+                    </div>
+
+                    <h3 class="relative z-10 text-red-700 font-black uppercase text-2xl md:text-3xl lg:text-4xl mb-6 drop-shadow-sm flex items-center justify-center gap-3 font-display whitespace-nowrap mx-4 md:mx-12">
+                        BẮN PHÁO HOA TẾT NGUYÊN ĐÁN BÍNH NGỌ 2026
+                    </h3>
+                    
+                    <div class="relative z-10 flex flex-col md:flex-row justify-center items-stretch gap-4 text-red-900">
+                        <div class="flex-1 flex items-center gap-3 bg-white/50 p-4 rounded-xl shadow-sm min-w-[200px]">
+                            <span class="text-3xl">📍</span>
+                            <div class="text-left"><span class="block font-bold text-lg md:text-xl">Quảng trường Văn Miếu</span><span class="text-sm font-medium opacity-80">(Khóm 1, Phường Cao Lãnh)</span></div>
+                        </div>
+                        <div class="flex-1 flex items-center gap-3 bg-white/50 p-4 rounded-xl shadow-sm min-w-[200px]">
+                            <span class="text-3xl">🧨</span>
+                            <div class="text-left"><span class="block font-bold text-lg md:text-xl">700 Quả tầm cao</span><span class="text-sm font-bold text-red-600">& 120 Giàn tầm thấp</span></div>
+                        </div>
+                        <div class="flex-[2] flex flex-col justify-center gap-2 bg-yellow-200/80 p-4 rounded-xl shadow-sm border border-yellow-400 min-w-[350px]">
+                            <div class="flex items-center gap-2"><span class="text-2xl">⏱️</span><span class="font-black text-red-900 text-xl">Thời lượng: 15 phút</span></div>
+                            <div class="flex items-start gap-2"><span class="text-2xl">📅</span><div class="text-left leading-tight"><span class="font-black text-red-900 text-xl">Thời điểm: Lúc 22 giờ 00 phút ngày 16 tháng 2 năm 2026</span><span class="block text-lg font-bold text-red-800 italic">(nhằm ngày 29 tháng Chạp năm Ất Tỵ)</span></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-red-900/50 to-transparent z-0"></div>
+        </div>
+    </div>
+
+    <script>
+        const headerUpload = document.getElementById('header-upload');
+        const userBgImg = document.getElementById('user-bg-img');
+        const mainPoster = document.getElementById('main-poster');
+        const bgColorPicker = document.getElementById('bg-color-picker');
+        const headerBgColorPicker = document.getElementById('header-bg-color-picker');
+        const headerSection = document.getElementById('poster-header');
+        const logoUpload = document.getElementById('logo-upload');
+        const headerLogo = document.getElementById('header-logo');
+        const tetIconUpload = document.getElementById('tet-icon-upload');
+        const tetIcon = document.getElementById('tet-icon');
+
+        if(bgColorPicker) {
+            bgColorPicker.addEventListener('input', (e) => { userBgImg.classList.add('hidden'); mainPoster.classList.remove('tet-bg-pattern'); mainPoster.style.background = e.target.value; });
+        }
+        if(headerBgColorPicker) {
+            headerBgColorPicker.addEventListener('input', (e) => { headerSection.classList.remove('bg-gradient-to-r', 'from-red-800', 'via-red-700', 'to-red-800'); headerSection.style.background = e.target.value; });
+        }
+        if(headerUpload) {
+            headerUpload.addEventListener('change', (e) => { if(e.target.files[0]){ const r=new FileReader(); r.onload=(ev)=>{ document.getElementById('header-image-preview').src=ev.target.result; document.getElementById('uploaded-header-container').classList.remove('hidden'); document.getElementById('reset-header-btn').classList.remove('hidden'); }; r.readAsDataURL(e.target.files[0]); } });
+        }
+        if(document.getElementById('bg-upload')) {
+            document.getElementById('bg-upload').addEventListener('change', (e) => { if(e.target.files[0]){ const r=new FileReader(); r.onload=(ev)=>{ userBgImg.src=ev.target.result; userBgImg.classList.remove('hidden'); mainPoster.classList.remove('tet-bg-pattern'); mainPoster.style.background = ''; }; r.readAsDataURL(e.target.files[0]); } });
+        }
+        if(logoUpload) {
+            logoUpload.addEventListener('change', (e) => { if(e.target.files[0]){ const r=new FileReader(); r.onload=(ev)=>{ headerLogo.src=ev.target.result; headerLogo.classList.remove('hidden'); }; r.readAsDataURL(e.target.files[0]); } });
+        }
+        if(tetIconUpload) {
+            tetIconUpload.addEventListener('change', (e) => { if(e.target.files[0]){ const r=new FileReader(); r.onload=(ev)=>{ tetIcon.src=ev.target.result; tetIcon.classList.remove('hidden'); }; r.readAsDataURL(e.target.files[0]); } });
+        }
+
+        function resetHeader() { document.getElementById('uploaded-header-container').classList.add('hidden'); document.getElementById('reset-header-btn').classList.add('hidden'); document.getElementById('header-upload').value = ""; headerSection.style.background = ''; headerSection.classList.add('bg-gradient-to-r', 'from-red-800', 'via-red-700', 'to-red-800'); if(headerBgColorPicker) headerBgColorPicker.value = '#991b1b'; }
+        function toggleHeaderText() { document.getElementById('header-text-content').classList.toggle('opacity-0'); }
+        function previewFlower(input, svgId, imgId) { if(input.files[0]){ const r=new FileReader(); const svg=document.getElementById(svgId); const img=document.getElementById(imgId); r.onload=(e)=>{ img.src=e.target.result; img.classList.remove('hidden'); if(svg) svg.classList.add('hidden'); }; r.readAsDataURL(input.files[0]); } }
+
+        function changeMainTitleSize(delta) { const lines = [document.getElementById('header-line-2'), document.getElementById('header-line-3')]; lines.forEach(el => { if (el) { let currentSize = parseFloat(window.getComputedStyle(el, null).getPropertyValue('font-size')); let newSize = currentSize + (delta * 2); if (newSize > 8) el.style.fontSize = newSize + 'px'; } }); }
+        function changeSubTitleSize(delta) { const el = document.getElementById('header-line-1'); if (el) { let currentSize = parseFloat(window.getComputedStyle(el, null).getPropertyValue('font-size')); let newSize = currentSize + (delta * 2); if (newSize > 8) el.style.fontSize = newSize + 'px'; } }
+        function changeCardFontSize(delta) { const titles = document.querySelectorAll('.card-title'); const details = document.querySelectorAll('.card-detail'); titles.forEach(el => { let currentSize = parseFloat(window.getComputedStyle(el, null).getPropertyValue('font-size')); let newSize = currentSize + delta; if(newSize > 10) el.style.fontSize = newSize + 'px'; }); details.forEach(el => { let currentSize = parseFloat(window.getComputedStyle(el, null).getPropertyValue('font-size')); let newSize = currentSize + delta; if(newSize > 8) el.style.fontSize = newSize + 'px'; }); }
+        function toggleCardBold() { const details = document.querySelectorAll('.card-detail'); details.forEach(el => { if (el.classList.contains('font-bold')) { el.classList.remove('font-bold'); el.classList.add('font-medium'); } else { el.classList.remove('font-medium'); el.classList.add('font-bold'); } }); }
+
+        function downloadPoster() { const mainPosterElement = document.getElementById('main-poster'); const downloadBtn = document.querySelector('button[onclick="downloadPoster()"]'); const originalText = downloadBtn.innerText; downloadBtn.innerText = "Đang xử lý..."; downloadBtn.disabled = true; html2canvas(mainPosterElement, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: null, logging: false, onclone: (clonedDoc) => { const placeholders = clonedDoc.querySelectorAll('.placeholder-text'); placeholders.forEach(el => el.style.display = 'none'); } }).then(canvas => { const link = document.createElement('a'); link.download = 'Poster_Xuan_2026_Grid.png'; link.href = canvas.toDataURL("image/png"); link.click(); downloadBtn.innerText = originalText; downloadBtn.disabled = false; }).catch(err => { console.error("Lỗi:", err); alert("Lỗi khi tải ảnh."); downloadBtn.innerText = originalText; downloadBtn.disabled = false; }); }
+
+        // EXPOSE FUNCTIONS GLOBALLY FOR HTML ONCLICK ATTRIBUTES
+        window.changeMainTitleSize = changeMainTitleSize;
+        window.changeSubTitleSize = changeSubTitleSize;
+        window.changeCardFontSize = changeCardFontSize;
+        window.toggleCardBold = toggleCardBold;
+        window.previewFlower = previewFlower;
+        window.toggleHeaderText = toggleHeaderText;
+        window.resetHeader = resetHeader;
+        window.downloadPoster = downloadPoster;
+
+    </script>
+</body>
+</html>
