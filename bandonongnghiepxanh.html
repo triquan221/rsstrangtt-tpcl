@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nông Nghiệp Xanh - Sầu Riêng Sạch & Bền Vững</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#15803d', // Green-700
+                            light: '#dcfce7', // Green-100
+                            accent: '#84cc16', // Lime-500
+                            alert: '#ef4444',
+                            safe: '#22c55e',
+                            soil: '#57534e'   // Stone-600
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Roboto"', 'sans-serif'],
+                        serif: ['"Merriweather"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(21, 128, 61, 0.1);
+        }
+        .step-connector::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 100%;
+            height: 2px;
+            background-color: #e5e7eb;
+            z-index: -1;
+            transform: translateY(-50%);
+        }
+        /* Custom Timeline */
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 5px;
+            bottom: 5px;
+            width: 2px;
+            background: #dcfce7;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-gray-800 font-sans">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="bg-brand-green text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl text-brand-green uppercase tracking-wide">Nông Nghiệp Xanh</h1>
+                    <p class="text-xs text-gray-500 font-medium">Vì Sức Khỏe Cộng Đồng</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex gap-6 font-medium text-gray-600 items-center">
+                <a href="#intro" class="hover:text-brand-green transition">Giới Thiệu</a>
+                <a href="http://bandonongnghiepxanh.id.vn/" target="_blank" class="hover:text-brand-green transition flex items-center gap-1">
+                    <i class="fa-solid fa-map-location-dot"></i> Bản Đồ
+                </a>
+                <a href="#process" class="hover:text-brand-green transition">Mô Hình Canh Tác</a>
+                <a href="#check" class="px-4 py-2 bg-brand-green text-white rounded-lg hover:bg-green-800 transition shadow-lg shadow-green-200">
+                    <i class="fa-solid fa-qrcode mr-2"></i>Truy Xuất Nguồn Gốc
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="intro" class="relative py-20 bg-gradient-to-br from-green-50 to-stone-100 overflow-hidden">
+        <!-- Background Decor -->
+        <i class="fa-solid fa-tree absolute top-10 right-10 text-9xl text-green-200 opacity-20 rotate-12"></i>
+        
+        <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-brand-green text-sm font-semibold border border-green-200">
+                    <i class="fa-solid fa-earth-americas"></i> Tiêu chuẩn GlobalGAP
+                </div>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 leading-tight">
+                    Kiến Tạo Hệ Sinh Thái <br>
+                    <span class="text-brand-green">Sầu Riêng Bền Vững</span>
+                </h2>
+                <p class="text-lg text-gray-600">
+                    Chúng tôi theo đuổi nền nông nghiệp tuần hoàn, ưu tiên chế phẩm sinh học và bảo vệ đất. Cam kết sản phẩm sầu riêng sạch, không tồn dư kim loại nặng (Cadmium), an toàn cho người tiêu dùng và môi trường.
+                </p>
+                
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#check" class="px-6 py-3 bg-brand-green text-white font-bold rounded-lg shadow-md hover:bg-green-800 transition">
+                        Kiểm Tra Nguồn Gốc
+                    </a>
+                    <a href="#process" class="px-6 py-3 border border-gray-300 bg-white text-gray-700 font-medium rounded-lg hover:border-brand-green hover:text-brand-green transition">
+                        Quy Trình Xanh
+                    </a>
+                    <a href="http://bandonongnghiepxanh.id.vn/" target="_blank" class="px-6 py-3 border border-brand-accent text-brand-green font-bold rounded-lg hover:bg-brand-green hover:text-white transition flex items-center gap-2">
+                        <i class="fa-solid fa-map"></i> Bản Đồ Số
+                    </a>
+                </div>
+                
+                <!-- Pillars -->
+                <div class="flex gap-6 mt-8 pt-6 border-t border-gray-200">
+                    <div class="text-center">
+                        <i class="fa-solid fa-hand-holding-droplet text-2xl text-brand-soil mb-1"></i>
+                        <p class="font-bold text-sm text-gray-700">Đất Khỏe</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fa-brands fa-envira text-2xl text-brand-green mb-1"></i>
+                        <p class="font-bold text-sm text-gray-700">Cây Lành</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fa-solid fa-apple-whole text-2xl text-brand-accent mb-1"></i>
+                        <p class="font-bold text-sm text-gray-700">Trái Ngọt</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <img src="https://placehold.co/600x450/15803d/FFF?text=Nông+Nghiệp+Hữu+Cơ&font=roboto" alt="Vườn sầu riêng hữu cơ" class="rounded-2xl shadow-2xl border-4 border-white">
+                <!-- Floating Card -->
+                <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg border-l-4 border-brand-safe max-w-xs animate-bounce" style="animation-duration: 3s;">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-green-100 p-2 rounded-full text-brand-safe"><i class="fa-solid fa-check-to-slot"></i></div>
+                        <div>
+                            <p class="text-xs text-gray-500 font-bold uppercase">Phương pháp canh tác</p>
+                            <p class="font-bold text-gray-800">100% Hữu cơ Vi sinh</p>
+                            <p class="text-xs text-brand-safe">Giảm thiểu hóa học</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Traceability Tool Section -->
+    <section id="check" class="py-20 bg-white relative">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-serif font-bold text-gray-900">Truy Xuất Hành Trình Xanh</h2>
+                <p class="text-gray-500 mt-2">Nhập mã lô hàng để xem nhật ký canh tác và kết quả kiểm nghiệm kim loại nặng.</p>
+            </div>
+
+            <!-- Search Box -->
+            <div class="bg-white p-2 rounded-full shadow-2xl border border-gray-100 flex items-center max-w-2xl mx-auto mb-12">
+                <input type="text" id="batch-input" placeholder="Ví dụ: SR-NNX-001" class="flex-grow px-6 py-3 rounded-full focus:outline-none text-gray-700" value="SR-NNX-001">
+                <button onclick="checkBatch()" class="bg-brand-green text-white px-8 py-3 rounded-full font-bold hover:bg-green-800 transition flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass"></i> <span class="hidden sm:inline">Tra Cứu</span>
+                </button>
+            </div>
+
+            <!-- Result Panel -->
+            <div id="result-panel" class="hidden glass-panel rounded-2xl p-8 shadow-xl border-t-4 border-brand-green animate-fade-in">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-6 mb-6">
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="text-2xl font-bold text-gray-900" id="res-name">Lô Hàng: SR-NNX-001</h3>
+                            <span class="bg-brand-green text-white text-xs font-bold px-3 py-1 rounded-full uppercase"><i class="fa-solid fa-leaf"></i> Chuẩn Nông Nghiệp Xanh</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-1">Nông trại liên kết: <span class="font-medium text-gray-900">HTX Sầu Riêng Bền Vững (Đắk Lắk)</span></p>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-right">
+                        <p class="text-sm text-gray-500">Ngày đóng gói</p>
+                        <p class="font-mono font-bold text-lg text-brand-green">24/05/2024</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- Left: Chemical Safety -->
+                    <div>
+                        <h4 class="font-bold text-gray-900 mb-5 flex items-center gap-2 bg-yellow-50 p-2 rounded-lg">
+                            <i class="fa-solid fa-shield-virus text-yellow-600"></i> Chỉ Số An Toàn (Eurofins Lab)
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <!-- Cadmium -->
+                            <div class="flex justify-between items-center p-4 rounded-xl border border-gray-200 hover:border-brand-green transition bg-white">
+                                <div>
+                                    <p class="font-bold text-gray-800">Cadmium (Cd)</p>
+                                    <p class="text-xs text-gray-500">Giới hạn TQ/EU: 0.05 mg/kg</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-2xl font-bold text-brand-safe">0.005</p>
+                                    <p class="text-xs font-bold text-brand-safe uppercase">Rất An Toàn</p>
+                                </div>
+                            </div>
+
+                            <!-- Lead -->
+                            <div class="flex justify-between items-center p-4 rounded-xl border border-gray-200 hover:border-brand-green transition bg-white">
+                                <div>
+                                    <p class="font-bold text-gray-800">Chì (Pb)</p>
+                                    <p class="text-xs text-gray-500">Giới hạn: 0.1 mg/kg</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-2xl font-bold text-brand-safe">< 0.01</p>
+                                    <p class="text-xs font-bold text-brand-safe uppercase">Không phát hiện</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-4 bg-green-50 rounded-lg border border-green-100">
+                            <p class="text-sm text-brand-green italic">
+                                <i class="fa-solid fa-info-circle mr-1"></i>
+                                Sản phẩm được canh tác theo hướng hữu cơ sinh học, ưu tiên bảo vệ thiên địch và hệ vi sinh vật đất.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Process Diary -->
+                    <div>
+                        <h4 class="font-bold text-gray-900 mb-5 flex items-center gap-2 bg-green-50 p-2 rounded-lg">
+                            <i class="fa-solid fa-clipboard-list text-brand-green"></i> Nhật Ký Canh Tác
+                        </h4>
+                        
+                        <div class="relative pl-8 space-y-6">
+                            <div class="timeline-line"></div>
+
+                            <!-- Stage 1 -->
+                            <div class="relative">
+                                <span class="absolute -left-[23px] bg-brand-soil h-4 w-4 rounded-full border-2 border-white top-1"></span>
+                                <p class="text-xs font-bold text-brand-soil uppercase tracking-wider mb-1">Giai Đoạn 1: Cải Tạo Đất</p>
+                                <p class="text-sm text-gray-600">Sử dụng <strong>Humic Acid & Vi sinh bản địa</strong> để cải thiện pH, giải độc đất, tạo độ tơi xốp tự nhiên.</p>
+                                <p class="text-xs text-gray-400 mt-1"><i class="fa-regular fa-clock"></i> 15/10/2023</p>
+                            </div>
+
+                            <!-- Stage 2 -->
+                            <div class="relative">
+                                <span class="absolute -left-[23px] bg-brand-accent h-4 w-4 rounded-full border-2 border-white top-1"></span>
+                                <p class="text-xs font-bold text-brand-green uppercase tracking-wider mb-1">Giai Đoạn 2: Dinh Dưỡng Hữu Cơ</p>
+                                <p class="text-sm text-gray-600">Bón phân hữu cơ nở nhập khẩu, phun amino acid tảo biển. Kiểm soát sâu bệnh bằng thảo mộc.</p>
+                                <p class="text-xs text-gray-400 mt-1"><i class="fa-regular fa-clock"></i> 20/12/2023</p>
+                            </div>
+
+                            <!-- Stage 3 -->
+                            <div class="relative">
+                                <span class="absolute -left-[23px] bg-brand-green h-4 w-4 rounded-full border-2 border-white top-1"></span>
+                                <p class="text-xs font-bold text-brand-green uppercase tracking-wider mb-1">Giai Đoạn 3: Nuôi Trái & An Toàn</p>
+                                <p class="text-sm text-gray-600">Tăng cường Kali hữu cơ. Ngưng toàn bộ vật tư trước thu hoạch 20 ngày để đảm bảo thời gian cách ly.</p>
+                                <p class="text-xs text-gray-400 mt-1"><i class="fa-regular fa-clock"></i> 05/04/2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Visualization -->
+    <section id="process" class="py-20 bg-stone-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-brand-green font-bold tracking-wider uppercase text-sm">Phương Pháp Kỹ Thuật</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mt-2">Mô Hình Nông Nghiệp Xanh</h2>
+                <div class="w-24 h-1 bg-brand-green mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-brand-soil hover:shadow-xl transition group">
+                    <div class="w-16 h-16 bg-stone-100 text-brand-soil rounded-full flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-mound"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">1. Nuôi Dưỡng Đất</h3>
+                    <ul class="space-y-3 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Duy trì thảm cỏ giữ ẩm và vi sinh vật.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Tăng cường chất hữu cơ, hạn chế xói mòn.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Kiểm tra định kỳ kim loại nặng trong đất.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-brand-accent hover:shadow-xl transition group">
+                    <div class="w-16 h-16 bg-green-100 text-brand-green rounded-full flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">2. Dinh Dưỡng Xanh</h3>
+                    <ul class="space-y-3 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Ưu tiên phân bón nguồn gốc thực vật/động vật.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Sử dụng thuốc BVTV sinh học, thảo mộc.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Loại bỏ hoàn toàn hóa chất cấm.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-brand-green hover:shadow-xl transition group">
+                    <div class="w-16 h-16 bg-green-100 text-brand-green rounded-full flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-recycle"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">3. Canh Tác Tuần Hoàn</h3>
+                    <ul class="space-y-3 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Tận dụng phụ phẩm nông nghiệp ủ phân.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Quản lý rác thải nông nghiệp đúng quy định.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> <span>Bảo vệ nguồn nước và môi trường sống.</span></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-8">
+            <div class="col-span-2">
+                 <div class="flex items-center gap-2 mb-4">
+                    <div class="bg-brand-green text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">Nông Nghiệp Xanh</span>
+                </div>
+                <p class="text-sm leading-relaxed mb-4">
+                    Đồng hành cùng nhà nông Việt Nam xây dựng nền nông nghiệp bền vững, minh bạch và trách nhiệm. Chuyên sâu về giải pháp canh tác sầu riêng sạch đạt chuẩn xuất khẩu.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Giải Pháp</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><i class="fa-solid fa-check text-brand-green mr-2"></i>Quy trình VietGAP/GlobalGAP</li>
+                    <li><i class="fa-solid fa-check text-brand-green mr-2"></i>Cải tạo đất hữu cơ</li>
+                    <li><i class="fa-solid fa-check text-brand-green mr-2"></i>Truy xuất nguồn gốc</li>
+                    <li><i class="fa-solid fa-check text-brand-green mr-2"></i>Kiểm soát dư lượng</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Liên Hệ</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><i class="fa-solid fa-envelope mr-2"></i>lienhe@nongnghiepxanh.vn</li>
+                    <li><i class="fa-solid fa-phone mr-2"></i>Hotline: 1900 xxxx</li>
+                    <li><i class="fa-solid fa-location-dot mr-2"></i>Cao Lãnh, Đồng Tháp</li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-12 pt-8 border-t border-gray-800 text-xs">
+            &copy; 2024 Nông Nghiệp Xanh. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        function checkBatch() {
+            const input = document.getElementById('batch-input').value;
+            const resultPanel = document.getElementById('result-panel');
+            const btn = document.querySelector('button[onclick="checkBatch()"]');
+            
+            // Simulation Loading
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tra cứu...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Reset button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+
+                // Show Result
+                resultPanel.classList.remove('hidden');
+                
+                // Scroll to result
+                resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Mock Update Name
+                if(input) {
+                    document.getElementById('res-name').innerHTML = `Lô Hàng: ${input.toUpperCase()}`;
+                }
+                
+            }, 800);
+        }
+    </script>
+</body>
+</html>
