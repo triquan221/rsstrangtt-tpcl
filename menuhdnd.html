@@ -11,8 +11,7 @@
     }
 
     .vertical-menu {
-       
-        max-width: none;          /* đảm bảo không bị bó */
+        max-width: none;
         background: linear-gradient(180deg, #1f8edc, #176fb8);
         border-radius: 10px;
         padding: 8px 0;
@@ -43,35 +42,8 @@
         display: block;
     }
 
-    /* Mũi tên submenu */
-    .vertical-menu li.has-sub::after {
-        content: "›";
-        position: absolute;
-        right: 18px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 22px;
-        color: #ffffff;
-    }
-
-    /* Hover */
     .vertical-menu li:hover {
         background: rgba(255,255,255,0.15);
-    }
-
-    /* Submenu */
-    .vertical-menu ul.submenu {
-        display: none;
-        background: rgba(0,0,0,0.15);
-    }
-
-    .vertical-menu li:hover > ul.submenu {
-        display: block;
-    }
-
-    .vertical-menu ul.submenu li {
-        padding: 12px 30px;
-        font-size: 15px;
     }
 </style>
 </head>
@@ -79,31 +51,36 @@
 <body>
 <div class="vertical-menu">
     <ul>
-        <li >
-            <a href="#">Giới thiệu</a>
-            
-           
+        <li>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+                Giới thiệu
+            </a>
         </li>
-  <li>
-            <a href="https://caolanh.dongthap.gov.vn/chuy%C3%AAn-trang-h%C4%90nd-ph%C6%B0%E1%BB%9Dng-cao-l%C3%A3nh">Cơ cấu tổ chức</a>
-        </li>
-          <li>
-            <a href="#">Chức năng nhiệm vụ</a>
-        </li>
-    
 
         <li>
-            <a href="#">Tài liệu họp HĐND Phường</a>
+            <a href="https://caolanh.dongthap.gov.vn/chuy%C3%AAn-trang-h%C4%90nd-ph%C6%B0%E1%BB%9Dng-cao-l%C3%A3nh"
+               target="_blank" rel="noopener noreferrer">
+                Tổ chức bộ máy
+            </a>
         </li>
 
-   
-
-        <li >
-            <a href="#">Danh sách người ứng cử</a>
-           
+        <li>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+                Chức năng nhiệm vụ
+            </a>
         </li>
 
-     
+        <li>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+                Tài liệu họp HĐND Phường
+            </a>
+        </li>
+
+        <li>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+                Danh sách người ứng cử
+            </a>
+        </li>
     </ul>
 </div>
 </body>
