@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Logo Đối Tác - HTML</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            color: #1e293b;
+            padding: 20px;
+        }
+
+        /* Container của Iframe/Slider */
+        .carousel-wrapper {
+            width: 100%;
+            max-width: 1100px; 
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 40px 60px; /* Tăng khoảng cách 2 bên để chứa mũi tên */
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .viewport {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 100%;
+        }
+
+        .page {
+            display: flex;
+            flex: 0 0 100%; 
+            width: 100%;
+            gap: 20px;
+            justify-content: flex-start; 
+            align-items: center;
+        }
+
+        .item {
+            flex: 0 0 calc((100% - 80px) / 5); /* Hiển thị 5 items / hàng (trừ đi 4 khoảng trống gap) */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px; /* Giảm khoảng cách viền để nhường chỗ cho logo */
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 180px; /* Điều chỉnh lại chiều cao để vừa vặn với 5 logo */
+        }
+
+        .item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #2563eb;
+            background: #ffffff;
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            max-height: 130px; /* Điều chỉnh lại giới hạn chiều cao tối đa của logo */
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+
+        /* Nút điều hướng mũi tên */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
+            color: #64748b;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .nav-btn:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .prev-btn {
+            left: 15px;
+        }
+
+        .next-btn {
+            right: 15px;
+        }
+
+        /* Responsive cho di động */
+        @media (max-width: 768px) {
+            .item {
+                flex: 0 0 calc((100% - 20px) / 2); /* 2 items / hàng trên màn hình tablet/mobile */
+            }
+        }
+        @media (max-width: 480px) {
+            .item {
+                flex: 0 0 calc((100% - 20px) / 2); /* Giữ 2 items / hàng trên màn hình điện thoại */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="carousel-wrapper">
+        <button class="nav-btn prev-btn" id="prevBtn">&#10094;</button>
+        
+        <div class="viewport">
+            <div class="track" id="carouselTrack">
+                <!-- Nội dung ảnh sẽ được Javascript tạo ra -->
+            </div>
+        </div>
+        
+        <button class="nav-btn next-btn" id="nextBtn">&#10095;</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imagesData = [
+                { id: 1, name: "Đối tác 1", src: "https://drive.google.com/thumbnail?id=12mNQdBLjx6yt42sKc4i5OwQo0J4OYq44&sz=w800" },
+                { id: 2, name: "Đối tác 2", src: "https://drive.google.com/thumbnail?id=1gW8Z3FqI1dz64MnmK9NR25jOmBXW9Ani&sz=w800" },
+                { id: 3, name: "Đối tác 3", src: "https://drive.google.com/thumbnail?id=1kQk8C8jHO2Lh_whZNzG4-Nid4FmZ9T-7&sz=w800" },
+                { id: 4, name: "Đối tác 4", src: "https://drive.google.com/thumbnail?id=1ytP_9ak4bQW_pmFbSZlkihyNrGxsSLiu&sz=w800" },
+                { id: 5, name: "Đối tác 5", src: "https://drive.google.com/thumbnail?id=1A1I7IS9Q-OzidzHxzWcq55uIyPM_VbZs&sz=w800" },
+                { id: 6, name: "Đối tác 6", src: "https://drive.google.com/thumbnail?id=1QVt2k92Ns5Iay-Qviy0fBEzcI78JfP28&sz=w800" },
+                { id: 7, name: "Đối tác 7", src: "https://drive.google.com/thumbnail?id=16oRSefGLhNyJmKdrRbpQwi1tFx0LNIaq&sz=w800" },
+                { id: 8, name: "Đối tác 8", src: "https://drive.google.com/thumbnail?id=1OIlQkT3JxY2FtNi6Slf3gzVsYY1wVjC-&sz=w800" },
+                { id: 9, name: "Đối tác 9", src: "https://drive.google.com/thumbnail?id=1YN86kQs0jEvmchrxD2RzBl7W76a2wTw2&sz=w800" },
+                { id: 10, name: "Đối tác 10", src: "https://drive.google.com/thumbnail?id=1o6jLuYNB5Kv6cC22WQPAGvb3uHkGIiMC&sz=w800" },
+                { id: 11, name: "Đối tác 11", src: "https://drive.google.com/thumbnail?id=1afqbJvcwblzp3tI7rlC8SwMONvI4YQXT&sz=w800" },
+                { id: 12, name: "Đối tác 12", src: "https://drive.google.com/thumbnail?id=1Zhzlp7pf8gIP0uQkvPnoOx7kFRMXdaEl&sz=w800" },
+                { id: 13, name: "Đối tác 13", src: "https://drive.google.com/thumbnail?id=1bnZ68sELBKVrVy2XLZxnkbouzax8DPU7&sz=w800" },
+                { id: 14, name: "Đối tác 14", src: "https://drive.google.com/thumbnail?id=1k3f3hlcRyo-bu88HtTGePLjkw_7Dorsp&sz=w800" },
+                { id: 15, name: "Đối tác 15", src: "https://drive.google.com/thumbnail?id=1n95xqpflYcyKiUtuN-F2u77sc9bfMK1S&sz=w800" },
+                { id: 16, name: "Đối tác 16", src: "https://drive.google.com/thumbnail?id=1Nh1MhN1rft5nf6csbgnAds3vZVij4m4i&sz=w800" },
+                { id: 17, name: "Đối tác 17", src: "https://drive.google.com/thumbnail?id=1RMa5yrSOrhQ4nPlw3-drmVJTcCJjQHnN&sz=w800" },
+                { id: 18, name: "Đối tác 18", src: "https://drive.google.com/thumbnail?id=1NBgoIRwXTlNwI0lOq8vZDz3CHy1awhlw&sz=w800" },
+                { id: 19, name: "Đối tác 19", src: "https://drive.google.com/thumbnail?id=1jUGZzxjLFlFPLmlDcV-tixMnxtUT1pid&sz=w800" },
+                { id: 20, name: "Đối tác 20", src: "https://drive.google.com/thumbnail?id=1DeDAKRPujT2gGtk18ItMC7aijgEkvcD4&sz=w800" },
+                { id: 21, name: "Đối tác 21", src: "https://drive.google.com/thumbnail?id=1f2A8Aifz7CpYBm-OlYrSgSfkSM7_24Cw&sz=w800" },
+                { id: 22, name: "Đối tác 22", src: "https://drive.google.com/thumbnail?id=1h4Xpr6SAZ8Qt80EuacHiB-j5O4cfUfyq&sz=w800" },
+                { id: 23, name: "Đối tác 23", src: "https://drive.google.com/thumbnail?id=1CLgwPsL-fPtgDgzYd8KIwAo7jXAo-Stl&sz=w800" },
+                { id: 24, name: "Đối tác 24", src: "https://drive.google.com/thumbnail?id=1LxVO6-NPA1hD_eel6EzBXgVwx9GuC5Q2&sz=w800" }
+            ];
+
+            let itemsPerPage = window.innerWidth <= 768 ? (window.innerWidth <= 480 ? 2 : 3) : 5;
+            let totalPages = Math.ceil(imagesData.length / itemsPerPage);
+            
+            const track = document.getElementById('carouselTrack');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentPage = 0;
+
+            function renderCarousel() {
+                track.innerHTML = '';
+
+                for (let i = 0; i < totalPages; i++) {
+                    const pageDiv = document.createElement('div');
+                    pageDiv.className = 'page';
+
+                    const startIndex = i * itemsPerPage;
+                    const pageItems = imagesData.slice(startIndex, startIndex + itemsPerPage);
+
+                    pageItems.forEach(item => {
+                        const itemHTML = `
+                            <div class="item">
+                                <img src="${item.src}" alt="${item.name}" onerror="this.src='https://placehold.co/300x150/e2e8f0/64748b?text=Lỗi+Ảnh'">
+                            </div>
+                        `;
+                        pageDiv.innerHTML += itemHTML;
+                    });
+
+                    track.appendChild(pageDiv);
+                }
+            }
+
+            function goToPage(pageIndex) {
+                currentPage = pageIndex;
+                track.style.transform = `translateX(-${currentPage * 100}%)`;
+            }
+
+            prevBtn.addEventListener('click', () => {
+                let prevPage = (currentPage - 1 + totalPages) % totalPages;
+                goToPage(prevPage);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                let nextPage = (currentPage + 1) % totalPages;
+                goToPage(nextPage);
+            });
+
+            // Gọi hàm render lần đầu
+            renderCarousel();
+
+            // Tính năng tự động trượt (Auto-play) mỗi 3 giây
+            let autoPlay = setInterval(() => {
+                let nextPage = (currentPage + 1) % totalPages;
+                goToPage(nextPage);
+            }, 3000);
+
+            // Tạm dừng auto-play khi rê chuột vào khối slider
+            const wrapper = document.querySelector('.carousel-wrapper');
+            wrapper.addEventListener('mouseenter', () => clearInterval(autoPlay));
+            wrapper.addEventListener('mouseleave', () => {
+                autoPlay = setInterval(() => {
+                    let nextPage = (currentPage + 1) % totalPages;
+                    goToPage(nextPage);
+                }, 3000);
+            });
+
+            // Lắng nghe sự kiện đổi kích thước màn hình để tự động điều chỉnh số lượng ảnh
+            window.addEventListener('resize', () => {
+                const newItemsPerPage = window.innerWidth <= 768 ? (window.innerWidth <= 480 ? 2 : 3) : 5;
+                if (newItemsPerPage !== itemsPerPage) {
+                    itemsPerPage = newItemsPerPage;
+                    totalPages = Math.ceil(imagesData.length / itemsPerPage);
+                    currentPage = 0;
+                    renderCarousel();
+                    goToPage(0);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
