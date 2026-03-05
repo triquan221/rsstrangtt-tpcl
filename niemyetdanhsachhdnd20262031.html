@@ -147,32 +147,53 @@
 
     <!-- MODAL HIỂN THỊ PDF -->
     <div id="biography-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black bg-opacity-75 backdrop-blur-sm modal-backdrop modal-hidden">
-        <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[95vh] sm:h-[90vh] overflow-hidden flex flex-col">
-            <!-- Header Modal canh giữa tuyệt đối -->
-            <div class="text-white p-3 sm:p-4 flex justify-center items-center relative shrink-0" style="background-color: var(--primary-color);">
-                <h3 id="modal-title-text" class="text-base sm:text-xl font-bold uppercase tracking-wider text-center w-full px-10" style="color: var(--accent-yellow);">
+        <!-- Thay đổi max-w-5xl để khung nhìn lớn hơn, sát lề -->
+        <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[95vh] sm:h-[90vh] overflow-hidden flex flex-col">
+            
+            <!-- Header Modal -->
+            <div class="text-white p-2 sm:p-3 flex justify-between items-center relative shrink-0 border-b-4" style="background-color: var(--primary-color); border-bottom-color: var(--accent-yellow);">
+                
+                <!-- Spacer để cân bằng Flexbox -->
+                <div class="flex-1 hidden sm:block"></div>
+                
+                <!-- Tiêu đề Canh giữa tuyệt đối -->
+                <h3 id="modal-title-text" class="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-wider text-center flex-1 sm:flex-none px-2 whitespace-nowrap" style="color: var(--accent-yellow);">
                     <!-- Chữ sẽ được điền bằng JS -->
                 </h3>
-                <button onclick="closeModal()" class="absolute right-3 sm:right-4 p-1 hover:bg-black/20 rounded-full transition-colors outline-none focus:ring-2 focus:ring-yellow-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
+                
+                <!-- Cụm nút bấm bên phải (Zoom + Đóng) -->
+                <div class="flex-1 flex justify-end items-center gap-1 sm:gap-2 pr-1">
+                    <button onclick="zoomPdf(25)" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none" title="Phóng to">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                    </button>
+                    <button onclick="zoomPdf(-25)" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none" title="Thu nhỏ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                    </button>
+                    <div class="w-px h-6 bg-white/30 mx-1 hidden sm:block"></div>
+                    <button onclick="closeModal()" class="p-1.5 sm:p-2 bg-red-800/60 hover:bg-red-900 rounded transition-colors outline-none ml-1" title="Đóng">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
             </div>
 
-            <!-- Content Modal (Iframe chứa PDF canh giữa và FitH để loại bỏ khoảng trắng lề) -->
-            <div class="flex-1 relative w-full h-full bg-gray-200">
+            <!-- Content Modal: Có overflow-auto để cuộn ngang khi zoom -->
+            <div class="flex-1 relative w-full h-full bg-gray-200 overflow-auto no-scrollbar" id="modal-body-container">
                 <!-- Vòng quay Loading -->
-                <div id="pdf-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 z-0">
+                <div id="pdf-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 z-20">
                     <div class="spinner mb-4"></div>
                     <span class="text-gray-500 font-medium">Đang tải tiểu sử...</span>
                 </div>
                 
-                <!-- Nhúng PDF nguyên bản với tham số view=FitH để tài liệu tự động phóng to vừa khít 100% chiều ngang -->
-                <iframe 
-                    id="pdf-iframe" 
-                    class="w-full h-full border-0 relative z-10 bg-white" 
-                    onload="document.getElementById('pdf-loading').style.display='none'"
-                    allowfullscreen
-                ></iframe>
+                <!-- Wrapper chứa iframe để xử lý Zoom -->
+                <!-- Thiết lập width 100% mặc định, PDF sẽ tự động khít lề do #view=FitH -->
+                <div id="pdf-wrapper" class="mx-auto h-full bg-white transition-all duration-300 relative z-10" style="width: 100%;">
+                    <iframe 
+                        id="pdf-iframe" 
+                        class="w-full h-full border-0" 
+                        onload="document.getElementById('pdf-loading').style.display='none'"
+                        allowfullscreen
+                    ></iframe>
+                </div>
             </div>
             
         </div>
@@ -315,10 +336,12 @@
             container.innerHTML = html;
         }
 
-        // --- LOGIC MODAL HIỂN THỊ PDF ---
+        // --- LOGIC MODAL HIỂN THỊ PDF & ZOOM ---
         const modal = document.getElementById('biography-modal');
         const pdfIframe = document.getElementById('pdf-iframe');
         const pdfLoading = document.getElementById('pdf-loading');
+        const pdfWrapper = document.getElementById('pdf-wrapper');
+        let currentZoom = 100; // Đơn vị: %
 
         // Hàm mở modal và load file PDF
         window.openModal = function(uIdx, cIdx) {
@@ -327,10 +350,16 @@
             // Set dòng chữ TIỂU SỬ TÓM TẮT in hoa và canh giữa
             document.getElementById('modal-title-text').textContent = `TIỂU SỬ TÓM TẮT ${candidate.name}`.toUpperCase();
 
-            // Xử lý link PDF từ Github. Dùng CDN jsdelivr để render dưới định dạng file PDF thực thụ.
+            // Xử lý link PDF từ Github. 
+            // Dùng tham số #view=FitH để PDF tự động scale phóng to/thu nhỏ vừa khít lề ngang của Iframe.
             const fileName = formatFileName(candidate.name);
             const pdfUrl = `https://cdn.jsdelivr.net/gh/triquan221/rsstrangtt-tpcl@main/${fileName}.pdf#view=FitH&toolbar=0&navpanes=0&scrollbar=0`;
             
+            // Reset trạng thái Zoom về 100%
+            currentZoom = 100;
+            pdfWrapper.style.width = '100%';
+            pdfWrapper.style.height = '100%';
+
             // Hiển thị loading và gán link trực tiếp vào iframe
             pdfLoading.style.display = 'flex';
             pdfIframe.src = pdfUrl;
@@ -339,6 +368,19 @@
             modal.classList.remove('modal-hidden');
             document.body.style.overflow = 'hidden'; // Ngăn cuộn trang nền
         };
+
+        // Hàm xử lý khi nhấn nút Zoom (+ / -)
+        window.zoomPdf = function(step) {
+            currentZoom += step;
+            
+            // Giới hạn zoom từ 50% đến 300%
+            if (currentZoom < 50) currentZoom = 50;
+            if (currentZoom > 300) currentZoom = 300;
+            
+            // Thay đổi width của wrapper. Vì có #view=FitH, trình đọc PDF gốc sẽ tự động tính toán lại và scale nội dung sắc nét.
+            pdfWrapper.style.width = currentZoom + '%';
+            pdfWrapper.style.height = currentZoom + '%';
+        }
 
         // Hàm đóng modal
         window.closeModal = function() {
