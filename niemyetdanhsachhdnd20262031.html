@@ -126,7 +126,6 @@
         }
     </style>
 </head>
-<!-- Loại bỏ min-h-screen để footer tự đẩy lên khi nội dung ngắn -->
 <body class="flex flex-col h-full bg-page">
 
     <!-- HEADER -->
@@ -158,13 +157,11 @@
     </header>
 
     <!-- MAIN CONTENT -->
-    <!-- Loại bỏ flex-1 để nội dung chỉ chiếm đúng không gian của nó -->
     <main class="w-full max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12" id="electoral-units-container">
         <!-- JS sẽ render HTML vào đây -->
     </main>
 
     <!-- FOOTER -->
-    <!-- Loại bỏ mt-auto để footer tự động dính sát vào content -->
     <footer class="relative footer-bg py-6 text-center flex justify-center overflow-hidden shrink-0 shadow-inner">
         <div class="absolute inset-0 z-0 opacity-10 pointer-events-none" style="background-image: url('https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/trong-dong.png'); background-position: center; background-repeat: no-repeat; background-size: cover;"></div>
         <div class="relative z-10 flex items-center justify-center px-4 w-full text-center">
@@ -242,8 +239,8 @@
                 { name: "Bà LÊ THỊ THANH TRÚC", fileBase: "ltthanhtruc" }, 
                 { name: "Bà VĂN THỊ KIM TUYẾN", fileBase: "vtkimtuyen" } 
             ] },
-            { id: 5, name: "ĐƠN VỊ BẦU CỬ SỐ 5", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Hòa Lợi, khóm Hòa Khánh, khóm Hòa Hiệp", candidates: [ { name: "Ông VÕ MINH KHANH" }, { name: "Ông LÊ VĂN NHIÊN" }, { name: "Bà ĐỖ THỊ NGỌC PHỤNG" }, { name: "Bà TRẦN THÙY TRANG" }, { name: "Ông NGÔ VĂN TRÚC" } ] },
-            { id: 6, name: "ĐƠN VỊ BẦU CỬ SỐ 6", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Đông Bình, khóm Phú An, khóm An Nhơn, khóm Bến Bắc", candidates: [ { name: "Ông NGUYỄN TUẤN AN" }, { name: "Ông NGUYỄN VĂN ĐẠT" }, { name: "Bà NGUYỄN THỊ THU HIỀN" }, { name: "Bà LÝ THỊ XUÂN HỒNG" }, { name: "Ông TRƯƠNG QUANG THÁI" } ] },
+            { id: 5, name: "ĐƠN VỊ BẦU CỬ SỐ 5", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Hòa Lợi, khóm Hòa Khánh, khóm Hòa Hiệp", candidates: [ { name: "Ông VÕ MINH KHANH" }, { name: "Ông LÊ VĂN NHIÊN", fileBase: "lvnhien" }, { name: "Bà ĐỖ THỊ NGỌC PHỤNG", fileBase: "dtngocphung" }, { name: "Bà TRẦN THÙY TRANG" }, { name: "Ông NGÔ VĂN TRÚC" } ] },
+            { id: 6, name: "ĐƠN VỊ BẦU CỬ SỐ 6", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Đông Bình, khóm Phú An, khóm An Nhơn, khóm Bến Bắc", candidates: [ { name: "Ông NGUYỄN TUẤN AN", fileBase: "ngtuanan" }, { name: "Ông NGUYỄN VĂN ĐẠT" }, { name: "Bà NGUYỄN THỊ THU HIỀN", fileBase: "ntthuhien" }, { name: "Bà LÝ THỊ XUÂN HỒNG", fileBase: "ltxuanhong" }, { name: "Ông TRƯƠNG QUANG THÁI", fileBase: "tquangthai" } ] },
             { id: 7, name: "ĐƠN VỊ BẦU CỬ SỐ 7", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Tân Tịch, khóm Tân Thuận, khóm Tân Việt Hòa, khóm Tịnh Thới", candidates: [ { name: "Ông NGUYỄN QUỐC HÀ" }, { name: "Bà LÊ KIM HOÀNG" }, { name: "Bà LÊ THỊ THÚY HUỲNH" }, { name: "Ông THÁI VĂN LÀNH" }, { name: "Bà LÊ THỊ DUY LINH" } ] },
             { id: 8, name: "ĐƠN VỊ BẦU CỬ SỐ 8", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Tịnh Châu, khóm Tịnh Đông, khóm Tịnh Long, khóm Tịnh Mỹ, khóm Tịnh Hưng", candidates: [ { name: "Ông VÕ TẤN BẢO" }, { name: "Ông TRẦN ĐỨC NHIỀU" }, { name: "Bà PHAN THỊ HỒNG THANH" }, { name: "Ông ĐẶNG NGỌC TRUNG" }, { name: "Ông NGUYỄN VĂN TUẤN" } ] },
             { id: 9, name: "ĐƠN VỊ BẦU CỬ SỐ 9", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Tân Chú, khóm Tân Hùng, khóm Tân Dân, khóm Tân Hậu", candidates: [ { name: "Ông TRẦN VĂN ẨN" }, { name: "Ông PHAN VĂN LƯỠNG" }, { name: "Ông LÊ CHÍ SĨ" }, { name: "Ông TRẦN VĂN THỦY" }, { name: "Ông NGUYỄN VĂN TỒN" } ] },
@@ -293,7 +290,8 @@
 
         // Hàm xử lý lỗi load ảnh chân dung
         window.handleImgError = function(img, pngUrl) {
-            if (img.src.endsWith('.jpg')) {
+            // Khắc phục lỗi đuôi file khi có thêm tham số chống cache (?v=timestamp)
+            if (img.src.includes('.jpg')) {
                 img.src = pngUrl; 
             } else {
                 img.style.display = 'none'; 
