@@ -230,11 +230,18 @@
     <!-- SCRIPT CHÍNH (HTML DOM MANIPULATION) -->
     <script>
         // Dữ liệu bầu cử tĩnh (Bất kể bạn nhập thứ tự nào, script sẽ tự động sắp xếp ABC)
+        // Lưu ý: Đã bổ sung trường fileBase để chỉ định tên file riêng biệt cho các trường hợp không theo quy chuẩn viết liền
         const electoralData = [
             { id: 1, name: "ĐƠN VỊ BẦU CỬ SỐ 1", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm 3, Khóm 4, Khóm 5, Khóm 6, Khóm 7, Khóm 8", candidates: [ { name: "Bà ĐỖ THỤY MINH CHÂU" }, { name: "Ông VÕ VĂN CƯỜNG" }, { name: "Ông LƯ TRỌNG HIỀN" }, { name: "Ông VÕ THANH HOÀNG" }, { name: "Ông NGUYỄN HÙNG TRÁNG" } ] },
             { id: 2, name: "ĐƠN VỊ BẦU CỬ SỐ 2", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm 2, khóm Thuận Trung, khóm Thuận An, khóm Hòa Long, khóm Hòa Mỹ, khóm Hòa Hưng", candidates: [ { name: "Ông PHAN THANH BÌNH" }, { name: "Bà NGUYỄN THỊ CẨM LINH" }, { name: "Ông NGUYỄN HUỲNH XUÂN PHÚC" }, { name: "Ông VÕ TRUYỀN THỐNG" }, { name: "Ông TRẦN THIỆN XUÂN" } ] },
             { id: 3, name: "ĐƠN VỊ BẦU CỬ SỐ 3", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm 9, khóm Mỹ Hưng, khóm Mỹ Phước, khóm Mỹ Đức, khóm Mỹ Long, khóm Mỹ Thiện", candidates: [ { name: "Ông LÊ ĐÌNH MINH HIỀN" }, { name: "Ông BÙI QUỐC NAM" }, { name: "Ông TRẦN TRƯỜNG SƠN" }, { name: "Bà NGUYỄN THỊ THƠ" }, { name: "Bà HỒ THỊ THANH TRÚC" } ] },
-            { id: 4, name: "ĐƠN VỊ BẦU CỬ SỐ 4", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Thuận Phú, khóm Thuận Nghĩa, khóm Thuận Phát, khóm Hòa Thuận, khóm Hòa Lạc, khóm Hòa An", candidates: [ { name: "Bà HỒ HUỆ THU HẰNG" }, { name: "Bà PHẠM THỊ TUYẾT MINH" }, { name: "Bà NGUYỄN NGỌC HUỲNH NHƯ" }, { name: "Bà LÊ THỊ THANH TRÚC" }, { name: "Bà VĂN THỊ KIM TUYẾN" } ] },
+            { id: 4, name: "ĐƠN VỊ BẦU CỬ SỐ 4", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Thuận Phú, khóm Thuận Nghĩa, khóm Thuận Phát, khóm Hòa Thuận, khóm Hòa Lạc, khóm Hòa An", candidates: [ 
+                { name: "Bà HỒ HUỆ THU HẰNG" }, 
+                { name: "Bà PHẠM THỊ TUYẾT MINH", fileBase: "pthituyetminh" }, 
+                { name: "Bà NGUYỄN NGỌC HUỲNH NHƯ", fileBase: "nnhuynhnhu" }, 
+                { name: "Bà LÊ THỊ THANH TRÚC", fileBase: "ltthanhtruc" }, 
+                { name: "Bà VĂN THỊ KIM TUYẾN", fileBase: "vtkimtuyen" } 
+            ] },
             { id: 5, name: "ĐƠN VỊ BẦU CỬ SỐ 5", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Hòa Lợi, khóm Hòa Khánh, khóm Hòa Hiệp", candidates: [ { name: "Ông VÕ MINH KHANH" }, { name: "Ông LÊ VĂN NHIÊN" }, { name: "Bà ĐỖ THỊ NGỌC PHỤNG" }, { name: "Bà TRẦN THÙY TRANG" }, { name: "Ông NGÔ VĂN TRÚC" } ] },
             { id: 6, name: "ĐƠN VỊ BẦU CỬ SỐ 6", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Đông Bình, khóm Phú An, khóm An Nhơn, khóm Bến Bắc", candidates: [ { name: "Ông NGUYỄN TUẤN AN" }, { name: "Ông NGUYỄN VĂN ĐẠT" }, { name: "Bà NGUYỄN THỊ THU HIỀN" }, { name: "Bà LÝ THỊ XUÂN HỒNG" }, { name: "Ông TRƯƠNG QUANG THÁI" } ] },
             { id: 7, name: "ĐƠN VỊ BẦU CỬ SỐ 7", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Tân Tịch, khóm Tân Thuận, khóm Tân Việt Hòa, khóm Tịnh Thới", candidates: [ { name: "Ông NGUYỄN QUỐC HÀ" }, { name: "Bà LÊ KIM HOÀNG" }, { name: "Bà LÊ THỊ THÚY HUỲNH" }, { name: "Ông THÁI VĂN LÀNH" }, { name: "Bà LÊ THỊ DUY LINH" } ] },
@@ -323,10 +330,12 @@
                     const title = titleMatch ? `${titleMatch[1]}:` : "";
                     const fullName = titleMatch ? titleMatch[2] : candidate.name;
 
-                    // Tự động tạo link ảnh github
-                    const fileName = formatFileName(candidate.name);
-                    const jpgUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${fileName}.jpg`;
-                    const pngUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${fileName}.png`;
+                    // Tự động tạo link ảnh github KÈM TIMESTAMP CHỐNG CACHE. 
+                    // Lưu ý: Ảnh LUÔN dùng định dạng tên gốc (formatFileName), KHÔNG dùng fileBase tùy chỉnh
+                    const ts = new Date().getTime();
+                    const imgFileName = formatFileName(candidate.name);
+                    const jpgUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${imgFileName}.jpg?v=${ts}`;
+                    const pngUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${imgFileName}.png?v=${ts}`;
 
                     // Truyền tham số unit.id thay vì uIdx để đảm bảo mở đúng người ngay cả khi mảng bị lọc
                     candidatesHtml += `
@@ -420,21 +429,25 @@
             // Set dòng chữ TIỂU SỬ TÓM TẮT in hoa và canh giữa
             document.getElementById('modal-title-text').textContent = `TIỂU SỬ TÓM TẮT ${candidate.name}`.toUpperCase();
 
-            // Xử lý link PDF từ Github
-            const fileName = formatFileName(candidate.name);
-            const rawPdfUrl = `https://cdn.jsdelivr.net/gh/triquan221/rsstrangtt-tpcl@main/${fileName}.pdf`;
+            // Xử lý link PDF từ Github, KÈM TIMESTAMP CHỐNG CACHE XUYÊN SUỐT
+            const ts = new Date().getTime();
+            
+            // CHỈ FILE PDF MỚI DÙNG FILEBASE TÙY CHỈNH (Nếu có)
+            const pdfFileName = candidate.fileBase || formatFileName(candidate.name);
             
             let finalPdfUrl = '';
 
             // Phân luồng hiển thị tùy thuộc vào thiết bị
             if (isMobileDevice()) {
-                // Trên Điện thoại: Bắt buộc dùng Google Docs Viewer để tránh bị iOS/Android cắt xén trang hoặc bắt tải về
+                // Trên Điện thoại: Dùng raw link + timestamp ép Google tải file mới nhất
+                const rawPdfUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${pdfFileName}.pdf?v=${ts}`;
                 finalPdfUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(rawPdfUrl)}&embedded=true`;
-                zoomControls.style.display = 'none'; // Ẩn nút Zoom tĩnh (vì điện thoại có thể vuốt/pinch to zoom trực tiếp trong G-Docs)
+                zoomControls.style.display = 'none'; // Ẩn nút Zoom tĩnh
                 pdfWrapper.style.width = '100%';
             } else {
-                // Trên Máy tính: Dùng trình xem gốc với tính năng FitH ép khít lề ngang (không bị viền xám)
-                finalPdfUrl = `${rawPdfUrl}#view=FitH&toolbar=0&navpanes=0&scrollbar=0`;
+                // Trên Máy tính: SỬ DỤNG MẠNG CDN (jsDelivr) KÈM TIMESTAMP 
+                // Giải thích: raw.githubusercontent.com ép tải file (download) do header báo mật, nên phải dùng CDN jsDelivr để view in-browser
+                finalPdfUrl = `https://cdn.jsdelivr.net/gh/triquan221/rsstrangtt-tpcl@main/${pdfFileName}.pdf?v=${ts}#view=FitH&toolbar=0&navpanes=0&scrollbar=0`;
                 zoomControls.style.display = 'flex'; // Hiện nút zoom
                 
                 // Reset trạng thái Zoom tĩnh về 100%
