@@ -411,6 +411,16 @@
             // Mở modal
             modal.classList.remove('modal-hidden');
             document.body.style.overflow = 'hidden'; // Ngăn cuộn trang nền
+
+            // Tự động cuộn trang lên đầu để người dùng có thể xem Modal trọn vẹn (hữu ích khi ở trong iframe)
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            // Hỗ trợ trường hợp nếu trang đang được nhúng trong một iframe cha (phải gửi thông điệp yêu cầu cha cuộn lên)
+            if (window.self !== window.top) {
+                window.parent.postMessage('scrollToTop', '*');
+            }
         };
 
         // Hàm xử lý khi nhấn nút Zoom (+ / -) cho Desktop
