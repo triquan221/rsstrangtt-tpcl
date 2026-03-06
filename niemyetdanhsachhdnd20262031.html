@@ -278,9 +278,25 @@
         // Render HTML
         function renderApp() {
             const container = document.getElementById('electoral-units-container');
+            
+            // Xử lý lọc đơn vị bầu cử theo tham số URL (vd: ?unit=1)
+            const urlParams = new URLSearchParams(window.location.search);
+            const unitFilter = urlParams.get('unit');
+            
+            let dataToRender = electoralData;
+            
+            if (unitFilter) {
+                dataToRender = electoralData.filter(u => u.id == parseInt(unitFilter));
+                // Nếu URL parameter không hợp lệ, hiển thị thông báo
+                if (dataToRender.length === 0) {
+                    container.innerHTML = '<div class="text-center w-full p-10"><h3 class="text-2xl text-red-600 font-bold">Không tìm thấy Đơn vị bầu cử này.</h3></div>';
+                    return;
+                }
+            }
+
             let html = '';
 
-            electoralData.forEach((unit, uIdx) => {
+            dataToRender.forEach((unit) => {
                 let candidatesHtml = '';
                 
                 unit.candidates.forEach((candidate, cIdx) => {
@@ -293,6 +309,7 @@
                     const jpgUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${fileName}.jpg`;
                     const pngUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${fileName}.png`;
 
+                    // Truyền tham số unit.id thay vì uIdx để đảm bảo mở đúng người ngay cả khi mảng bị lọc
                     candidatesHtml += `
                         <div class="candidate-card p-3 shadow-sm hover:shadow-2xl flex flex-col h-full justify-between group overflow-hidden border-[3px]">
                             <div class="absolute top-0 left-0 w-full h-[6px] opacity-0 group-hover:opacity-100 transition-opacity" style="background-color: var(--accent-yellow);"></div>
@@ -318,7 +335,7 @@
                                 </div>
                             </div>
 
-                            <button onclick="openModal(${uIdx}, ${cIdx})" class="btn-detail w-full mt-auto py-2 font-black rounded-md transition-all flex items-center justify-center gap-1.5 text-xs sm:text-sm shadow-md">
+                            <button onclick="openModal(${unit.id}, ${cIdx})" class="btn-detail w-full mt-auto py-2 font-black rounded-md transition-all flex items-center justify-center gap-1.5 text-xs sm:text-sm shadow-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                                 XEM TIỂU SỬ TÓM TẮT
                             </button>
@@ -375,8 +392,11 @@
         }
 
         // Hàm mở modal và load file PDF
-        window.openModal = function(uIdx, cIdx) {
-            const candidate = electoralData[uIdx].candidates[cIdx];
+        window.openModal = function(unitId, cIdx) {
+            // Tìm unit theo unitId thay vì Index để đảm bảo lấy đúng data khi dùng bộ lọc URL
+            const unit = electoralData.find(u => u.id === unitId);
+            if (!unit) return;
+            const candidate = unit.candidates[cIdx];
             
             // Set dòng chữ TIỂU SỬ TÓM TẮT in hoa và canh giữa
             document.getElementById('modal-title-text').textContent = `TIỂU SỬ TÓM TẮT ${candidate.name}`.toUpperCase();
