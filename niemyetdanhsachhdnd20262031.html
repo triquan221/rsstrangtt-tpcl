@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách chính thức những người ứng cử Đại biểu HĐND phường Cao Lãnh nhiệm kỳ 2026 - 2031</title>
+    <title>Danh sách chính thức những người ứng cử Đại biểu HĐND</title>
     <!-- Tích hợp Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tích hợp Font Roboto từ Google Fonts -->
@@ -118,6 +118,12 @@
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Hỗ trợ cuộn mượt cho iFrame trên iOS */
+        .ios-scroll-wrapper {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -147,45 +153,46 @@
 
     <!-- MODAL HIỂN THỊ PDF -->
     <div id="biography-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black bg-opacity-75 backdrop-blur-sm modal-backdrop modal-hidden">
-        <!-- Thay đổi max-w-5xl để khung nhìn lớn hơn, sát lề -->
         <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[95vh] sm:h-[90vh] overflow-hidden flex flex-col">
             
             <!-- Header Modal -->
             <div class="text-white p-2 sm:p-3 flex justify-between items-center relative shrink-0 border-b-4" style="background-color: var(--primary-color); border-bottom-color: var(--accent-yellow);">
                 
-                <!-- Spacer để cân bằng Flexbox -->
                 <div class="flex-1 hidden sm:block"></div>
                 
                 <!-- Tiêu đề Canh giữa tuyệt đối -->
-                <h3 id="modal-title-text" class="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-wider text-center flex-1 sm:flex-none px-2 whitespace-nowrap" style="color: var(--accent-yellow);">
+                <h3 id="modal-title-text" class="text-xs sm:text-lg md:text-xl font-bold uppercase tracking-wider text-center flex-1 sm:flex-none px-1 sm:px-2 whitespace-nowrap" style="color: var(--accent-yellow);">
                     <!-- Chữ sẽ được điền bằng JS -->
                 </h3>
                 
                 <!-- Cụm nút bấm bên phải (Zoom + Đóng) -->
                 <div class="flex-1 flex justify-end items-center gap-1 sm:gap-2 pr-1">
-                    <button onclick="zoomPdf(25)" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none" title="Phóng to">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                    </button>
-                    <button onclick="zoomPdf(-25)" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none" title="Thu nhỏ">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                    </button>
-                    <div class="w-px h-6 bg-white/30 mx-1 hidden sm:block"></div>
+                    <!-- Nút Zoom (Sẽ tự động ẩn trên điện thoại) -->
+                    <div id="zoom-controls" class="flex items-center gap-1 sm:gap-2">
+                        <button onclick="zoomPdf(25)" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none" title="Phóng to">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                        </button>
+                        <button onclick="zoomPdf(-25)" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none" title="Thu nhỏ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                        </button>
+                        <div class="w-px h-6 bg-white/30 mx-1 hidden sm:block"></div>
+                    </div>
+                    
                     <button onclick="closeModal()" class="p-1.5 sm:p-2 bg-red-800/60 hover:bg-red-900 rounded transition-colors outline-none ml-1" title="Đóng">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
             </div>
 
-            <!-- Content Modal: Có overflow-auto để cuộn ngang khi zoom -->
-            <div class="flex-1 relative w-full h-full bg-gray-200 overflow-auto no-scrollbar" id="modal-body-container">
+            <!-- Content Modal: Chứa class hỗ trợ iOS scroll -->
+            <div class="flex-1 relative w-full h-full bg-gray-200 overflow-auto no-scrollbar ios-scroll-wrapper" id="modal-body-container">
                 <!-- Vòng quay Loading -->
                 <div id="pdf-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 z-20">
                     <div class="spinner mb-4"></div>
                     <span class="text-gray-500 font-medium">Đang tải tiểu sử...</span>
                 </div>
                 
-                <!-- Wrapper chứa iframe để xử lý Zoom -->
-                <!-- Thiết lập width 100% mặc định, PDF sẽ tự động khít lề do #view=FitH -->
+                <!-- Wrapper chứa iframe -->
                 <div id="pdf-wrapper" class="mx-auto h-full bg-white transition-all duration-300 relative z-10" style="width: 100%;">
                     <iframe 
                         id="pdf-iframe" 
@@ -341,7 +348,13 @@
         const pdfIframe = document.getElementById('pdf-iframe');
         const pdfLoading = document.getElementById('pdf-loading');
         const pdfWrapper = document.getElementById('pdf-wrapper');
+        const zoomControls = document.getElementById('zoom-controls');
         let currentZoom = 100; // Đơn vị: %
+
+        // Hàm kiểm tra thiết bị di động
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+        }
 
         // Hàm mở modal và load file PDF
         window.openModal = function(uIdx, cIdx) {
@@ -350,26 +363,39 @@
             // Set dòng chữ TIỂU SỬ TÓM TẮT in hoa và canh giữa
             document.getElementById('modal-title-text').textContent = `TIỂU SỬ TÓM TẮT ${candidate.name}`.toUpperCase();
 
-            // Xử lý link PDF từ Github. 
-            // Dùng tham số #view=FitH để PDF tự động scale phóng to/thu nhỏ vừa khít lề ngang của Iframe.
+            // Xử lý link PDF từ Github
             const fileName = formatFileName(candidate.name);
-            const pdfUrl = `https://cdn.jsdelivr.net/gh/triquan221/rsstrangtt-tpcl@main/${fileName}.pdf#view=FitH&toolbar=0&navpanes=0&scrollbar=0`;
+            const rawPdfUrl = `https://cdn.jsdelivr.net/gh/triquan221/rsstrangtt-tpcl@main/${fileName}.pdf`;
             
-            // Reset trạng thái Zoom về 100%
-            currentZoom = 100;
-            pdfWrapper.style.width = '100%';
-            pdfWrapper.style.height = '100%';
+            let finalPdfUrl = '';
+
+            // Phân luồng hiển thị tùy thuộc vào thiết bị
+            if (isMobileDevice()) {
+                // Trên Điện thoại: Bắt buộc dùng Google Docs Viewer để tránh bị iOS/Android cắt xén trang hoặc bắt tải về
+                finalPdfUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(rawPdfUrl)}&embedded=true`;
+                zoomControls.style.display = 'none'; // Ẩn nút Zoom tĩnh (vì điện thoại có thể vuốt/pinch to zoom trực tiếp trong G-Docs)
+                pdfWrapper.style.width = '100%';
+            } else {
+                // Trên Máy tính: Dùng trình xem gốc với tính năng FitH ép khít lề ngang (không bị viền xám)
+                finalPdfUrl = `${rawPdfUrl}#view=FitH&toolbar=0&navpanes=0&scrollbar=0`;
+                zoomControls.style.display = 'flex'; // Hiện nút zoom
+                
+                // Reset trạng thái Zoom tĩnh về 100%
+                currentZoom = 100;
+                pdfWrapper.style.width = '100%';
+                pdfWrapper.style.height = '100%';
+            }
 
             // Hiển thị loading và gán link trực tiếp vào iframe
             pdfLoading.style.display = 'flex';
-            pdfIframe.src = pdfUrl;
+            pdfIframe.src = finalPdfUrl;
 
             // Mở modal
             modal.classList.remove('modal-hidden');
             document.body.style.overflow = 'hidden'; // Ngăn cuộn trang nền
         };
 
-        // Hàm xử lý khi nhấn nút Zoom (+ / -)
+        // Hàm xử lý khi nhấn nút Zoom (+ / -) cho Desktop
         window.zoomPdf = function(step) {
             currentZoom += step;
             
@@ -377,7 +403,7 @@
             if (currentZoom < 50) currentZoom = 50;
             if (currentZoom > 300) currentZoom = 300;
             
-            // Thay đổi width của wrapper. Vì có #view=FitH, trình đọc PDF gốc sẽ tự động tính toán lại và scale nội dung sắc nét.
+            // Thay đổi width của wrapper. Trình đọc PDF gốc sẽ tự động tính toán lại tỷ lệ (nhờ view=FitH)
             pdfWrapper.style.width = currentZoom + '%';
             pdfWrapper.style.height = currentZoom + '%';
         }
