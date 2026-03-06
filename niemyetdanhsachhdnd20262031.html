@@ -129,12 +129,30 @@
 <body class="flex flex-col min-h-screen">
 
     <!-- HEADER -->
-    <header class="relative header-bg py-8 sm:py-10 flex flex-col items-center text-center overflow-hidden shadow-lg shrink-0">
+    <header class="relative header-bg py-6 sm:py-10 flex items-center justify-center overflow-hidden shadow-lg shrink-0">
         <div class="absolute inset-0 z-0 opacity-20 pointer-events-none" style="background-image: url('https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/trong-dong.png'); background-position: center; background-repeat: no-repeat; background-size: cover;"></div>
-        <div class="relative z-10 flex flex-col gap-1 px-4 w-full max-w-5xl mx-auto">
-            <h1 class="text-xl sm:text-3xl md:text-4xl font-bold uppercase tracking-wider drop-shadow-md leading-tight" style="color: var(--accent-yellow)">Danh sách chính thức</h1>
-            <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-white uppercase tracking-wider drop-shadow-md leading-tight">Những người ứng cử Đại biểu</h1>
-            <h2 class="text-xl sm:text-3xl md:text-4xl font-bold text-white uppercase drop-shadow-md leading-tight mt-1">Hội đồng nhân dân Phường Cao Lãnh <br> nhiệm kỳ 2026 - 2031</h2>
+        <div class="relative z-10 flex flex-row items-center w-full max-w-7xl mx-auto px-4">
+            
+            <!-- Logo bên trái -->
+            <div class="shrink-0 w-16 sm:w-28 md:w-36 lg:w-44 flex justify-start">
+                <img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/logo_pCL-removebg-preview.png" alt="Logo Phường Cao Lãnh" class="w-full h-auto drop-shadow-md object-contain">
+            </div>
+
+            <!-- Phần text tiêu đề canh giữa -->
+            <div class="flex flex-col gap-2 text-center flex-1 px-2">
+                <div class="text-lg sm:text-3xl md:text-4xl font-bold uppercase tracking-wider drop-shadow-md leading-tight" style="color: var(--accent-yellow)">
+                    Danh sách chính thức
+                </div>
+                <h1 class="text-sm sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white uppercase tracking-wider drop-shadow-md leading-snug mt-1 sm:mt-2">
+                    Những người ứng cử Đại biểu <br>
+                    Hội đồng nhân dân Phường Cao Lãnh <br>
+                    nhiệm kỳ 2026 - 2031
+                </h1>
+            </div>
+
+            <!-- Cục trống bên phải để canh giữa chữ cân xứng với logo -->
+            <div class="shrink-0 w-16 sm:w-28 md:w-36 lg:w-44"></div>
+            
         </div>
     </header>
 
