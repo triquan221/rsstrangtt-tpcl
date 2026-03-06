@@ -229,7 +229,7 @@
 
     <!-- SCRIPT CHÍNH (HTML DOM MANIPULATION) -->
     <script>
-        // Dữ liệu bầu cử tĩnh - ĐÃ SẮP XẾP THEO ABC (TÊN CHÍNH)
+        // Dữ liệu bầu cử tĩnh (Bất kể bạn nhập thứ tự nào, script sẽ tự động sắp xếp ABC)
         const electoralData = [
             { id: 1, name: "ĐƠN VỊ BẦU CỬ SỐ 1", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm 3, Khóm 4, Khóm 5, Khóm 6, Khóm 7, Khóm 8", candidates: [ { name: "Bà ĐỖ THỤY MINH CHÂU" }, { name: "Ông VÕ VĂN CƯỜNG" }, { name: "Ông LƯ TRỌNG HIỀN" }, { name: "Ông VÕ THANH HOÀNG" }, { name: "Ông NGUYỄN HÙNG TRÁNG" } ] },
             { id: 2, name: "ĐƠN VỊ BẦU CỬ SỐ 2", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm 2, khóm Thuận Trung, khóm Thuận An, khóm Hòa Long, khóm Hòa Mỹ, khóm Hòa Hưng", candidates: [ { name: "Ông PHAN THANH BÌNH" }, { name: "Bà NGUYỄN THỊ CẨM LINH" }, { name: "Ông NGUYỄN HUỲNH XUÂN PHÚC" }, { name: "Ông VÕ TRUYỀN THỐNG" }, { name: "Ông TRẦN THIỆN XUÂN" } ] },
@@ -242,6 +242,22 @@
             { id: 9, name: "ĐƠN VỊ BẦU CỬ SỐ 9", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Tân Chú, khóm Tân Hùng, khóm Tân Dân, khóm Tân Hậu", candidates: [ { name: "Ông TRẦN VĂN ẨN" }, { name: "Ông PHAN VĂN LƯỠNG" }, { name: "Ông LÊ CHÍ SĨ" }, { name: "Ông TRẦN VĂN THỦY" }, { name: "Ông NGUYỄN VĂN TỒN" } ] },
             { id: 10, name: "ĐƠN VỊ BẦU CỬ SỐ 10", info: "Số đại biểu được bầu: 03 NGƯỜI | Số người ứng cử: 05 NGƯỜI", areas: "Khóm Đông Định, khóm Đông Hòa, khóm Đông Thạnh, khóm Tân Phát", candidates: [ { name: "Ông TRẦN MINH HIẾU" }, { name: "Ông LÊ VIỆT MỸ" }, { name: "Ông NGUYỄN TẤN PHÁT" }, { name: "Ông NGUYỄN QUỐC QUI" }, { name: "Ông NGUYỄN TRUNG TUYẾN" } ] }
         ];
+
+        // Hàm lấy tên chuẩn để sắp xếp (Ví dụ: "Ông Nguyễn Văn A" -> "A Nguyễn Văn")
+        function getSortableName(fullName) {
+            let nameOnly = fullName.replace(/^(Ông|Bà)\s+/i, '').trim();
+            let parts = nameOnly.split(/\s+/);
+            let firstName = parts.pop() || ''; // Lấy tên chính
+            let restName = parts.join(' '); // Phần họ đệm
+            return (firstName + ' ' + restName).toLowerCase();
+        }
+
+        // TỰ ĐỘNG SẮP XẾP TOÀN BỘ ỨNG CỬ VIÊN THEO CHUẨN ABC
+        electoralData.forEach(unit => {
+            unit.candidates.sort((a, b) => {
+                return getSortableName(a.name).localeCompare(getSortableName(b.name), 'vi');
+            });
+        });
 
         // Hàm xử lý Tên File từ Github (áp dụng cho cả JPG và PDF)
         function removeVietnameseTones(str) {
