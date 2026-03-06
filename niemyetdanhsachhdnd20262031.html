@@ -126,7 +126,8 @@
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<!-- Loại bỏ min-h-screen để footer tự đẩy lên khi nội dung ngắn -->
+<body class="flex flex-col h-full bg-page">
 
     <!-- HEADER -->
     <header class="relative header-bg py-6 sm:py-10 flex items-center justify-center overflow-hidden shadow-lg shrink-0">
@@ -157,12 +158,14 @@
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 w-full max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12" id="electoral-units-container">
+    <!-- Loại bỏ flex-1 để nội dung chỉ chiếm đúng không gian của nó -->
+    <main class="w-full max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12" id="electoral-units-container">
         <!-- JS sẽ render HTML vào đây -->
     </main>
 
     <!-- FOOTER -->
-    <footer class="relative footer-bg py-6 text-center flex justify-center mt-auto overflow-hidden shrink-0 shadow-inner">
+    <!-- Loại bỏ mt-auto để footer tự động dính sát vào content -->
+    <footer class="relative footer-bg py-6 text-center flex justify-center overflow-hidden shrink-0 shadow-inner">
         <div class="absolute inset-0 z-0 opacity-10 pointer-events-none" style="background-image: url('https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/trong-dong.png'); background-position: center; background-repeat: no-repeat; background-size: cover;"></div>
         <div class="relative z-10 flex items-center justify-center px-4 w-full text-center">
             <p class="font-bold text-white uppercase text-lg md:text-2xl drop-shadow-md tracking-widest">ỦY BAN BẦU CỬ PHƯỜNG CAO LÃNH</p>
