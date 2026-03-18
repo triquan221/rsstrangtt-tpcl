@@ -224,11 +224,11 @@
 
     <!-- SCRIPT CHÍNH (HTML DOM MANIPULATION) -->
     <script>
-        // DỮ LIỆU ĐÃ LỌC CHỈ CÒN 30 NGƯỜI TRÚNG CỬ KÈM NGÀY SINH VÀ CHỨC VỤ ĐÃ GỘP
+        // DỮ LIỆU ĐÃ ĐƯỢC SẮP XẾP THỦ CÔNG THEO ĐÚNG THỨ TỰ YÊU CẦU CỦA NGƯỜI DÙNG
         const electoralData = [
             { id: 1, name: "ĐƠN VỊ BẦU CỬ SỐ 01", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm 1, Khóm 3, Khóm 4, Khóm 5, Khóm 6, Khóm 7, Khóm 8", candidates: [ 
-                { name: "Ông VÕ VĂN CƯỜNG", dob: "12/11/1992", position: "Ủy viên Ban Chấp hành Đảng bộ phường Cao Lãnh, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Bí thư Đoàn phường Cao Lãnh" }, 
                 { name: "Ông NGUYỄN HÙNG TRÁNG", dob: "26/11/1969", position: "Tỉnh ủy viên, Bí thư Đảng ủy, Bí thư Chi bộ Quân sự, Chủ tịch HĐND phường Cao Lãnh" }, 
+                { name: "Ông VÕ VĂN CƯỜNG", dob: "12/11/1992", position: "Ủy viên Ban Chấp hành Đảng bộ phường Cao Lãnh, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Bí thư Đoàn phường Cao Lãnh" }, 
                 { name: "Ông VÕ THANH HOÀNG", dob: "12/06/1986", position: "Bí thư Chi bộ, Trưởng khóm 1" } 
             ] },
             { id: 2, name: "ĐƠN VỊ BẦU CỬ SỐ 02", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm 2, khóm Thuận Trung, khóm Thuận An, khóm Hòa Long, khóm Hòa Mỹ, khóm Hòa Hưng", candidates: [ 
@@ -247,52 +247,39 @@
                 { name: "Bà VĂN THỊ KIM TUYẾN", fileBase: "vtkimtuyen", dob: "20/02/1991", position: "Bí thư Chi bộ, Trưởng khóm Hòa Thuận" } 
             ] },
             { id: 5, name: "ĐƠN VỊ BẦU CỬ SỐ 05", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Hòa Lợi, khóm Hòa Khánh, khóm Hòa Hiệp", candidates: [ 
-                { name: "Ông VÕ MINH KHANH", fileBase: "vminhkhanh", dob: "09/10/1981", position: "Đảng ủy viên, Chánh Văn phòng HĐND và UBND phường Cao Lãnh" }, 
                 { name: "Bà TRẦN THÙY TRANG", dob: "02/09/1975", position: "Phó Bí thư Thường trực Đảng ủy, Bí thư Đảng bộ cơ sở các cơ quan Đảng phường Cao Lãnh" }, 
+                { name: "Ông VÕ MINH KHANH", fileBase: "vminhkhanh", dob: "09/10/1981", position: "Đảng ủy viên, Chánh Văn phòng HĐND và UBND phường Cao Lãnh" }, 
                 { name: "Ông NGÔ VĂN TRÚC", dob: "25/04/1971", position: "Bí thư Chi bộ, Hiệu trưởng Trường THCS Nguyễn Chí Thanh" } 
             ] },
             { id: 6, name: "ĐƠN VỊ BẦU CỬ SỐ 06", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Đông Bình, khóm Phú An, khóm An Nhơn, khóm Bến Bắc", candidates: [ 
                 { name: "Ông NGUYỄN TUẤN AN", fileBase: "ngtuanan", dob: "10/09/1984", position: "Ủy viên Ban Thường vụ Đảng ủy, Chỉ huy trưởng Ban Chỉ huy Quân sự phường Cao Lãnh" }, 
-                { name: "Ông NGUYỄN VĂN ĐẠT", dob: "01/01/1966", position: "Đảng viên, Ủy viên BCH Hội Nông dân phường Cao Lãnh, Chi hội trưởng Hội Nông dân khóm Đông Bình" }, 
-                { name: "Bà NGUYỄN THỊ THU HIỀN", fileBase: "ntthuhien", dob: "19/07/1979", position: "Ủy viên Ban Thường vụ Đảng ủy, Trưởng Ban Xây dựng Đảng, Trưởng Ban Văn hóa - Xã hội HĐND phường Cao Lãnh" } 
+                { name: "Bà NGUYỄN THỊ THU HIỀN", fileBase: "ntthuhien", dob: "19/07/1979", position: "Ủy viên Ban Thường vụ Đảng ủy, Trưởng Ban Xây dựng Đảng, Trưởng Ban Văn hóa - Xã hội HĐND phường Cao Lãnh" }, 
+                { name: "Ông NGUYỄN VĂN ĐẠT", dob: "01/01/1966", position: "Đảng viên, Ủy viên BCH Hội Nông dân phường Cao Lãnh, Chi hội trưởng Hội Nông dân khóm Đông Bình" } 
             ] },
             { id: 7, name: "ĐƠN VỊ BẦU CỬ SỐ 07", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tân Tịch, khóm Tân Thuận, khóm Tân Việt Hòa, khóm Tịnh Thới", candidates: [ 
-                { name: "Ông NGUYỄN QUỐC HÀ", dob: "13/10/1976", position: "Bí thư Chi bộ, Trưởng Khóm Tân Việt Hòa" }, 
                 { name: "Ông THÁI VĂN LÀNH", dob: "01/01/1975", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh" }, 
-                { name: "Bà LÊ THỊ DUY LINH", dob: "20/10/1991", position: "Đảng ủy viên, Phó Bí thư Chi bộ, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Hội LHPN phường Cao Lãnh" } 
+                { name: "Bà LÊ THỊ DUY LINH", dob: "20/10/1991", position: "Đảng ủy viên, Phó Bí thư Chi bộ, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Hội LHPN phường Cao Lãnh" }, 
+                { name: "Ông NGUYỄN QUỐC HÀ", dob: "13/10/1976", position: "Bí thư Chi bộ, Trưởng Khóm Tân Việt Hòa" } 
             ] },
             { id: 8, name: "ĐƠN VỊ BẦU CỬ SỐ 08", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tịnh Châu, khóm Tịnh Đông, khóm Tịnh Long, khóm Tịnh Mỹ, khóm Tịnh Hưng", candidates: [ 
-                { name: "Ông VÕ TẤN BẢO", dob: "09/01/1982", position: "Bí thư Chi bộ, Giám đốc HTX dịch vụ nông nghiệp Tịnh Thới" }, 
                 { name: "Bà PHAN THỊ HỒNG THANH", dob: "21/12/1979", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Phó Chủ tịch HĐND phường Cao Lãnh" }, 
-                { name: "Ông NGUYỄN VĂN TUẤN", dob: "01/01/1978", position: "Đảng ủy viên, Ủy viên BTV Hội Nông dân tỉnh, Phó Chủ tịch Thường trực UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Hội Nông dân phường Cao Lãnh" } 
+                { name: "Ông NGUYỄN VĂN TUẤN", dob: "01/01/1978", position: "Đảng ủy viên, Ủy viên BTV Hội Nông dân tỉnh, Phó Chủ tịch Thường trực UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Hội Nông dân phường Cao Lãnh" }, 
+                { name: "Ông VÕ TẤN BẢO", dob: "09/01/1982", position: "Bí thư Chi bộ, Giám đốc HTX dịch vụ nông nghiệp Tịnh Thới" } 
             ] },
             { id: 9, name: "ĐƠN VỊ BẦU CỬ SỐ 09", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tân Chú, khóm Tân Hùng, khóm Tân Dân, khóm Tân Hậu", candidates: [ 
+                { name: "Ông NGUYỄN VĂN TỒN", dob: "05/07/1976", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Đảng ủy cơ sở, Trưởng Công an phường Cao Lãnh" }, 
                 { name: "Ông PHAN VĂN LƯỠNG", dob: "03/02/1976", position: "Đảng ủy viên, Ủy viên BTV Liên đoàn Lao động tỉnh, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Công đoàn phường Cao Lãnh" }, 
-                { name: "Ông TRẦN VĂN THỦY", dob: "10/10/1960", position: "Phó Ban trị sự Giáo hội Phật giáo Việt Nam tỉnh Đồng Tháp" }, 
-                { name: "Ông NGUYỄN VĂN TỒN", dob: "05/07/1976", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Đảng ủy cơ sở, Trưởng Công an phường Cao Lãnh" } 
+                { name: "Ông TRẦN VĂN THỦY", dob: "10/10/1960", position: "Phó Ban trị sự Giáo hội Phật giáo Việt Nam tỉnh Đồng Tháp" } 
             ] },
             { id: 10, name: "ĐƠN VỊ BẦU CỬ SỐ 10", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Đông Định, khóm Đông Hòa, khóm Đông Thạnh, khóm Tân Phát", candidates: [ 
-                { name: "Ông TRẦN MINH HIẾU", dob: "28/01/1985", position: "Đảng viên, Khóm Đội trưởng, Phó Trưởng khóm Đông Thạnh" }, 
                 { name: "Ông NGUYỄN TẤN PHÁT", dob: "16/08/1990", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chánh Văn phòng Đảng ủy phường Cao Lãnh" }, 
+                { name: "Ông TRẦN MINH HIẾU", dob: "28/01/1985", position: "Đảng viên, Khóm Đội trưởng, Phó Trưởng khóm Đông Thạnh" }, 
                 { name: "Ông NGUYỄN QUỐC QUI", dob: "07/11/1993", position: "Bí thư Chi bộ, Trưởng khóm Tân Phát" } 
             ] }
         ];
 
-        // Hàm lấy tên chuẩn để sắp xếp (Ví dụ: "Ông Nguyễn Văn A" -> "A Nguyễn Văn")
-        function getSortableName(fullName) {
-            let nameOnly = fullName.replace(/^(Ông|Bà)\s+/i, '').trim();
-            let parts = nameOnly.split(/\s+/);
-            let firstName = parts.pop() || ''; // Lấy tên chính
-            let restName = parts.join(' '); // Phần họ đệm
-            return (firstName + ' ' + restName).toLowerCase();
-        }
-
-        // TỰ ĐỘNG SẮP XẾP TOÀN BỘ ỨNG CỬ VIÊN THEO CHUẨN ABC
-        electoralData.forEach(unit => {
-            unit.candidates.sort((a, b) => {
-                return getSortableName(a.name).localeCompare(getSortableName(b.name), 'vi');
-            });
-        });
+        // Đã xóa hàm getSortableName và đoạn code tự động sắp xếp (sort) 
+        // để đảm bảo hiển thị đúng 100% thứ tự đã nhập trong mảng electoralData bên trên.
 
         // Hàm xử lý Tên File từ Github (áp dụng cho cả JPG và PDF)
         function removeVietnameseTones(str) {
@@ -414,9 +401,9 @@
                 });
 
                 html += `
-                    <div class="rounded-2xl shadow-xl overflow-hidden border-2" style="background-color: var(--bg-unit); border-color: var(--primary-color);">
-                        <!-- Header của Đơn vị (Horizontal layout như danh sách trúng cử) -->
-                        <div class="px-4 py-4 sm:px-6 sm:py-5 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4" style="background-color: var(--primary-color); border-bottom: 4px solid var(--accent-yellow);">
+                    <div class="rounded-2xl shadow-xl overflow-hidden border-[3px] flex flex-col" style="background-color: var(--bg-unit); border-color: var(--primary-color);">
+                        <!-- Header của Đơn vị -->
+                        <div class="px-4 py-4 sm:px-6 sm:py-5 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4" style="background-color: var(--primary-color);">
                             
                             <!-- Cột trái: Tên Đơn vị + Khu vực -->
                             <div class="flex flex-col text-center sm:text-left gap-1 sm:gap-1.5 flex-1">
@@ -437,8 +424,8 @@
                             </div>
                         </div>
 
-                        <!-- Lưới danh sách 3 ứng cử viên dàn đều toàn bộ chiều ngang -->
-                        <div class="p-4 sm:p-6 lg:p-8 bg-white/50">
+                        <!-- Lưới danh sách ứng cử viên dàn đều toàn bộ chiều ngang -->
+                        <div class="p-4 sm:p-6 lg:p-8 w-full">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-10 w-full">
                                 ${candidatesHtml}
                             </div>
