@@ -6,9 +6,24 @@
     <title>Poster Danh Sách Trúng Cử Đại Biểu HĐND Phường Cao Lãnh</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Import font Montserrat (Bold 700, ExtraBold 800) và Roboto (Regular 400, Bold 700) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Thư viện hỗ trợ xuất PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
+        :root {
+            /* Biến CSS để điều khiển ảnh động */
+            --avatar-size: 200px;
+            --avatar-radius: 50%;
+            --img-scale: 1;
+            --img-pos-x: 50%;
+            --img-pos-y: 15%;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -16,20 +31,21 @@
         }
 
         body {
-            background-color: #ffffff; /* Đổi nền xung quanh thành màu trắng */
-            font-family: 'Roboto', sans-serif;
+            background-color: #ffffff;
+            font-family: 'Roboto', sans-serif; /* Mặc định nội dung là Roboto */
             display: flex;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 20px 10px; /* Giảm padding ngoài cùng của trang */
+            padding-bottom: 100px; /* Khoảng trống cho các nút nổi */
         }
 
         .poster-container {
             width: 100%;
             max-width: 1300px;
-            background-color: #f8fafc;
+            background-color: #eff6ff; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             border-radius: 12px;
-            border: 2px solid #e2e8f0; /* Viền mỏng giống thẻ ứng viên */
+            border: 2px solid #e2e8f0;
             overflow: hidden;
             position: relative;
         }
@@ -45,6 +61,28 @@
             opacity: 0.6;
             z-index: 0;
             pointer-events: none;
+        }
+
+        /* --- Editable Element Styles --- */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+            padding: 2px 4px;
+            margin: -2px -4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        [contenteditable="true"]:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+        }
+        
+        [contenteditable="true"]:focus {
+            background-color: #fff1f2;
+            box-shadow: 0 0 0 2px #fda4af;
+            z-index: 10;
+            position: relative;
         }
 
         /* --- Header Section --- */
@@ -63,7 +101,7 @@
 
         /* --- Body Section --- */
         .poster-body {
-            padding: 40px;
+            padding: 25px 15px; /* Giảm khoảng cách lề trái/phải/trên/dưới của lề trắng poster */
             position: relative;
             z-index: 1;
         }
@@ -73,84 +111,91 @@
             border-width: 3px;
             border-style: solid;
             border-radius: 24px;
-            padding: 30px 25px;
-            margin-bottom: 45px;
+            padding: 25px 15px 25px 15px; /* Giảm padding bên trong khung màu */
+            margin-bottom: 40px; /* Giảm khoảng cách giữa các khối đơn vị */
             box-shadow: 0 10px 20px rgba(0,0,0,0.03);
             position: relative;
         }
 
         .unit-title {
-            font-size: 22px;
-            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 800; /* ExtraBold */
             text-align: center;
             text-transform: uppercase;
-            margin-bottom: 30px;
-            padding: 10px 30px;
+            margin-bottom: 10px;
+            padding: 10px 40px; /* Thu gọn padding của nút tiêu đề một chút */
             border-radius: 50px;
-            border-width: 2px;
-            border-style: solid;
-            background-color: #ffffff;
+            background-color: #b91c1c !important; 
+            color: #ffffff !important; 
+            border: none !important;
             display: inline-block;
             position: relative;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-top: -55px; /* Kéo tiêu đề lên trên viền */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            margin-top: -45px; /* Điều chỉnh lại vị trí do lề khung đã giảm */
         }
 
-        /* Màu sắc luân phiên cho các Đơn vị */
-        /* Theme 1: Đỏ/Hồng nhạt */
+        .unit-area {
+            font-family: 'Roboto', sans-serif; /* Đổi sang Roboto */
+            text-align: center;
+            font-size: 18px; /* Tăng cỡ chữ lên 18px */
+            color: #000000; 
+            margin-bottom: 25px; /* Giảm khoảng trống phía dưới phần khu vực bầu cử */
+            padding: 0 10px;
+            line-height: 1.4;
+            font-weight: 700; /* Roboto Bold */
+        }
+        
+        .area-label {
+            color: #b91c1c; /* Thay đổi màu thành #b91c1c theo yêu cầu */
+            font-weight: 700; /* Đồng bộ Roboto Bold */
+        }
+
+        /* Màu sắc nền luân phiên cho các Đơn vị */
         .unit-section:nth-child(3n+1) { background-color: #fff1f2; border-color: #fda4af; }
-        .unit-section:nth-child(3n+1) .unit-title { color: #e11d48; border-color: #fda4af; }
-        
-        /* Theme 2: Vàng nhạt */
         .unit-section:nth-child(3n+2) { background-color: #fffbeb; border-color: #fde047; }
-        .unit-section:nth-child(3n+2) .unit-title { color: #d97706; border-color: #fde047; }
-        
-        /* Theme 3: Xanh dương nhạt */
-        .unit-section:nth-child(3n+3) { background-color: #eff6ff; border-color: #7dd3fc; }
-        .unit-section:nth-child(3n+3) .unit-title { color: #0284c7; border-color: #7dd3fc; }
+        .unit-section:nth-child(3n+3) { background-color: #f0fdf4; border-color: #86efac; } 
 
         .unit-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            gap: 20px;
             width: 100%;
+            align-items: start;
         }
 
-        /* --- Candidate Card --- */
+        /* --- Candidate Card (Vertical Layout) --- */
         .candidate-card {
-            background-color: #ffffff;
-            border-radius: 60px;
+            background-color: transparent; 
             display: flex;
+            flex-direction: column; 
             align-items: center;
-            padding: 12px 20px 12px 12px;
-            border: 2px solid #e2e8f0;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            border: none;
+            box-shadow: none;
             position: relative;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            min-height: 140px; /* Tăng nhẹ chiều cao thẻ để vừa với font 18px của thông tin */
-            height: auto;
+            transition: transform 0.2s ease;
         }
 
         .candidate-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(220, 38, 38, 0.15);
-            border-color: #fca5a5;
+            transform: translateY(-5px);
         }
 
+        /* KHUNG ẢNH ĐƯỢC CĂN CHỈNH BẰNG BIẾN CSS */
         .candidate-avatar {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            border: 3px solid #dc2626;
-            background: #f1f5f9;
+            width: var(--avatar-size); 
+            height: var(--avatar-size); 
+            border-radius: var(--avatar-radius);
+            border: 4px solid #b91c1c; 
+            background: radial-gradient(circle at bottom, #fde047 0%, #ffffff 70%); 
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            margin-right: 18px; /* Tăng nhẹ khoảng cách giữa ảnh và text */
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+            margin-bottom: 15px; 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
             overflow: hidden;
             position: relative;
         }
@@ -159,53 +204,55 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: top;
+            object-position: var(--img-pos-x) var(--img-pos-y);
+            transform: scale(var(--img-scale));
         }
 
         .candidate-info {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            flex-grow: 1;
-            overflow: hidden;
+            align-items: center; 
+            text-align: center;
+            width: 100%;
         }
 
         .candidate-name {
-            font-size: 18px; /* Tên ứng viên 18px */
-            color: #dc2626;
-            font-weight: 700;
-            margin-bottom: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px; 
+            font-weight: 800; /* ExtraBold */
+            margin-bottom: 10px;
+            line-height: 1.3;
+            width: 100%;
+        }
+        
+        .prefix {
+            color: #000000; 
+            font-weight: 800; /* ExtraBold */
+        }
+
+        .name-text {
+            color: #b91c1c; 
+            font-weight: 800; /* ExtraBold */
             text-transform: uppercase;
-            line-height: 1.2;
         }
 
-        .candidate-unit {
-            font-size: 15px; 
-            color: #d97706;
-            font-weight: 700;
-            margin-bottom: 6px;
-            display: inline-flex;
-            align-items: center;
-            background-color: #fef3c7;
-            padding: 3px 10px;
-            border-radius: 12px;
-            align-self: flex-start;
-        }
-
-        .candidate-unit i {
-            margin-right: 5px;
-            font-size: 14px;
+        .candidate-dob {
+            font-family: 'Montserrat', sans-serif; /* Đổi sang Montserrat */
+            font-size: 23px; /* Tăng cỡ chữ lên 23px */
+            color: #000000; 
+            font-weight: 700; /* Đổi sang Bold */
+            margin-bottom: 10px;
+            width: 100%;
         }
 
         .candidate-role {
-            font-size: 18px; /* Chỉnh cỡ chữ thông tin chức vụ thành 18px */
-            color: #334155;
-            font-weight: 700;
+            font-family: 'Montserrat', sans-serif; /* Đổi sang Montserrat */
+            font-size: 23px; /* Tăng cỡ chữ lên 23px */
+            color: #000000; 
+            font-weight: 700; /* Đổi sang Bold */
             line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            display: block; 
+            width: 100%;
         }
 
         /* --- Footer Section --- */
@@ -216,7 +263,9 @@
             padding: 15px 40px;
             position: relative;
             display: flex;
+            justify-content: center; 
             align-items: center;
+            gap: 20px; 
             margin-top: 10px;
             overflow: hidden;
         }
@@ -245,26 +294,151 @@
         }
 
         .footer-text-container {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+            position: relative;
+            z-index: 2;
             display: flex;
             align-items: center;
-            justify-content: center;
-            z-index: 1;
-            pointer-events: none;
         }
 
         .footer-text-container h2 {
+            font-family: 'Montserrat', sans-serif;
             color: #ffffff;
             font-size: 32px;
-            font-weight: 700;
+            font-weight: 800; /* ExtraBold */
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        /* --- Floating Buttons & Controls --- */
+        .download-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #b91c1c;
+            color: #ffffff;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #991b1b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(185, 28, 28, 0.6);
+        }
+
+        .download-btn:disabled {
+            background-color: #64748b;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .settings-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #1e293b;
+            color: #ffffff;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(30, 41, 59, 0.4);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            background-color: #0f172a;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(30, 41, 59, 0.6);
+        }
+
+        .controls-panel {
+            position: fixed;
+            bottom: 90px;
+            left: 30px;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1001;
+            width: 320px;
+            border: 1px solid #e2e8f0;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .controls-panel.active {
+            display: flex;
+        }
+
+        .controls-panel h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 5px;
+            border-bottom: 2px solid #fde047;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .close-panel-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .close-panel-btn:hover {
+            color: #b91c1c;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-group label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .control-group label span {
+            color: #b91c1c;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: #b91c1c;
         }
 
         @media (max-width: 1024px) {
@@ -273,15 +447,32 @@
 
         @media (max-width: 768px) {
             .unit-grid { grid-template-columns: 1fr; }
-            .footer-text-container h2 { font-size: 18px; }
+            .poster-footer { 
+                padding: 10px 20px; 
+                gap: 15px;
+            }
             .footer-logo { height: 50px; }
-            .poster-footer { padding: 10px 20px; }
+            .footer-text-container h2 { font-size: 18px; }
+            .unit-title { font-size: 18px; padding: 10px 30px; }
+            
+            .download-btn, .settings-btn {
+                bottom: 15px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            .download-btn { right: 15px; }
+            .settings-btn { left: 15px; }
+            .controls-panel {
+                bottom: 65px;
+                left: 15px;
+                width: 280px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="poster-container">
+<div class="poster-container" id="posterContent">
     <div class="bg-pattern"></div>
 
     <!-- HEADER -->
@@ -294,30 +485,31 @@
 
         <!-- UNIT 1 -->
         <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 1</h2>
+            <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 01</h2>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm 1, Khóm 3, Khóm 4, Khóm 5, Khóm 6, Khóm 7, Khóm 8</p>
             <div class="unit-grid">
-                <!-- Candidate 3 -> 1 -->
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhungtrang.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhungtrang.png';" alt="Nguyễn Hùng Tráng"></div>
                     <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Hùng Tráng">Nguyễn Hùng Tráng</h3>
-                        <p class="candidate-role" title="Tỉnh uỷ viên, Bí thư Đảng uỷ, Chủ tịch HĐND phường Cao Lãnh">Tỉnh uỷ viên, Bí thư Đảng uỷ, Chủ tịch HĐND phường Cao Lãnh</p>
+                        <h3 class="candidate-name" contenteditable="true"><span class="prefix">Ông:</span> <span class="name-text">Nguyễn Hùng Tráng</span></h3>
+                        <div class="candidate-dob" contenteditable="true">Ngày sinh: 26/11/1969</div>
+                        <p class="candidate-role" contenteditable="true">Tỉnh ủy viên, Bí thư Đảng ủy, Bí thư Chi bộ Quân sự, Chủ tịch HĐND Phường</p>
                     </div>
                 </div>
-                <!-- Candidate 1 -> 2 -->
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/vovancuong.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/vovancuong.png';" alt="Võ Văn Cường"></div>
                     <div class="candidate-info">
-                        <h3 class="candidate-name" title="Võ Văn Cường">Võ Văn Cường</h3>
-                        <p class="candidate-role" title="ĐUV, PCT UB MTTQVN phường, Bí thư ĐTNCS Hồ Chí Minh phường Cao Lãnh">ĐUV, PCT UB MTTQVN phường, Bí thư ĐTNCS Hồ Chí Minh</p>
+                        <h3 class="candidate-name" contenteditable="true"><span class="prefix">Ông:</span> <span class="name-text">Võ Văn Cường</span></h3>
+                        <div class="candidate-dob" contenteditable="true">Ngày sinh: 12/11/1992</div>
+                        <p class="candidate-role" contenteditable="true">Ủy viên Ban Chấp hành Đảng bộ Phường, Phó Chủ tịch UBMTTQ Việt Nam Phường, Bí thư Đoàn Phường</p>
                     </div>
                 </div>
-                <!-- Candidate 2 -> 3 -->
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/vothanhhoang.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/vothanhhoang.png';" alt="Võ Thanh Hoàng"></div>
                     <div class="candidate-info">
-                        <h3 class="candidate-name" title="Võ Thanh Hoàng">Võ Thanh Hoàng</h3>
-                        <p class="candidate-role" title="Bí thư Chi bộ, trưởng Khóm 1">Bí thư Chi bộ, trưởng Khóm 1</p>
+                        <h3 class="candidate-name" contenteditable="true"><span class="prefix">Ông:</span> <span class="name-text">Võ Thanh Hoàng</span></h3>
+                        <div class="candidate-dob" contenteditable="true">Ngày sinh: 12/06/1986</div>
+                        <p class="candidate-role" contenteditable="true">Bí thư Chi bộ, Trưởng khóm 1</p>
                     </div>
                 </div>
             </div>
@@ -325,294 +517,24 @@
 
         <!-- UNIT 2 -->
         <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 2</h2>
+            <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 02</h2>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm 2, khóm Thuận Trung, khóm Thuận An, khóm Hòa Long, khóm Hòa Mỹ, khóm Hòa Hưng</p>
             <div class="unit-grid">
-                <!-- Candidate 4 -> 1 -->
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanthanhbinh.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanthanhbinh.png';" alt="Phan Thanh Bình"></div>
                     <div class="candidate-info">
-                        <h3 class="candidate-name" title="Phan Thanh Bình">Phan Thanh Bình</h3>
-                        <p class="candidate-role" title="UVBTV, CN UBKT Đảng uỷ, Trưởng Ban KT-NS HĐND phường Cao Lãnh">UVBTV, CN UBKT Đảng uỷ, Trưởng Ban KT-NS HĐND</p>
+                        <h3 class="candidate-name" contenteditable="true"><span class="prefix">Ông:</span> <span class="name-text">Phan Thanh Bình</span></h3>
+                        <div class="candidate-dob" contenteditable="true">Ngày sinh: 15/05/1973</div>
+                        <p class="candidate-role" contenteditable="true">Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chủ nhiệm UB Kiểm tra Đảng ủy Phường</p>
                     </div>
                 </div>
-                <!-- Candidate 6 -> 2 -->
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/votruyenthong.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/votruyenthong.png';" alt="Võ Truyền Thống"></div>
                     <div class="candidate-info">
-                        <h3 class="candidate-name" title="Võ Truyền Thống">Võ Truyền Thống</h3>
-                        <p class="candidate-role" title="ĐUV, Phó Chủ tịch Ủy ban nhân dân phường Cao Lãnh">ĐUV, Phó Chủ tịch UBND phường Cao Lãnh</p>
+                        <h3 class="candidate-name" contenteditable="true"><span class="prefix">Ông:</span> <span class="name-text">Võ Truyền Thống</span></h3>
+                        <div class="candidate-dob" contenteditable="true">Ngày sinh: 15/09/1979</div>
+                        <p class="candidate-role" contenteditable="true">Đảng ủy viên, Bí thư Chi bộ, Phó Chủ tịch UBND Phường</p>
                     </div>
                 </div>
-                <!-- Candidate 5 -> 3 -->
                 <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhuynhxuanphuc.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhuynhxuanphuc.png';" alt="Nguyễn Huỳnh Xuân Phúc"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Huỳnh Xuân Phúc">Nguyễn Huỳnh Xuân Phúc</h3>
-                        <p class="candidate-role" title="Phó trưởng khóm Thuận An">Phó trưởng khóm Thuận An</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- UNIT 3 -->
-        <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 3</h2>
-            <div class="unit-grid">
-                <!-- Candidate 7 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/buiquocnam.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/buiquocnam.png';" alt="Bùi Quốc Nam"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Bùi Quốc Nam">Bùi Quốc Nam</h3>
-                        <p class="candidate-role" title="PBT, Chủ tịch Ủy ban nhân dân phường Cao Lãnh">PBT, Chủ tịch Ủy ban nhân dân phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 8 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/trantruongson.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/trantruongson.png';" alt="Trần Trường Sơn"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Trần Trường Sơn">Trần Trường Sơn</h3>
-                        <p class="candidate-role" title="ĐUV, Trưởng phòng Kinh tế, Hạ tầng và Đô thị phường Cao Lãnh">ĐUV, Trưởng phòng KT, Hạ tầng và Đô thị phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 9 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenthitho.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenthitho.png';" alt="Nguyễn Thị Thơ"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Thị Thơ">Nguyễn Thị Thơ</h3>
-                        <p class="candidate-role" title="Bí thư chi bộ, Trưởng khóm Mỹ Phước">Bí thư chi bộ, Trưởng khóm Mỹ Phước</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- UNIT 4 -->
-        <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 4</h2>
-            <div class="unit-grid">
-                <!-- Candidate 10 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/hohuethuhang.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/hohuethuhang.png';" alt="Hồ Huệ Thu Hằng"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Hồ Huệ Thu Hằng">Hồ Huệ Thu Hằng</h3>
-                        <p class="candidate-role" title="UVBTV, Phó Chủ tịch UBND phường Cao Lãnh">UVBTV, Phó Chủ tịch UBND phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 11 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/lethithanhtruc.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/lethithanhtruc.png';" alt="Lê Thị Thanh Trúc"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Lê Thị Thanh Trúc">Lê Thị Thanh Trúc</h3>
-                        <p class="candidate-role" title="Đảng ủy viên, Trưởng phòng Văn hóa - Xã hội phường Cao Lãnh">Đảng ủy viên, Trưởng phòng Văn hóa - Xã hội phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 12 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/vanthikimtuyen.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/vanthikimtuyen.png';" alt="Văn Thị Kim Tuyến"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Văn Thị Kim Tuyến">Văn Thị Kim Tuyến</h3>
-                        <p class="candidate-role" title="Bí thư, trưởng khóm Hòa Thuận">Bí thư, trưởng khóm Hòa Thuận</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- UNIT 5 -->
-        <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 5</h2>
-            <div class="unit-grid">
-                <!-- Candidate 14 -> 1 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tranthuytrang.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tranthuytrang.png';" alt="Trần Thùy Trang"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Trần Thùy Trang">Trần Thùy Trang</h3>
-                        <p class="candidate-role" title="Phó bí thư Thường trực Đảng uỷ phường Cao Lãnh">Phó bí thư Thường trực Đảng uỷ phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 13 -> 2 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/vominhkhanh.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/vominhkhanh.png';" alt="Võ Minh Khanh"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Võ Minh Khanh">Võ Minh Khanh</h3>
-                        <p class="candidate-role" title="ĐUV, Chánh Văn phòng HĐND và UBND phường Cao Lãnh">ĐUV, Chánh Văn phòng HĐND và UBND phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 15 -> 3 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/ngovantruc.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/ngovantruc.png';" alt="Ngô Văn Trúc"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Ngô Văn Trúc">Ngô Văn Trúc</h3>
-                        <p class="candidate-role" title="Bí thư chi bộ, Hiệu trưởng Trường THCS Nguyễn Chí Thanh">Bí thư chi bộ, Hiệu trưởng Trường THCS Nguyễn Chí Thanh</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- UNIT 6 -->
-        <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 6</h2>
-            <div class="unit-grid">
-                <!-- Candidate 16 -> 1 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyentuanan.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyentuanan.png';" alt="Nguyễn Tuấn An"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Tuấn An">Nguyễn Tuấn An</h3>
-                        <p class="candidate-role" title="UVTV Đảng ủy, Chỉ huy Trưởng BCH Quân sự phường Cao Lãnh">UVTV Đảng ủy, Chỉ huy Trưởng BCH Quân sự phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 18 -> 2 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenthithuhien.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenthithuhien.png';" alt="Nguyễn Thị Thu Hiền"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Thị Thu Hiền">Nguyễn Thị Thu Hiền</h3>
-                        <p class="candidate-role" title="UVBTV, Trưởng Ban Xây dựng Đảng Đảng ủy phường Cao Lãnh">UVBTV, Trưởng Ban Xây dựng Đảng Đảng ủy phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 17 -> 3 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenvandat.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenvandat.png';" alt="Nguyễn Văn Đạt"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Văn Đạt">Nguyễn Văn Đạt</h3>
-                        <p class="candidate-role" title="Uỷ viên BCH Hội Nông dân Phường, Chi hội trưởng Hội Nông dân">Uỷ viên BCH Hội Nông dân Phường, Chi hội trưởng Hội Nông dân</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- UNIT 7 -->
-        <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 7</h2>
-            <div class="unit-grid">
-                <!-- Candidate 20 -> 1 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/thaivanlanh.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/thaivanlanh.png';" alt="Thái Văn Lành"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Thái Văn Lành">Thái Văn Lành</h3>
-                        <p class="candidate-role" title="UVBTV, Chủ tịch UBMTTQVN phường Cao Lãnh">UVBTV, Chủ tịch UBMTTQVN phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 21 -> 2 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/lethiduylinh.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/lethiduylinh.png';" alt="Lê Thị Duy Linh"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Lê Thị Duy Linh">Lê Thị Duy Linh</h3>
-                        <p class="candidate-role" title="ĐUV, Phó Chủ tịch Ủy ban MTTQ, Chủ tịch Hội LHPN phường Cao Lãnh">ĐUV, Phó Chủ tịch UBMTTQ, Chủ tịch Hội LHPN phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 19 -> 3 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenquocha.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenquocha.png';" alt="Nguyễn Quốc Hà"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Quốc Hà">Nguyễn Quốc Hà</h3>
-                        <p class="candidate-role" title="Bí thư chi bộ, Trưởng khóm Tân Việt Hòa">Bí thư chi bộ, Trưởng khóm Tân Việt Hòa</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- UNIT 8 -->
-        <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 8</h2>
-            <div class="unit-grid">
-                <!-- Candidate 23 -> 1 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanthihongthanh.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanthihongthanh.png';" alt="Phan Thị Hồng Thanh"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Phan Thị Hồng Thanh">Phan Thị Hồng Thanh</h3>
-                        <p class="candidate-role" title="UVBTV, Phó Chủ tịch HĐND phường Cao Lãnh">UVBTV, Phó Chủ tịch HĐND phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 24 -> 2 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenvantuan.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenvantuan.png';" alt="Nguyễn Văn Tuấn"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Văn Tuấn">Nguyễn Văn Tuấn</h3>
-                        <p class="candidate-role" title="UVTV Hội Nông dân Tỉnh, ĐUV, Phó Chủ tịch Thường trực UBMTTQVN">UVTV Hội Nông dân Tỉnh, ĐUV, PCT Thường trực UBMTTQVN</p>
-                    </div>
-                </div>
-                <!-- Candidate 22 -> 3 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/votanbao.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/votanbao.png';" alt="Võ Tấn Bảo"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Võ Tấn Bảo">Võ Tấn Bảo</h3>
-                        <p class="candidate-role" title="Giám đốc HTX DVNN Tịnh Thới">Giám đốc HTX DVNN Tịnh Thới</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- UNIT 9 -->
-        <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 9</h2>
-            <div class="unit-grid">
-                <!-- Candidate 25 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanvanluong.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanvanluong.png';" alt="Phan Văn Lưỡng"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Phan Văn Lưỡng">Phan Văn Lưỡng</h3>
-                        <p class="candidate-role" title="UVTV Liên đoàn Lao động Tỉnh, ĐUV, Phó Chủ tịch UBMTTQ, Chủ tịch Công đoàn">UVTV LĐLĐ Tỉnh, ĐUV, Phó Chủ tịch UBMTTQ, Chủ tịch Công đoàn</p>
-                    </div>
-                </div>
-                <!-- Candidate 26 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenvanton.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenvanton.png';" alt="Nguyễn Văn Tồn"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Văn Tồn">Nguyễn Văn Tồn</h3>
-                        <p class="candidate-role" title="UVBTV, Bí thư Đảng uỷ cơ sở Công an, Trưởng Công an phường Cao Lãnh">UVBTV, Bí thư Đảng uỷ cơ sở Công an, Trưởng Công an phường Cao Lãnh</p>
-                    </div>
-                </div>
-                <!-- Candidate 27 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tranvanthuy.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tranvanthuy.png';" alt="Trần Văn Thủy"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Trần Văn Thủy">Trần Văn Thủy</h3>
-                        <p class="candidate-role" title="Phó ban trị sự giáo hội Phật giáo Việt Nam, tỉnh Đồng Tháp">Phó ban trị sự giáo hội Phật giáo Việt Nam, tỉnh Đồng Tháp</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- UNIT 10 -->
-        <div class="unit-section">
-            <h2 class="unit-title">Đơn vị bầu cử số 10</h2>
-            <div class="unit-grid">
-                <!-- Candidate 29 -> 1 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyentanphat.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyentanphat.png';" alt="Nguyễn Tấn Phát"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Tấn Phát">Nguyễn Tấn Phát</h3>
-                        <p class="candidate-role" title="UVBTV, Bí thư Chi bộ Văn phòng Đảng Ủy, Chánh văn phòng Đảng uỷ">UVBTV, Bí thư Chi bộ VP Đảng Ủy, Chánh VP Đảng uỷ</p>
-                    </div>
-                </div>
-                <!-- Candidate 30 -> 2 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenquocqui.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenquocqui.png';" alt="Nguyễn Quốc Qui"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Nguyễn Quốc Qui">Nguyễn Quốc Qui</h3>
-                        <p class="candidate-role" title="Bí thư chi bộ / Trưởng khóm Tân Phát">Bí thư chi bộ / Trưởng khóm Tân Phát</p>
-                    </div>
-                </div>
-                <!-- Candidate 28 -> 3 -->
-                <div class="candidate-card">
-                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tranminhhieu.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tranminhhieu.png';" alt="Trần Minh Hiếu"></div>
-                    <div class="candidate-info">
-                        <h3 class="candidate-name" title="Trần Minh Hiếu">Trần Minh Hiếu</h3>
-                        <p class="candidate-role" title="Khóm đội trưởng / Phó trưởng khóm Đông Thạnh">Khóm đội trưởng / Phó trưởng khóm Đông Thạnh</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- NEW REDESIGNED FOOTER -->
-    <div class="poster-footer">
-        <img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/logo_pCL-removebg-preview.png" alt="Logo Phường Cao Lãnh" class="footer-logo">
-        <div class="footer-text-container">
-            <h2>ỦY BAN BẦU CỬ PHƯỜNG CAO LÃNH</h2>
-        </div>
-    </div>
-
-</div>
-
-</body>
-</html>
+                    <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhuynhxuanphuc.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhuynhxuanphuc.png';"
