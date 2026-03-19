@@ -9,19 +9,18 @@
     <!-- Tích hợp Font từ Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Montserrat:wght@700;900&family=Playfair+Display:wght@700;900&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Cấu hình phối màu: Tông Đỏ - Vàng */
+        /* Cấu hình màu sắc đồng bộ theo tông Đơn vị 01 */
         :root {
-            --primary-color: #a21817;   /* Đỏ chủ đạo */
-            --dark-color: #801010;      /* Đỏ đậm khi hover */
-            --accent-yellow: #fce118;   /* Vàng sáng điểm nhấn */
-            --candidate-name-color: #a21817; /* Tên ứng viên màu đỏ */
-            --header-footer-bg: #a21817; /* Nền Header/Footer đỏ */
-            --bg-page: #fffcf5;         /* Nền trang vàng rất nhạt */
-            --bg-unit: #fbeec1;         /* Nền đơn vị bầu cử màu vàng nhạt */
-            --bg-card: #ffffff;         /* Nền thẻ ứng viên màu trắng */
-            --text-main: #1a202c;       /* Chữ màu xám đen */
+            --accent-yellow: #fce118;   
+            --header-footer-bg: #a21817; 
+            --bg-page: #fffcf5;         
+            --text-main: #1a202c;
+            --primary-red: #a21817;     
+            --bg-pink: #fff1f2;        
+            --border-pink: #fda4af;    
+            --bg-info-box: #fffbeb;
         }
 
         body {
@@ -32,122 +31,41 @@
             padding: 0;
         }
 
-        /* Lớp CSS cho Tiêu đề chính để dễ dàng đổi font */
-        .main-title {
-            font-family: 'Roboto', sans-serif;
-        }
-        
-        .aspect-portrait {
-            aspect-ratio: 3 / 4;
-        }
-
-        /* Lớp CSS tĩnh */
-        .header-bg { 
-            background-color: var(--header-footer-bg); 
-        }
+        .header-bg { background-color: var(--header-footer-bg); }
         .footer-bg { 
             background-color: var(--header-footer-bg); 
             border-top: 6px solid var(--accent-yellow); 
         }
         
-        .unit-section { 
-            background-color: var(--bg-unit); 
-            border: 3px solid var(--primary-color); 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            border-radius: 1rem;
-        }
-        
-        .unit-header-bg { 
-            background-color: var(--primary-color);
-            border-bottom: 4px solid var(--accent-yellow); 
-        }
-        
         .candidate-card { 
-            background-color: var(--bg-card); 
-            border: 3px solid var(--primary-color); 
             border-radius: 0.75rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .candidate-card:hover {
-            box-shadow: 0 20px 25px -5px rgba(162, 24, 23, 0.25);
             transform: translateY(-5px);
             filter: brightness(1.02);
-            border-color: var(--accent-yellow); 
+            box-shadow: 0 20px 25px -5px rgba(162, 24, 23, 0.15);
         }
         
-        .candidate-name { 
-            color: var(--candidate-name-color); 
-        }
-        
-        .btn-detail { 
-            color: #ffffff; 
-            background-color: var(--primary-color); 
-            border: 2px solid var(--primary-color); 
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .btn-detail:hover { 
-            background-color: var(--dark-color); 
-            border-color: var(--dark-color);
-            box-shadow: 0 4px 12px rgba(162, 24, 23, 0.4);
-            transform: scale(1.02);
-        }
-
-        /* Hiệu ứng Modal */
-        .modal-backdrop {
-            transition: opacity 0.3s ease;
-        }
-        .modal-hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .modal-hidden .modal-content {
-            transform: scale(0.95) translateY(10px);
-        }
-        .modal-content {
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        
-        /* Spinner CSS */
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: var(--primary-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Hỗ trợ cuộn mượt cho iFrame trên iOS */
-        .ios-scroll-wrapper {
-            -webkit-overflow-scrolling: touch;
-            overflow-y: auto;
-        }
     </style>
 </head>
 <body class="flex flex-col h-full relative">
 
-    <!-- LỚP NỀN TRỐNG ĐỒNG WATERMARK TOÀN TRANG -->
+    <!-- LỚP NỀN TRỐNG ĐỒNG WATERMARK -->
     <div class="fixed inset-0 z-0 pointer-events-none opacity-[0.03]" style="background-image: url('https://giaoan.link/wp-content/uploads/2018/07/giaoan.lik-trong-dong.png'); background-position: center; background-repeat: repeat; background-size: 300px;"></div>
 
-    <!-- HEADER WRAPPER CÓ PADDING ĐỂ TẠO KHỐI POSTER -->
+    <!-- HEADER -->
     <div class="w-full max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8 z-10 relative">
-        <!-- HEADER BO TRÒN VÀ CÓ VIỀN VÀNG, KHÔNG PADDING ĐỂ PHỦ KHÍT ẢNH -->
         <header class="relative w-full overflow-hidden shadow-2xl shrink-0 rounded-2xl sm:rounded-3xl border-4 sm:border-[6px] flex items-center justify-center bg-[#a21817]" style="border-color: var(--accent-yellow);">
-            
-            <!-- Hình ảnh tiêu đề phủ kín toàn bộ bề ngang, phóng to nhẹ (scale) để cắt phần viền thừa của ảnh gốc -->
             <img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tieude1.PNG" alt="Tiêu đề Danh sách người trúng cử" class="w-full h-auto object-cover block relative z-0 transform scale-[1.02] sm:scale-[1.03] origin-center">
-            
         </header>
     </div>
 
     <!-- MAIN CONTENT -->
     <main class="w-full max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-12 relative z-10" id="electoral-units-container">
-        <!-- JS sẽ render HTML vào đây -->
+        <!-- Nội dung được Render bởi JS -->
     </main>
 
     <!-- FOOTER -->
@@ -158,118 +76,84 @@
         </div>
     </footer>
 
-    <!-- MODAL HIỂN THỊ PDF -->
-    <div id="biography-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black bg-opacity-75 backdrop-blur-sm modal-backdrop modal-hidden">
-        <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[95vh] sm:h-[90vh] overflow-hidden flex flex-col">
-            
-            <!-- Header Modal -->
-            <div class="text-white p-2 sm:p-3 flex justify-between items-center relative shrink-0 border-b-4" style="background-color: var(--primary-color); border-bottom-color: var(--accent-yellow);">
-                
-                <div class="flex-1 hidden sm:block"></div>
-                
-                <!-- Tiêu đề Canh giữa tuyệt đối -->
-                <h3 id="modal-title-text" class="text-xs sm:text-lg md:text-xl font-bold uppercase tracking-wider text-center flex-1 sm:flex-none px-1 sm:px-2 whitespace-nowrap" style="color: var(--accent-yellow);">
-                    <!-- Chữ sẽ được điền bằng JS -->
-                </h3>
-                
-                <!-- Cụm nút bấm bên phải (Zoom + Đóng) -->
-                <div class="flex-1 flex justify-end items-center gap-1 sm:gap-2 pr-1">
-                    <!-- Nút Zoom (Sẽ tự động ẩn trên điện thoại) -->
-                    <div id="zoom-controls" class="flex items-center gap-1 sm:gap-2">
-                        <button onclick="zoomPdf(25)" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none" title="Phóng to">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                        </button>
-                        <button onclick="zoomPdf(-25)" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none" title="Thu nhỏ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                        </button>
-                        <div class="w-px h-6 bg-white/30 mx-1 hidden sm:block"></div>
-                    </div>
-                    
-                    <button onclick="closeModal()" class="p-1.5 sm:p-2 bg-black/20 hover:bg-black/40 rounded transition-colors outline-none ml-1" title="Đóng">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Content Modal: Chứa class hỗ trợ iOS scroll -->
-            <div class="flex-1 relative w-full h-full bg-gray-200 overflow-hidden ios-scroll-wrapper" id="modal-body-container">
-                <!-- Vòng quay Loading -->
-                <div id="pdf-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 z-20">
-                    <div class="spinner mb-4"></div>
-                    <span class="text-gray-500 font-medium">Đang tải tiểu sử...</span>
-                </div>
-                
-                <!-- Wrapper chứa iframe -->
-                <div id="pdf-wrapper" class="mx-auto h-full bg-white transition-all duration-300 relative z-10" style="width: 100%; overflow: hidden;">
-                    <iframe 
-                        id="pdf-iframe" 
-                        class="w-full h-full border-0" 
-                        onload="document.getElementById('pdf-loading').style.display='none'"
-                        allowfullscreen
-                    ></iframe>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-
-    <!-- SCRIPT CHÍNH (HTML DOM MANIPULATION) -->
     <script>
-        // DỮ LIỆU ĐÃ LỌC CHỈ CÒN 30 NGƯỜI TRÚNG CỬ (3 NGƯỜI / ĐƠN VỊ) KÈM NGÀY SINH & CHỨC VỤ ĐẦY ĐỦ
+        // Cấu hình tông màu đồng bộ
+        const globalTheme = { primary: "#a21817", bg: "#fff1f2", border: "#fda4af" };
+
         const electoralData = [
-            { id: 1, name: "ĐƠN VỊ BẦU CỬ SỐ 01", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm 1, Khóm 3, Khóm 4, Khóm 5, Khóm 6, Khóm 7, Khóm 8", candidates: [ 
-                { name: "Ông NGUYỄN HÙNG TRÁNG", dob: "26/11/1969", position: "Tỉnh ủy viên, Bí thư Đảng ủy, Bí thư Chi bộ Quân sự, Chủ tịch HĐND phường Cao Lãnh" }, 
-                { name: "Ông VÕ VĂN CƯỜNG", dob: "12/11/1992", position: "Ủy viên Ban Chấp hành Đảng bộ phường Cao Lãnh, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Bí thư Đoàn phường Cao Lãnh" }, 
-                { name: "Ông VÕ THANH HOÀNG", dob: "12/06/1986", position: "Bí thư Chi bộ, Trưởng khóm 1" } 
-            ] },
-            { id: 2, name: "ĐƠN VỊ BẦU CỬ SỐ 02", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm 2, khóm Thuận Trung, khóm Thuận An, khóm Hòa Long, khóm Hòa Mỹ, khóm Hòa Hưng", candidates: [ 
-                { name: "Ông PHAN THANH BÌNH", dob: "15/05/1973", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chủ nhiệm UB Kiểm tra Đảng ủy phường Cao Lãnh" }, 
-                { name: "Ông VÕ TRUYỀN THỐNG", dob: "15/09/1979", position: "Đảng ủy viên, Bí thư Chi bộ, Phó Chủ tịch UBND phường Cao Lãnh" }, 
-                { name: "Ông NGUYỄN HUỲNH XUÂN PHÚC", dob: "07/06/1995", position: "Chi ủy viên, Khóm Đội trưởng, Phó Trưởng khóm, Bí thư Chi đoàn khóm Thuận An" } 
-            ] },
-            { id: 3, name: "ĐƠN VỊ BẦU CỬ SỐ 03", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm 9, khóm Mỹ Hưng, khóm Mỹ Phước, khóm Mỹ Đức, khóm Mỹ Long, khóm Mỹ Thiện", candidates: [ 
-                { name: "Ông BÙI QUỐC NAM", dob: "16/12/1978", position: "Phó Bí thư Đảng ủy, Bí thư Đảng ủy UBND, Chủ tịch UBND phường Cao Lãnh" }, 
-                { name: "Ông TRẦN TRƯỜNG SƠN", dob: "13/10/1983", position: "Đảng ủy viên, Trưởng phòng Kinh tế, Hạ tầng và Đô thị phường Cao Lãnh" }, 
-                { name: "Bà NGUYỄN THỊ THƠ", dob: "08/11/1973", position: "Bí thư Chi bộ, Trưởng khóm Mỹ Phước" } 
-            ] },
-            { id: 4, name: "ĐƠN VỊ BẦU CỬ SỐ 04", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Thuận Phú, khóm Thuận Nghĩa, khóm Thuận Phát, khóm Hòa Thuận, khóm Hòa Lạc, khóm Hòa An", candidates: [ 
-                { name: "Bà HỒ HUỆ THU HẰNG", dob: "15/11/1980", position: "Ủy viên Ban Thường vụ Đảng ủy, Phó Chủ tịch UBND phường Cao Lãnh" }, 
-                { name: "Bà LÊ THỊ THANH TRÚC", fileBase: "ltthanhtruc", dob: "18/10/1982", position: "Đảng ủy viên, Bí thư Chi bộ, Trưởng phòng Văn hóa - Xã hội phường Cao Lãnh" }, 
-                { name: "Bà VĂN THỊ KIM TUYẾN", fileBase: "vtkimtuyen", dob: "20/02/1991", position: "Bí thư Chi bộ, Trưởng khóm Hòa Thuận" } 
-            ] },
-            { id: 5, name: "ĐƠN VỊ BẦU CỬ SỐ 05", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Hòa Lợi, khóm Hòa Khánh, khóm Hòa Hiệp", candidates: [ 
-                { name: "Bà TRẦN THÙY TRANG", dob: "02/09/1975", position: "Phó Bí thư Thường trực Đảng ủy, Bí thư Đảng bộ cơ sở các cơ quan Đảng phường Cao Lãnh" }, 
-                { name: "Ông VÕ MINH KHANH", fileBase: "vminhkhanh", dob: "09/10/1981", position: "Đảng ủy viên, Chánh Văn phòng HĐND và UBND phường Cao Lãnh" }, 
-                { name: "Ông NGÔ VĂN TRÚC", dob: "25/04/1971", position: "Bí thư Chi bộ, Hiệu trưởng Trường THCS Nguyễn Chí Thanh" } 
-            ] },
-            { id: 6, name: "ĐƠN VỊ BẦU CỬ SỐ 06", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Đông Bình, khóm Phú An, khóm An Nhơn, khóm Bến Bắc", candidates: [ 
-                { name: "Ông NGUYỄN TUẤN AN", fileBase: "ngtuanan", dob: "10/09/1984", position: "Ủy viên Ban Thường vụ Đảng ủy, Chỉ huy trưởng Ban Chỉ huy Quân sự phường Cao Lãnh" }, 
-                { name: "Bà NGUYỄN THỊ THU HIỀN", fileBase: "ntthuhien", dob: "19/07/1979", position: "Ủy viên Ban Thường vụ Đảng ủy, Trưởng Ban Xây dựng Đảng, Trưởng Ban Văn hóa - Xã hội HĐND phường Cao Lãnh" }, 
-                { name: "Ông NGUYỄN VĂN ĐẠT", dob: "01/01/1966", position: "Đảng viên, Ủy viên BCH Hội Nông dân phường Cao Lãnh, Chi hội trưởng Hội Nông dân khóm Đông Bình" } 
-            ] },
-            { id: 7, name: "ĐƠN VỊ BẦU CỬ SỐ 07", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tân Tịch, khóm Tân Thuận, khóm Tân Việt Hòa, khóm Tịnh Thới", candidates: [ 
-                { name: "Ông THÁI VĂN LÀNH", dob: "01/01/1975", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh" }, 
-                { name: "Bà LÊ THỊ DUY LINH", dob: "20/10/1991", position: "Đảng ủy viên, Phó Bí thư Chi bộ, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Hội LHPN phường Cao Lãnh" }, 
-                { name: "Ông NGUYỄN QUỐC HÀ", dob: "13/10/1976", position: "Bí thư Chi bộ, Trưởng Khóm Tân Việt Hòa" } 
-            ] },
-            { id: 8, name: "ĐƠN VỊ BẦU CỬ SỐ 08", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tịnh Châu, khóm Tịnh Đông, khóm Tịnh Long, khóm Tịnh Mỹ, khóm Tịnh Hưng", candidates: [ 
-                { name: "Bà PHAN THỊ HỒNG THANH", dob: "21/12/1979", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Phó Chủ tịch HĐND phường Cao Lãnh" }, 
-                { name: "Ông NGUYỄN VĂN TUẤN", dob: "01/01/1978", position: "Đảng ủy viên, Ủy viên BTV Hội Nông dân tỉnh, Phó Chủ tịch Thường trực UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Hội Nông dân phường Cao Lãnh" }, 
-                { name: "Ông VÕ TẤN BẢO", dob: "09/01/1982", position: "Bí thư Chi bộ, Giám đốc HTX dịch vụ nông nghiệp Tịnh Thới" } 
-            ] },
-            { id: 9, name: "ĐƠN VỊ BẦU CỬ SỐ 09", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tân Chú, khóm Tân Hùng, khóm Tân Dân, khóm Tân Hậu", candidates: [ 
-                { name: "Ông NGUYỄN VĂN TỒN", dob: "05/07/1976", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Đảng ủy cơ sở, Trưởng Công an phường Cao Lãnh" }, 
-                { name: "Ông PHAN VĂN LƯỠNG", dob: "03/02/1976", position: "Đảng ủy viên, Ủy viên BTV Liên đoàn Lao động tỉnh, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Công đoàn phường Cao Lãnh" }, 
-                { name: "Ông TRẦN VĂN THỦY", dob: "10/10/1960", position: "Phó Ban trị sự Giáo hội Phật giáo Việt Nam tỉnh Đồng Tháp" } 
-            ] },
-            { id: 10, name: "ĐƠN VỊ BẦU CỬ SỐ 10", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Đông Định, khóm Đông Hòa, khóm Đông Thạnh, khóm Tân Phát", candidates: [ 
-                { name: "Ông NGUYỄN TẤN PHÁT", dob: "16/08/1990", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chánh Văn phòng Đảng ủy phường Cao Lãnh" }, 
-                { name: "Ông TRẦN MINH HIẾU", dob: "28/01/1985", position: "Đảng viên, Khóm Đội trưởng, Phó Trưởng khóm Đông Thạnh" }, 
-                { name: "Ông NGUYỄN QUỐC QUI", dob: "07/11/1993", position: "Bí thư Chi bộ, Trưởng khóm Tân Phát" } 
-            ] }
+            { id: 1, name: "ĐƠN VỊ BẦU CỬ SỐ 01", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm 1, Khóm 3, Khóm 4, Khóm 5, Khóm 6, Khóm 7, Khóm 8",
+                candidates: [ 
+                    { name: "Ông NGUYỄN HÙNG TRÁNG", dob: "26/11/1969", position: "Tỉnh ủy viên, Bí thư Đảng ủy, Bí thư Chi bộ Quân sự, Chủ tịch HĐND phường Cao Lãnh" }, 
+                    { name: "Ông VÕ VĂN CƯỜNG", dob: "12/11/1992", position: "Ủy viên Ban Chấp hành Đảng bộ phường Cao Lãnh, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Bí thư Đoàn phường Cao Lãnh" }, 
+                    { name: "Ông VÕ THANH HOÀNG", dob: "12/06/1986", position: "Bí thư Chi bộ, Trưởng khóm 1" } 
+                ] 
+            },
+            { id: 2, name: "ĐƠN VỊ BẦU CỬ SỐ 02", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm 2, khóm Thuận Trung, khóm Thuận An, khóm Hòa Long, khóm Hòa Mỹ, khóm Hòa Hưng",
+                candidates: [ 
+                    { name: "Ông PHAN THANH BÌNH", dob: "15/05/1973", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chủ nhiệm UB Kiểm tra Đảng ủy phường Cao Lãnh" }, 
+                    { name: "Ông VÕ TRUYỀN THỐNG", dob: "15/09/1979", position: "Đảng ủy viên, Bí thư Chi bộ, Phó Chủ tịch UBND phường Cao Lãnh" }, 
+                    { name: "Ông NGUYỄN HUỲNH XUÂN PHÚC", dob: "07/06/1995", position: "Chi ủy viên, Khóm Đội trưởng, Phó Trưởng khóm, Bí thư Chi đoàn khóm Thuận An" } 
+                ] 
+            },
+            { id: 3, name: "ĐƠN VỊ BẦU CỬ SỐ 03", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm 9, khóm Mỹ Hưng, khóm Mỹ Phước, khóm Mỹ Đức, khóm Mỹ Long, khóm Mỹ Thiện",
+                candidates: [ 
+                    { name: "Ông BÙI QUỐC NAM", dob: "16/12/1978", position: "Phó Bí thư Đảng ủy, Bí thư Đảng ủy UBND, Chủ tịch UBND phường Cao Lãnh" }, 
+                    { name: "Ông TRẦN TRƯỜNG SƠN", dob: "13/10/1983", position: "Đảng ủy viên, Trưởng phòng Kinh tế, Hạ tầng và Đô thị phường Cao Lãnh" }, 
+                    { name: "Bà NGUYỄN THỊ THƠ", dob: "08/11/1973", position: "Bí thư Chi bộ, Trưởng khóm Mỹ Phước" } 
+                ] 
+            },
+            { id: 4, name: "ĐƠN VỊ BẦU CỬ SỐ 04", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Thuận Phú, khóm Thuận Nghĩa, khóm Thuận Phát, khóm Hòa Thuận, khóm Hòa Lạc, khóm Hòa An",
+                candidates: [ 
+                    { name: "Bà HỒ HUỆ THU HẰNG", dob: "15/11/1980", position: "Ủy viên Ban Thường vụ Đảng ủy, Phó Chủ tịch UBND phường Cao Lãnh" }, 
+                    { name: "Bà LÊ THỊ THANH TRÚC", dob: "18/10/1982", position: "Đảng ủy viên, Bí thư Chi bộ, Trưởng phòng Văn hóa - Xã hội phường Cao Lãnh" }, 
+                    { name: "Bà VĂN THỊ KIM TUYẾN", dob: "20/02/1991", position: "Bí thư Chi bộ, Trưởng khóm Hòa Thuận" } 
+                ] 
+            },
+            { id: 5, name: "ĐƠN VỊ BẦU CỬ SỐ 05", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Hòa Lợi, khóm Hòa Khánh, khóm Hòa Hiệp",
+                candidates: [ 
+                    { name: "Bà TRẦN THÙY TRANG", dob: "02/09/1975", position: "Phó Bí thư Thường trực Đảng ủy, Bí thư Đảng bộ cơ sở các cơ quan Đảng phường Cao Lãnh" }, 
+                    { name: "Ông VÕ MINH KHANH", dob: "09/10/1981", position: "Đảng ủy viên, Chánh Văn phòng HĐND và UBND phường Cao Lãnh" }, 
+                    { name: "Ông NGÔ VĂN TRÚC", dob: "25/04/1971", position: "Bí thư Chi bộ, Hiệu trưởng Trường THCS Nguyễn Chí Thanh" } 
+                ] 
+            },
+            { id: 6, name: "ĐƠN VỊ BẦU CỬ SỐ 06", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Đông Bình, khóm Phú An, khóm An Nhơn, khóm Bến Bắc",
+                candidates: [ 
+                    { name: "Ông NGUYỄN TUẤN AN", dob: "10/09/1984", position: "Ủy viên Ban Thường vụ Đảng ủy, Chỉ huy trưởng Ban Chỉ huy Quân sự phường Cao Lãnh" }, 
+                    { name: "Bà NGUYỄN THỊ THU HIỀN", dob: "19/07/1979", position: "Ủy viên Ban Thường vụ Đảng ủy, Trưởng Ban Xây dựng Đảng, Trưởng Ban Văn hóa - Xã hội HĐND phường Cao Lãnh" }, 
+                    { name: "Ông NGUYỄN VĂN ĐẠT", dob: "01/01/1966", position: "Đảng viên, Ủy viên BCH Hội Nông dân phường Cao Lãnh, Chi hội trưởng Hội Nông dân khóm Đông Bình" } 
+                ] 
+            },
+            { id: 7, name: "ĐƠN VỊ BẦU CỬ SỐ 07", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tân Tịch, khóm Tân Thuận, khóm Tân Việt Hòa, khóm Tịnh Thới",
+                candidates: [ 
+                    { name: "Ông THÁI VĂN LÀNH", dob: "01/01/1975", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chủ nhận UBMTTQ Việt Nam phường Cao Lãnh" }, 
+                    { name: "Bà LÊ THỊ DUY LINH", dob: "20/10/1991", position: "Đảng ủy viên, Phó Bí thư Chi bộ, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Hội LHPN phường Cao Lãnh" }, 
+                    { name: "Ông NGUYỄN QUỐC HÀ", dob: "13/10/1976", position: "Bí thư Chi bộ, Trưởng Khóm Tân Việt Hòa" } 
+                ] 
+            },
+            { id: 8, name: "ĐƠN VỊ BẦU CỬ SỐ 08", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tịnh Châu, khóm Tịnh Đông, khóm Tịnh Long, khóm Tịnh Mỹ, khóm Tịnh Hưng",
+                candidates: [ 
+                    { name: "Bà PHAN THỊ HỒNG THANH", dob: "21/12/1979", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Phó Chủ tịch HĐND phường Cao Lãnh" }, 
+                    { name: "Ông NGUYỄN VĂN TUẤN", dob: "01/01/1978", position: "Đảng ủy viên, Ủy viên BTV Hội Nông dân tỉnh, Phó Chủ tịch Thường trực UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Hội Nông dân phường Cao Lãnh" }, 
+                    { name: "Ông VÕ TẤN BẢO", dob: "09/01/1982", position: "Bí thư Chi bộ, Giám đốc HTX dịch vụ nông nghiệp Tịnh Thới" } 
+                ] 
+            },
+            { id: 9, name: "ĐƠN VỊ BẦU CỬ SỐ 09", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Tân Chú, khóm Tân Hùng, khóm Tân Dân, khóm Tân Hậu",
+                candidates: [ 
+                    { name: "Ông NGUYỄN VĂN TỒN", dob: "05/07/1976", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Đảng ủy cơ sở, Trưởng Công an phường Cao Lãnh" }, 
+                    { name: "Ông PHAN VĂN LƯỠNG", dob: "03/02/1976", position: "Đảng ủy viên, Ủy viên BTV Liên đoàn Lao động tỉnh, Phó Chủ tịch UBMTTQ Việt Nam phường Cao Lãnh, Chủ tịch Công đoàn phường Cao Lãnh" }, 
+                    { name: "Ông TRẦN VĂN THỦY", dob: "10/10/1960", position: "Phó Ban trị sự Giáo hội Phật giáo Việt Nam tỉnh Đồng Tháp" } 
+                ] 
+            },
+            { id: 10, name: "ĐƠN VỊ BẦU CỬ SỐ 10", info: "Số đại biểu trúng cử: 03 người", areas: "Khóm Đông Định, khóm Đông Hòa, khóm Đông Thạnh, khóm Tân Phát",
+                candidates: [ 
+                    { name: "Ông NGUYỄN TẤN PHÁT", dob: "16/08/1990", position: "Ủy viên Ban Thường vụ Đảng ủy, Bí thư Chi bộ, Chánh Văn phòng Đảng ủy phường Cao Lãnh" }, 
+                    { name: "Ông TRẦN MINH HIẾU", dob: "28/01/1985", position: "Đảng viên, Khóm Đội trưởng, Phó Trưởng khóm Đông Thạnh" }, 
+                    { name: "Ông NGUYỄN QUỐC QUI", dob: "07/11/1993", position: "Bí thư Chi bộ, Trưởng khóm Tân Phát" } 
+                ] 
+            }
         ];
 
-        // Hàm xử lý Tên File từ Github (áp dụng cho cả JPG và PDF)
+        // Hàm loại bỏ dấu tiếng Việt
         function removeVietnameseTones(str) {
             str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
             str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
@@ -288,15 +172,15 @@
             return str;
         }
 
+        // Hàm format tên file chuẩn: bỏ "Ông/Bà", viết liền không dấu
         function formatFileName(name) {
             let cleanName = name.replace(/^(Ông|Bà)\s+/i, '').trim();
             cleanName = removeVietnameseTones(cleanName).toLowerCase().replace(/\s+/g, '');
             return cleanName;
         }
 
-        // Hàm xử lý lỗi load ảnh chân dung
+        // Hàm xử lý lỗi ảnh: Thử PNG nếu JPG lỗi
         window.handleImgError = function(img, pngUrl) {
-            // Khắc phục lỗi đuôi file khi có thêm tham số chống cache (?v=timestamp)
             if (img.src.includes('.jpg')) {
                 img.src = pngUrl; 
             } else {
@@ -305,78 +189,57 @@
             }
         };
 
-        // Render HTML
         function renderApp() {
             const container = document.getElementById('electoral-units-container');
-            
-            // Xử lý lọc đơn vị bầu cử theo tham số URL (vd: ?unit=1)
-            const urlParams = new URLSearchParams(window.location.search);
-            const unitFilter = urlParams.get('unit');
-            
-            let dataToRender = electoralData;
-            
-            if (unitFilter) {
-                dataToRender = electoralData.filter(u => u.id == parseInt(unitFilter));
-                // Nếu URL parameter không hợp lệ, hiển thị thông báo
-                if (dataToRender.length === 0) {
-                    container.innerHTML = '<div class="text-center w-full p-10"><h3 class="text-2xl font-bold" style="color: var(--primary-color);">Không tìm thấy Đơn vị bầu cử này.</h3></div>';
-                    return;
-                }
-            }
-
+            const ts = new Date().getTime(); // Dùng timestamp để tránh cache ảnh cũ trên trình duyệt
             let html = '';
 
-            dataToRender.forEach((unit) => {
+            electoralData.forEach((unit) => {
                 let candidatesHtml = '';
-                
-                unit.candidates.forEach((candidate, cIdx) => {
+                unit.candidates.forEach((candidate) => {
                     const titleMatch = candidate.name.match(/^(Ông|Bà)\s+(.*)/i);
                     const title = titleMatch ? `${titleMatch[1]}:` : "";
                     const fullName = titleMatch ? titleMatch[2] : candidate.name;
-
-                    // Tự động tạo link ảnh github KÈM TIMESTAMP CHỐNG CACHE. 
-                    // Lưu ý: Ảnh LUÔN dùng định dạng tên gốc (formatFileName), KHÔNG dùng fileBase tùy chỉnh
-                    const ts = new Date().getTime();
+                    
+                    // Xử lý link ảnh Github chuẩn xác
                     const imgFileName = formatFileName(candidate.name);
                     const jpgUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${imgFileName}.jpg?v=${ts}`;
                     const pngUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${imgFileName}.png?v=${ts}`;
 
-                    // Truyền tham số unit.id thay vì uIdx để đảm bảo mở đúng người ngay cả khi mảng bị lọc
                     candidatesHtml += `
-                        <div class="candidate-card p-3 shadow-sm hover:shadow-2xl flex flex-col h-full group overflow-hidden border-[3px]">
+                        <div class="candidate-card p-3 shadow-sm hover:shadow-2xl flex flex-col h-full group overflow-hidden border-[3px]" 
+                             style="background-color: ${globalTheme.bg}; border-color: ${globalTheme.border};">
+                            
                             <div class="absolute top-0 left-0 w-full h-[6px] opacity-0 group-hover:opacity-100 transition-opacity" style="background-color: var(--accent-yellow);"></div>
-
+                            
                             <div class="flex flex-col gap-3 items-center w-full mb-3 pt-2 flex-1">
-                                <!-- Khung ảnh (Chiều ngang 160px) -->
+                                <!-- Khung ảnh 4x6 chuẩn (160x240px) -->
                                 <div class="bg-gray-50 border-4 rounded-lg p-[2px] flex-shrink-0 flex flex-col items-center justify-center shadow-inner overflow-hidden relative transition-transform duration-300 group-hover:scale-105"
-                                     style="width: 160px; aspect-ratio: 4/6; border-color: var(--primary-color);">
+                                     style="width: 160px; height: 240px; border-color: ${globalTheme.primary};">
                                     <img src="${jpgUrl}" alt="${fullName}" onerror="handleImgError(this, '${pngUrl}')" class="w-full h-full object-cover rounded-sm absolute inset-0 z-10" />
-                                    
-                                    <div class="absolute inset-0 z-0 flex flex-col items-center justify-center h-full w-full bg-gray-50 opacity-50 hidden fallback-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-color); opacity: 0.7;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                        <span class="text-[12px] mt-2 font-bold uppercase text-center leading-tight" style="color: var(--primary-color); opacity: 0.9;">Chưa có<br/>ảnh</span>
+                                    <div class="absolute inset-0 z-0 flex flex-col items-center justify-center h-full w-full bg-gray-100 opacity-50 hidden fallback-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: ${globalTheme.primary}; opacity: 0.7;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        <span class="text-[12px] mt-2 font-bold uppercase text-center leading-tight" style="color: ${globalTheme.primary}; opacity: 0.9;">Chưa có ảnh</span>
                                     </div>
                                 </div>
-                                
-                                <!-- Thông tin -->
+
                                 <div class="flex flex-col w-full text-center justify-start flex-1 px-1">
-                                    <div class="candidate-name font-bold uppercase leading-tight mb-2 min-h-[4rem] flex items-center justify-center flex-wrap w-full text-[22px]">
-                                        ${title ? `<span class="font-normal normal-case mr-2 opacity-90">${title}</span>` : ''}
+                                    <div class="font-bold uppercase leading-tight mb-3 min-h-[4rem] flex items-center justify-center flex-wrap w-full text-[22px]" style="color: ${globalTheme.primary};">
+                                        ${title ? `<span class="font-normal normal-case mr-2 opacity-90 text-slate-600">${title}</span>` : ''}
                                         <span>${fullName}</span>
                                     </div>
-
+                                    
                                     <!-- Box thông tin Ngày sinh & Chức vụ -->
-                                    <div class="w-full text-left text-[22px] text-gray-800 bg-white p-3 sm:p-4 rounded-md border border-gray-200 shadow-sm mt-auto flex flex-col flex-1 gap-3">
-                                        <div class="border-b border-gray-100 pb-3 shrink-0 leading-relaxed">
-                                            <span class="font-bold mr-1" style="color: var(--primary-color)">Ngày sinh:</span>
+                                    <div class="w-full text-left text-[22px] text-gray-800 bg-[#fffbeb] p-3 sm:p-4 rounded-md border shadow-sm mt-auto flex flex-col flex-1 gap-3" style="border-color: ${globalTheme.border};">
+                                        <div class="border-b pb-3 shrink-0 leading-relaxed" style="border-bottom-color: ${globalTheme.border};">
+                                            <span class="font-bold mr-1" style="color: ${globalTheme.primary}">Ngày sinh:</span>
                                             <span class="font-semibold text-gray-900">${candidate.dob || '...'}</span>
                                         </div>
                                         <div class="flex-1 leading-relaxed">
-                                            <span class="font-bold mr-1" style="color: var(--primary-color)">Chức vụ:</span>
+                                            <span class="font-bold mr-1" style="color: ${globalTheme.primary}">Chức vụ:</span>
                                             <span class="font-medium text-gray-900">${candidate.position || '...'}</span>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -384,11 +247,9 @@
                 });
 
                 html += `
-                    <div class="rounded-2xl shadow-lg overflow-hidden border-[3px]" style="background-color: var(--bg-unit); border-color: var(--primary-color);">
-                        <!-- Header của Đơn vị -->
-                        <div class="px-4 py-4 sm:px-6 sm:py-5 flex flex-col sm:flex-row justify-between items-center sm:items-center gap-3 sm:gap-4 unit-header-bg">
-                            
-                            <!-- Cột trái: Tên Đơn vị + Khu vực -->
+                    <div class="rounded-2xl shadow-xl overflow-hidden border-[3px]" style="background-color: #ffffff; border-color: ${globalTheme.primary};">
+                        <!-- Header Đơn vị -->
+                        <div class="px-4 py-4 sm:px-6 sm:py-5 flex flex-col sm:flex-row justify-between items-center sm:items-center gap-3 sm:gap-4" style="background-color: ${globalTheme.primary};">
                             <div class="flex flex-col text-center sm:text-left gap-1 sm:gap-1.5 flex-1">
                                 <h3 class="text-xl sm:text-2xl md:text-[28px] font-bold uppercase tracking-wide text-white drop-shadow-sm leading-tight">
                                     ${unit.name}
@@ -398,17 +259,15 @@
                                     <span class="font-medium text-white">${unit.areas}</span>
                                 </div>
                             </div>
-
-                            <!-- Cột phải: Số lượng đại biểu -->
                             <div class="shrink-0 flex items-center mt-3 sm:mt-0">
-                                <span class="text-[22px] font-black px-5 py-2.5 sm:px-6 sm:py-3 rounded-full shadow-lg whitespace-nowrap" style="color: var(--primary-color); background-color: var(--accent-yellow);">
+                                <span class="text-[22px] font-black px-5 py-2.5 sm:px-6 sm:py-3 rounded-full shadow-lg whitespace-nowrap" style="color: ${globalTheme.primary}; background-color: var(--accent-yellow);">
                                     ${unit.info}
                                 </span>
                             </div>
                         </div>
 
-                        <!-- Cấu trúc lại Lưới danh sách 3 ứng cử viên (Dàn đều sang 2 bên) -->
-                        <div class="p-4 sm:p-6 lg:p-8 w-full">
+                        <!-- Lưới ứng viên -->
+                        <div class="p-4 sm:p-6 lg:p-8 w-full" style="background-color: ${globalTheme.bg};">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-10 w-full">
                                 ${candidatesHtml}
                             </div>
@@ -420,114 +279,7 @@
             container.innerHTML = html;
         }
 
-        // --- LOGIC MODAL HIỂN THỊ PDF & ZOOM ---
-        const modal = document.getElementById('biography-modal');
-        const pdfIframe = document.getElementById('pdf-iframe');
-        const pdfLoading = document.getElementById('pdf-loading');
-        const pdfWrapper = document.getElementById('pdf-wrapper');
-        const zoomControls = document.getElementById('zoom-controls');
-        let currentZoom = 100; // Đơn vị: %
-
-        // Hàm kiểm tra thiết bị di động
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
-        }
-
-        // Hàm mở modal và load file PDF
-        window.openModal = function(unitId, cIdx) {
-            // Tìm unit theo unitId thay vì Index để đảm bảo lấy đúng data khi dùng bộ lọc URL
-            const unit = electoralData.find(u => u.id === unitId);
-            if (!unit) return;
-            const candidate = unit.candidates[cIdx];
-            
-            // Set dòng chữ TIỂU SỬ TÓM TẮT in hoa và canh giữa
-            document.getElementById('modal-title-text').textContent = `TIỂU SỬ TÓM TẮT ${candidate.name}`.toUpperCase();
-
-            // Xử lý link PDF từ Github, KÈM TIMESTAMP CHỐNG CACHE XUYÊN SUỐT
-            const ts = new Date().getTime();
-            
-            // CHỈ FILE PDF MỚI DÙNG FILEBASE TÙY CHỈNH (Nếu có)
-            const pdfFileName = candidate.fileBase || formatFileName(candidate.name);
-            
-            let finalPdfUrl = '';
-
-            // Phân luồng hiển thị tùy thuộc vào thiết bị
-            if (isMobileDevice()) {
-                // Trên Điện thoại: Dùng raw link + timestamp ép Google tải file mới nhất
-                const rawPdfUrl = `https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/${pdfFileName}.pdf?v=${ts}`;
-                finalPdfUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(rawPdfUrl)}&embedded=true`;
-                zoomControls.style.display = 'none'; // Ẩn nút Zoom tĩnh
-                pdfWrapper.style.width = '100%';
-            } else {
-                // Trên Máy tính: SỬ DỤNG MẠNG CDN (jsDelivr) KÈM TIMESTAMP 
-                // Giải thích: raw.githubusercontent.com ép tải file (download) do header báo mật, nên phải dùng CDN jsDelivr để view in-browser
-                finalPdfUrl = `https://cdn.jsdelivr.net/gh/triquan221/rsstrangtt-tpcl@main/${pdfFileName}.pdf?v=${ts}#view=FitH&toolbar=0&navpanes=0&scrollbar=0`;
-                zoomControls.style.display = 'flex'; // Hiện nút zoom
-                
-                // Reset trạng thái Zoom tĩnh về 100%
-                currentZoom = 100;
-                pdfWrapper.style.width = '100%';
-                pdfWrapper.style.height = '100%';
-            }
-
-            // Hiển thị loading và gán link trực tiếp vào iframe
-            pdfLoading.style.display = 'flex';
-            pdfIframe.src = finalPdfUrl;
-
-            // Mở modal
-            modal.classList.remove('modal-hidden');
-            document.body.style.overflow = 'hidden'; // Ngăn cuộn trang nền
-
-            // Tự động cuộn trang lên đầu để người dùng có thể xem Modal trọn vẹn (hữu ích khi ở trong iframe)
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-            // Hỗ trợ trường hợp nếu trang đang được nhúng trong một iframe cha (phải gửi thông điệp yêu cầu cha cuộn lên)
-            if (window.self !== window.top) {
-                window.parent.postMessage('scrollToTop', '*');
-            }
-        };
-
-        // Hàm xử lý khi nhấn nút Zoom (+ / -) cho Desktop
-        window.zoomPdf = function(step) {
-            currentZoom += step;
-            
-            // Giới hạn zoom từ 50% đến 300%
-            if (currentZoom < 50) currentZoom = 50;
-            if (currentZoom > 300) currentZoom = 300;
-            
-            // Thay đổi width của wrapper. Trình đọc PDF gốc sẽ tự động tính toán lại tỷ lệ (nhờ view=FitH)
-            pdfWrapper.style.width = currentZoom + '%';
-            pdfWrapper.style.height = currentZoom + '%';
-        }
-
-        // Hàm đóng modal
-        window.closeModal = function() {
-            modal.classList.add('modal-hidden');
-            document.body.style.overflow = '';
-            
-            // Xóa link iframe để ngắt quá trình tải nếu chưa xong, và reset nội dung
-            setTimeout(() => {
-                pdfIframe.src = '';
-            }, 300); // Đợi CSS transition kết thúc
-        };
-
-        // Đóng modal khi click ra vùng đen bên ngoài
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        // Đóng modal khi ấn phím ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && !modal.classList.contains('modal-hidden')) {
-                closeModal();
-            }
-        });
-
-        // Khởi chạy giao diện
         document.addEventListener('DOMContentLoaded', renderApp);
-
     </script>
 </body>
 </html>
