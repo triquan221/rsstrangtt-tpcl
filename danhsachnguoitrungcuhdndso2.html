@@ -17,8 +17,9 @@
     <style>
         :root {
             /* Biến CSS để điều khiển ảnh động */
-            --avatar-size: 200px;
-            --avatar-radius: 50%;
+            --avatar-width: 158px;
+            --avatar-height: 240px;
+            --avatar-radius: 16px;
             --img-scale: 1;
             --img-pos-x: 50%;
             --img-pos-y: 15%;
@@ -185,11 +186,11 @@
 
         /* KHUNG ẢNH ĐƯỢC CĂN CHỈNH BẰNG BIẾN CSS */
         .candidate-avatar {
-            width: var(--avatar-size); 
-            height: var(--avatar-size); 
-            border-radius: var(--avatar-radius);
+            width: var(--avatar-width); 
+            height: var(--avatar-height); /* Kích thước chuẩn 158x240 */
+            border-radius: var(--avatar-radius); /* Bo tròn 4 góc */
             border: 4px solid #b91c1c; 
-            background: radial-gradient(circle at bottom, #fde047 0%, #ffffff 70%); 
+            background: linear-gradient(to bottom, #ffffff 0%, #fde047 100%); 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -486,7 +487,7 @@
         <!-- UNIT 1 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 01</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm 1, Khóm 3, Khóm 4, Khóm 5, Khóm 6, Khóm 7, Khóm 8</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm 1, Khóm 3, Khóm 4, Khóm 5, Khóm 6, Khóm 7, Khóm 8</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhungtrang.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhungtrang.png';" alt="Nguyễn Hùng Tráng"></div>
@@ -518,7 +519,7 @@
         <!-- UNIT 2 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 02</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm 2, khóm Thuận Trung, khóm Thuận An, khóm Hòa Long, khóm Hòa Mỹ, khóm Hòa Hưng</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm 2, khóm Thuận Trung, khóm Thuận An, khóm Hòa Long, khóm Hòa Mỹ, khóm Hòa Hưng</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanthanhbinh.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanthanhbinh.png';" alt="Phan Thanh Bình"></div>
@@ -539,7 +540,7 @@
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhuynhxuanphuc.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenhuynhxuanphuc.png';" alt="Nguyễn Huỳnh Xuân Phúc"></div>
                     <div class="candidate-info">
-                        <h3 class="candidate-name" contenteditable="true" style="font-size: 16.5px; white-space: nowrap;"><span class="prefix">Ông:</span> <span class="name-text">Nguyễn Huỳnh Xuân Phúc</span></h3>
+                        <h3 class="candidate-name" contenteditable="true" style="font-size: 19px; white-space: nowrap;"><span class="prefix">Ông:</span> <span class="name-text">Nguyễn Huỳnh Xuân Phúc</span></h3>
                         <div class="candidate-dob" contenteditable="true">Ngày sinh: 07/06/1995</div>
                         <p class="candidate-role" contenteditable="true">Chi ủy viên, Khóm Đội trưởng, Phó Trưởng khóm, Bí thư Chi đoàn khóm Thuận An</p>
                     </div>
@@ -550,7 +551,7 @@
         <!-- UNIT 3 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 03</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm 9, khóm Mỹ Hưng, khóm Mỹ Phước, khóm Mỹ Đức, khóm Mỹ Long, khóm Mỹ Thiện</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm 9, khóm Mỹ Hưng, khóm Mỹ Phước, khóm Mỹ Đức, khóm Mỹ Long, khóm Mỹ Thiện</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/buiquocnam.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/buiquocnam.png';" alt="Bùi Quốc Nam"></div>
@@ -582,7 +583,7 @@
         <!-- UNIT 4 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 04</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm Thuận Phú, khóm Thuận Nghĩa, khóm Thuận Phát, khóm Hòa Thuận, khóm Hòa Lạc, khóm Hòa An</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm Thuận Phú, khóm Thuận Nghĩa, khóm Thuận Phát, khóm Hòa Thuận, khóm Hòa Lạc, khóm Hòa An</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/hohuethuhang.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/hohuethuhang.png';" alt="Hồ Huệ Thu Hằng"></div>
@@ -614,7 +615,7 @@
         <!-- UNIT 5 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 05</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm Hòa Lợi, khóm Hòa Khánh, khóm Hòa Hiệp</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm Hòa Lợi, khóm Hòa Khánh, khóm Hòa Hiệp</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tranthuytrang.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/tranthuytrang.png';" alt="Trần Thùy Trang"></div>
@@ -646,7 +647,7 @@
         <!-- UNIT 6 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 06</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm Đông Bình, khóm Phú An, khóm An Nhơn, khóm Bến Bắc</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm Đông Bình, khóm Phú An, khóm An Nhơn, khóm Bến Bắc</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyentuanan.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyentuanan.png';" alt="Nguyễn Tuấn An"></div>
@@ -678,7 +679,7 @@
         <!-- UNIT 7 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 07</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm Tân Tịch, khóm Tân Thuận, khóm Tân Việt Hòa, khóm Tịnh Thới</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm Tân Tịch, khóm Tân Thuận, khóm Tân Việt Hòa, khóm Tịnh Thới</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/thaivanlanh.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/thaivanlanh.png';" alt="Thái Văn Lành"></div>
@@ -710,7 +711,7 @@
         <!-- UNIT 8 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 08</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm Tịnh Châu, khóm Tịnh Đông, khóm Tịnh Long, khóm Tịnh Mỹ, khóm Tịnh Hưng</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm Tịnh Châu, khóm Tịnh Đông, khóm Tịnh Long, khóm Tịnh Mỹ, khóm Tịnh Hưng</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanthihongthanh.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/phanthihongthanh.png';" alt="Phan Thị Hồng Thanh"></div>
@@ -742,7 +743,7 @@
         <!-- UNIT 9 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 09</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm Tân Chú, khóm Tân Hùng, khóm Tân Dân, khóm Tân Hậu</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm Tân Chú, khóm Tân Hùng, khóm Tân Dân, khóm Tân Hậu</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenvanton.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyenvanton.png';" alt="Nguyễn Văn Tồn"></div>
@@ -774,7 +775,7 @@
         <!-- UNIT 10 -->
         <div class="unit-section">
             <h2 class="unit-title" contenteditable="true">Đơn vị bầu cử số 10</h2>
-            <p class="unit-area" contenteditable="true"><span class="area-label">Khu vực bầu cử:</span> Khóm Đông Định, khóm Đông Hòa, khóm Đông Thạnh, khóm Tân Phát</p>
+            <p class="unit-area" contenteditable="true"><span class="area-label">Gồm:</span> Khóm Đông Định, khóm Đông Hòa, khóm Đông Thạnh, khóm Tân Phát</p>
             <div class="unit-grid">
                 <div class="candidate-card">
                     <div class="candidate-avatar"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyentanphat.jpg" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/nguyentanphat.png';" alt="Nguyễn Tấn Phát"></div>
@@ -828,8 +829,8 @@
     </h3>
     
     <div class="control-group">
-        <label>Độ lớn Khung ảnh: <span id="valFrame">200px</span></label>
-        <input type="range" id="ctrlFrame" min="100" max="300" value="200">
+        <label>Độ rộng Khung (4x6): <span id="valFrame">158px</span></label>
+        <input type="range" id="ctrlFrame" min="100" max="250" value="158">
     </div>
     
     <div class="control-group">
@@ -848,9 +849,9 @@
     </div>
     
     <div class="control-group">
-        <label>Bo góc (Thành 4x6): <span id="valRadius">50%</span></label>
-        <input type="range" id="ctrlRadius" min="0" max="50" value="50">
-        <small style="color: #64748b; font-size: 11px;">(Kéo về 0 để ảnh thành hình chữ nhật 4x6)</small>
+        <label>Bo góc (px): <span id="valRadius">16px</span></label>
+        <input type="range" id="ctrlRadius" min="0" max="100" value="16">
+        <small style="color: #64748b; font-size: 11px;">(Kéo về 0 để ảnh vuông vức)</small>
     </div>
 </div>
 
@@ -886,8 +887,10 @@
     btnClose.addEventListener('click', () => panel.classList.remove('active'));
 
     ctrlFrame.addEventListener('input', (e) => {
-        root.style.setProperty('--avatar-size', e.target.value + 'px');
-        valFrame.textContent = e.target.value + 'px';
+        const newWidth = e.target.value;
+        root.style.setProperty('--avatar-width', newWidth + 'px');
+        root.style.setProperty('--avatar-height', (newWidth * 240 / 158) + 'px');
+        valFrame.textContent = newWidth + 'px';
     });
 
     ctrlZoom.addEventListener('input', (e) => {
@@ -906,8 +909,8 @@
     });
 
     ctrlRadius.addEventListener('input', (e) => {
-        root.style.setProperty('--avatar-radius', e.target.value + '%');
-        valRadius.textContent = e.target.value + '%';
+        root.style.setProperty('--avatar-radius', e.target.value + 'px');
+        valRadius.textContent = e.target.value + 'px';
     });
 
     // Logic Tải Xuống PDF
