@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tin Hoạt động PBGDPL</title>
+<style>
+  body { 
+    margin: 0; 
+    font-family: Arial, Tahoma, sans-serif; 
+    background: #f9f9f9; /* Đổi màu nền body một chút để bạn dễ nhìn thấy khung viền trắng */
+  }
+
+  /* KHUNG BAO NGOÀI CÙNG */
+  .rss-wrapper {
+    background: #fff;
+    margin: 20px auto; /* Căn giữa màn hình và tạo khoảng cách trên dưới */
+    max-width: 1000px;
+    border: 1px solid #ddd; /* Khung viền màu xám nhạt */
+    border-radius: 12px; /* Bo tròn 4 góc */
+    padding: 25px 20px; /* Thêm khoảng cách bên trong để nội dung không chạm viền */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Đổ bóng nhẹ cho khung nổi bật hơn */
+  }
+
+  /* Tiêu đề dải băng màu đỏ */
+  .moj-header-ribbon {
+    background-color: #b30000;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 7px 15px;
+    position: relative;
+    margin-bottom: 20px; 
+  }
+  
+  .moj-header-ribbon::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -24px;
+    border-width: 16.5px 12px;
+    border-style: solid;
+    border-color: #b30000 transparent #b30000 #b30000;
+  }
+
+  /* Bố cục chia cột */
+  .moj-body-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px; 
+    align-items: flex-start; 
+  }
+
+  /* Cột trái: Tin nổi bật (35%) */
+  .moj-featured {
+    flex: 0 0 calc(35% - 15px);
+    max-width: calc(35% - 15px);
+  }
+  .moj-featured a.moj-title {
+    font-size: 15.5px;
+    font-weight: bold;
+    color: #2b5b84; 
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px; 
+    line-height: 1.35;
+  }
+  .moj-featured a.moj-title:hover {
+    color: #b30000;
+  }
+  .moj-featured img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px; /* Bo tròn nhẹ góc ảnh cho đồng bộ với khung ngoài */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+  }
+  
+  /* Tóm tắt tin nổi bật */
+  .moj-featured-desc {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+    text-align: justify; 
+    display: -webkit-box;
+    -webkit-line-clamp: 5; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Cột phải: Danh sách tin (65%) */
+  .moj-list {
+    flex: 1;
+  }
+  .moj-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .moj-list li {
+    position: relative;
+    padding-left: 16px; 
+    margin-bottom: 14px; 
+    line-height: 1.4;
+  }
+  
+  /* Dấu chấm vuông đỏ */
+  .moj-list li::before {
+    content: "■";
+    color: #b30000;
+    position: absolute;
+    left: 0;
+    top: 3px; 
+    font-size: 10px;
+  }
+  .moj-list li a.moj-title {
+    color: #2b5b84;
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .moj-list li a.moj-title:hover {
+    text-decoration: underline;
+    color: #1a3d5c;
+  }
+
+  /* Responsive cho thiết bị di động */
+  @media (max-width: 768px) {
+    .moj-featured, .moj-list {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="rss-wrapper" id="rss-widget-container">
+  <p style="padding: 15px; color: #666;">Đang tải dữ liệu RSS...</p>
+</div>
+
+<script>
+const RSS_URL = "https://pbgdpl.moj.gov.vn/qt/rss/Pages/chi-tiet-rss.aspx?ItemId=3";
+
+async function loadRSS() {
+  try {
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`);
+    const data = await res.json();
+    const xml = new DOMParser().parseFromString(data.contents, "text/xml");
+    const list = xml.querySelectorAll("item");
+
+    let items = Array.from(list).map(el => {
+      let img = el.querySelector("enclosure")?.getAttribute("url");
+      if (!img) img = el.querySelector("media\\:content, content")?.getAttribute("url");
+      
+      const descHtml = el.querySelector("description")?.textContent || "";
+      if (!img) {
+        const imgMatch = descHtml.match(/<img[^>]+src=["']([^"']+)["']/i);
+        img = imgMatch ? imgMatch[1] : null;
+      }
+
+      // Xóa thẻ HTML để lấy chữ thuần túy
+      let pureText = descHtml.replace(/<[^>]*>?/gm, '').trim();
+      pureText = pureText.replace(/\s+/g, ' ');
+
+      return {
+        title: el.querySelector("title")?.textContent ?? "Không có tiêu đề",
+        link: el.querySelector("link")?.textContent ?? "#",
+        image: img,
+        description: pureText
+      };
+    });
+
+    if (items.length > 0) {
+      const featuredItem = items[0]; 
+      const listItems = items.slice(1, 6); 
+
+      let imgTag = featuredItem.image ? `<a href="${featuredItem.link}" target="_blank" rel="noopener noreferrer"><img src="${featuredItem.image}" alt="Hình ảnh bài viết"></a>` : '';
+      
+      let listHTML = listItems.map(item => `
+        <li>
+          <a class="moj-title" href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a>
+        </li>
+      `).join('');
+
+      const container = document.getElementById("rss-widget-container");
+      container.innerHTML = `
+        <div class="moj-header-ribbon">HOẠT ĐỘNG PBGDPL Ở TRUNG ƯƠNG</div>
+        <div class="moj-body-flex">
+          <div class="moj-featured">
+            <a class="moj-title" href="${featuredItem.link}" target="_blank" rel="noopener noreferrer">${featuredItem.title}</a>
+            ${imgTag}
+            <div class="moj-featured-desc">${featuredItem.description}</div>
+          </div>
+          <div class="moj-list">
+            <ul>
+              ${listHTML}
+            </ul>
+          </div>
+        </div>
+      `;
+    } else {
+      document.getElementById("rss-widget-container").innerHTML = '<p style="padding: 15px; color: #b30000;">Không có tin bài nào.</p>';
+    }
+
+  } catch (e) {
+    console.error("Không thể tải RSS:", e);
+    document.getElementById("rss-widget-container").innerHTML = '<p style="padding: 15px; color: #b30000;">Lỗi kết nối khi tải dữ liệu RSS.</p>';
+  }
+}
+
+loadRSS();
+</script>
+</body>
+</html>
