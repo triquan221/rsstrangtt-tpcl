@@ -8,18 +8,18 @@
   body { 
     margin: 0; 
     font-family: Arial, Tahoma, sans-serif; 
-    background: #f9f9f9; /* Đổi màu nền body một chút để bạn dễ nhìn thấy khung viền trắng */
+    background: #f9f9f9; 
   }
 
   /* KHUNG BAO NGOÀI CÙNG */
   .rss-wrapper {
-    background: #fff;
-    margin: 20px auto; /* Căn giữa màn hình và tạo khoảng cách trên dưới */
+    background: #fef6d9; /* Đã cập nhật màu nền đồng bộ */
+    margin: 20px auto; 
     max-width: 1000px;
-    border: 1px solid #ddd; /* Khung viền màu xám nhạt */
-    border-radius: 12px; /* Bo tròn 4 góc */
-    padding: 25px 20px; /* Thêm khoảng cách bên trong để nội dung không chạm viền */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Đổ bóng nhẹ cho khung nổi bật hơn */
+    border: 1px solid #ddd; 
+    border-radius: 12px; 
+    padding: 25px 20px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
   }
 
   /* Tiêu đề dải băng màu đỏ */
@@ -74,7 +74,7 @@
     width: 100%;
     height: auto;
     border: 1px solid #ddd;
-    border-radius: 6px; /* Bo tròn nhẹ góc ảnh cho đồng bộ với khung ngoài */
+    border-radius: 6px; 
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
     margin-bottom: 10px;
   }
@@ -137,16 +137,17 @@
 </head>
 <body>
 
-<div class="rss-wrapper" id="rss-widget-container">
+<div class="rss-wrapper" id="rss-widget-container-local">
   <p style="padding: 15px; color: #666;">Đang tải dữ liệu RSS...</p>
 </div>
 
 <script>
-const RSS_URL = "https://pbgdpl.moj.gov.vn/qt/rss/Pages/chi-tiet-rss.aspx?ItemId=4";
+// Sử dụng đường dẫn RSS của địa phương (ItemId=4)
+const RSS_URL_LOCAL = "https://pbgdpl.moj.gov.vn/qt/rss/Pages/chi-tiet-rss.aspx?ItemId=4";
 
-async function loadRSS() {
+async function loadRSSLocal() {
   try {
-    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`);
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL_LOCAL)}`);
     const data = await res.json();
     const xml = new DOMParser().parseFromString(data.contents, "text/xml");
     const list = xml.querySelectorAll("item");
@@ -185,9 +186,10 @@ async function loadRSS() {
         </li>
       `).join('');
 
-      const container = document.getElementById("rss-widget-container");
+      // Gắn vào container riêng biệt
+      const container = document.getElementById("rss-widget-container-local");
       container.innerHTML = `
-        <div class="moj-header-ribbon">Hoạt động PBGDPL địa phương</div>
+        <div class="moj-header-ribbon">HOẠT ĐỘNG PBGDPL Ở ĐỊA PHƯƠNG</div>
         <div class="moj-body-flex">
           <div class="moj-featured">
             <a class="moj-title" href="${featuredItem.link}" target="_blank" rel="noopener noreferrer">${featuredItem.title}</a>
@@ -202,16 +204,16 @@ async function loadRSS() {
         </div>
       `;
     } else {
-      document.getElementById("rss-widget-container").innerHTML = '<p style="padding: 15px; color: #b30000;">Không có tin bài nào.</p>';
+      document.getElementById("rss-widget-container-local").innerHTML = '<p style="padding: 15px; color: #b30000;">Không có tin bài nào.</p>';
     }
 
   } catch (e) {
     console.error("Không thể tải RSS:", e);
-    document.getElementById("rss-widget-container").innerHTML = '<p style="padding: 15px; color: #b30000;">Lỗi kết nối khi tải dữ liệu RSS.</p>';
+    document.getElementById("rss-widget-container-local").innerHTML = '<p style="padding: 15px; color: #b30000;">Lỗi kết nối khi tải dữ liệu RSS.</p>';
   }
 }
 
-loadRSS();
+loadRSSLocal();
 </script>
 </body>
 </html>
