@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bản Đồ Nông Nghiệp Xanh Đồng Tháp</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Leaflet CSS & JS cho Bản đồ -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet MarkerCluster -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        agrigreen: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles cho các icon bản đồ */
+        .custom-div-icon {
+            background: transparent;
+            border: none;
+        }
+        .marker-pin {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .marker-pin:hover {
+            transform: scale(1.1);
+        }
+        .status-safe { background-color: #22c55e; } /* Xanh: An toàn/VietGAP */
+        .status-warning { background-color: #eab308; } /* Vàng: Đang theo dõi */
+        .status-danger { background-color: #ef4444; } /* Đỏ: Cảnh báo Cadimi/PHI */
+
+        /* Custom Cluster styles */
+        .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+            background-color: rgba(34, 197, 94, 0.6);
+        }
+        .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+            background-color: rgba(21, 128, 61, 0.9);
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Ẩn hiện các tab */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Map container height */
+        #map-container { height: calc(100vh - 64px); } /* Trừ đi chiều cao header */
+        #map { height: 100%; width: 100%; z-index: 1;}
+
+        /* Custom Scrollbar cho Modal & Legend */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-hidden">
+
+    <!-- HEADER / NAVBAR -->
+    <header class="bg-white shadow-md relative z-10 h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-10 h-10 bg-agrigreen-100 rounded-full flex items-center justify-center mr-3 border-2 border-agrigreen-600">
+                        <i class="fa-solid fa-leaf text-agrigreen-600 text-xl"></i>
+                    </div>
+                    <span class="font-bold text-xl text-agrigreen-800 hidden sm:block">Nông Nghiệp Xanh</span>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="flex space-x-1 sm:space-x-8">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-3 py-2 text-sm font-medium rounded-md text-agrigreen-700 bg-agrigreen-50">
+                        <i class="fa-solid fa-house mr-1"></i> Trang chủ
+                    </button>
+                    <button onclick="switchTab('map')" id="nav-map" class="nav-btn px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-agrigreen-700 hover:bg-agrigreen-50 transition">
+                        <i class="fa-solid fa-map-location-dot mr-1"></i> Bản đồ Vùng trồng
+                    </button>
+                </nav>
+
+                <!-- Action Button -->
+                <div>
+                    <button class="bg-agrigreen-600 hover:bg-agrigreen-700 text-white px-4 py-2 rounded-md text-sm font-medium shadow transition flex items-center">
+                        <i class="fa-solid fa-qrcode mr-2"></i> <span>Truy xuất QR</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- TAB 1: TRANG CHỦ (TIN TỨC & THÔNG TIN) -->
+    <div id="tab-home" class="tab-content active overflow-y-auto" style="height: calc(100vh - 64px);">
+        <!-- Hero Section -->
+        <div class="bg-agrigreen-50 py-12 border-b border-agrigreen-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                    <span class="inline-block py-1 px-3 rounded-full bg-agrigreen-100 text-agrigreen-800 text-xs font-bold tracking-wider mb-4 border border-agrigreen-200">ĐỒNG THÁP</span>
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
+                        Tập trung phát triển <span class="text-agrigreen-600">Sầu riêng</span> theo hướng bền vững
+                    </h1>
+                    <p class="text-gray-600 text-lg mb-6 line-clamp-3">
+                        Kiểm soát chặt chẽ quy trình canh tác, áp dụng nhật ký điện tử và giám sát hàm lượng Cadimi để nâng tầm giá trị nông sản Đồng Tháp trên thị trường quốc tế.
+                    </p>
+                    <button onclick="switchTab('map')" class="bg-agrigreen-600 hover:bg-agrigreen-700 text-white px-6 py-3 rounded-lg font-medium shadow-lg transition flex items-center">
+                        Khám phá Bản đồ vùng trồng <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <div class="bg-gray-200 rounded-xl overflow-hidden shadow-xl relative pb-[60%]">
+                        <!-- Ảnh Hero thay bằng ảnh cây sầu riêng thật -->
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhkX0WNICO9Z6E0ZDTk203eiAxzD9ww-3fiTpDX12av7-VFQdm5dqa5JFKTDq3lJEtC8Fyk6MdAkymaonlxYqoLd7JYEwJazzjpsh_ZBjRIhm6wtzC0HiuC9_WOLwQntt2EiL2PHNee0TYe79U0oLwbqsN2-1u4Kljnq2yFoZCioOjSNcAY7AXjw-_2BNw/s1050/20240729_162853.jpg" alt="Vườn sầu riêng" class="absolute inset-0 w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tin Tức Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <h2 class="text-2xl font-bold text-center text-agrigreen-800 mb-8 border-b-2 border-agrigreen-200 inline-block pb-2 uppercase mx-auto flex justify-center">Tin tức nổi bật</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition flex flex-col">
+                    <div class="h-48 bg-gray-200 relative">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXO_7QX8VVXJcCkI9nqIo8NBbmlFnhQBbJ_A&s" alt="Tin tức sầu riêng" class="w-full h-full object-cover">
+                        <span class="absolute top-2 right-2 bg-agrigreen-500 text-white text-xs px-2 py-1 rounded">Sầu riêng</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col">
+                        <h3 class="font-bold text-lg text-gray-900 mb-2 hover:text-agrigreen-600 cursor-pointer">Ứng dụng giải pháp đẩy lùi chất Cadimi trong vườn sầu riêng</h3>
+                        <p class="text-gray-500 text-sm mb-4 flex-grow line-clamp-3">Nhiều hợp tác xã tại Châu Thành và Cao Lãnh đang tích cực thay đổi quy trình bón lân, tăng cường hữu cơ để khóa chặt kim loại nặng trong đất.</p>
+                        <a href="#" class="text-agrigreen-600 text-sm font-medium hover:underline flex items-center">Xem chi tiết <i class="fa-solid fa-chevron-right ml-1 text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition flex flex-col">
+                    <div class="h-48 bg-gray-200 relative">
+                        <img src="https://sfarm.vn/wp-content/uploads/2024/10/1-ky-thuat-canh-tac-trong-mo-hinh-trong-sau-reg-VietGAP-667x400.jpg" alt="Mô hình trồng sầu riêng VietGAP" class="w-full h-full object-cover">
+                        <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">Chính sách</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col">
+                        <h3 class="font-bold text-lg text-gray-900 mb-2 hover:text-agrigreen-600 cursor-pointer">Mô hình trồng sầu riêng hiệu quả chuẩn VietGAP, hữu cơ, xen canh</h3>
+                        <p class="text-gray-500 text-sm mb-4 flex-grow line-clamp-3">Gói hỗ trợ lên đến 30 triệu/ha nhằm khôi phục và cải tạo các vườn sầu riêng già cỗi, định hướng canh tác theo chuẩn VietGAP.</p>
+                        <a href="#" class="text-agrigreen-600 text-sm font-medium hover:underline flex items-center">Xem chi tiết <i class="fa-solid fa-chevron-right ml-1 text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition flex flex-col">
+                    <div class="h-48 bg-gray-200 relative">
+                        <!-- Thay thế icon bằng hình ảnh vườn sầu riêng -->
+                        <img src="https://wasi.org.vn/wp-content/uploads/2025/11/image001.png" alt="Sổ tay hướng dẫn" class="w-full h-full object-cover">
+                        <span class="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded">Công nghệ</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col">
+                        <h3 class="font-bold text-lg text-gray-900 mb-2 hover:text-agrigreen-600 cursor-pointer">SỔ TAY HƯỚNG DẪN KỸ THUÂT CHO NÔNG DÂN</h3>
+                        <p class="text-gray-500 text-sm mb-4 flex-grow line-clamp-3">Thương lái giờ đây có thể quét mã QR để xem trực tiếp nhật ký bón phân, ngày phun thuốc cuối cùng, đảm bảo an toàn thực phẩm trước khi xuất khẩu.</p>
+                        <a href="#" class="text-agrigreen-600 text-sm font-medium hover:underline flex items-center">Xem chi tiết <i class="fa-solid fa-chevron-right ml-1 text-xs"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer đơn giản -->
+        <footer class="bg-gray-900 text-white py-8">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <p class="text-gray-400 text-sm">© 2026 Bản Đồ Nông Nghiệp Xanh Đồng Tháp. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- TAB 2: BẢN ĐỒ WEBGIS -->
+    <div id="tab-map" class="tab-content relative flex flex-col md:flex-row w-full" style="height: calc(100vh - 64px);">
+        
+        <!-- Khu vực hiển thị bản đồ -->
+        <div id="map-area" class="w-full md:w-3/4 lg:w-4/5 h-full relative z-0">
+            <div id="map"></div>
+            
+            <!-- THANH TÌM KIẾM NỔI TRÊN BẢN ĐỒ -->
+            <div class="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] w-11/12 max-w-md transition-all">
+                <div class="bg-white rounded-lg shadow-md border border-gray-200 flex items-center overflow-hidden">
+                    <div class="pl-4 pr-2 text-agrigreen-600">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <input type="text" id="map-search-box" placeholder="Tìm kiếm nhà vườn, mã lô, xã/phường..." 
+                           class="w-full py-3 px-2 text-sm text-gray-700 focus:outline-none focus:bg-gray-50 placeholder-gray-400">
+                    <button id="clear-search" class="px-4 text-gray-400 hover:text-red-500 hidden transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chú thích bản đồ (Legend) & Upload GeoJSON -->
+            <div class="absolute bottom-6 left-6 z-[1000] bg-white p-3 rounded-lg shadow-lg border border-gray-200 text-sm hidden sm:block max-h-[80vh] overflow-y-auto custom-scrollbar w-64">
+                <h4 class="font-bold text-gray-800 mb-2 border-b pb-1">Phân loại Rủi ro (Bật/Tắt)</h4>
+                <label class="flex items-center mb-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition">
+                    <input type="checkbox" id="cb-safe" checked class="mr-2 w-4 h-4 text-agrigreen-600 rounded border-gray-300 focus:ring-agrigreen-500" onchange="syncFilters('checkbox')">
+                    <span class="w-4 h-4 rounded-full bg-green-500 inline-block mr-2 border border-white shadow-sm"></span> VietGAP / An toàn
+                </label>
+                <label class="flex items-center mb-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition">
+                    <input type="checkbox" id="cb-warning" checked class="mr-2 w-4 h-4 text-yellow-500 rounded border-gray-300 focus:ring-yellow-500" onchange="syncFilters('checkbox')">
+                    <span class="w-4 h-4 rounded-full bg-yellow-500 inline-block mr-2 border border-white shadow-sm"></span> Đang chuyển đổi
+                </label>
+                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded transition">
+                    <input type="checkbox" id="cb-danger" checked class="mr-2 w-4 h-4 text-red-500 rounded border-gray-300 focus:ring-red-500" onchange="syncFilters('checkbox')">
+                    <span class="w-4 h-4 rounded-full bg-red-500 inline-block mr-2 border border-white shadow-sm"></span> Cảnh báo Cadimi/PHI
+                </label>
+
+                <!-- Tính năng Tích hợp GeoJSON mới -->
+                <h4 class="font-bold text-gray-800 mt-4 mb-2 border-b pb-1">Bản đồ Hành chính</h4>
+                <label class="flex items-center mb-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition">
+                    <input type="checkbox" id="cb-layer-province" checked class="mr-2 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" onchange="toggleGeoJSONLayers()">
+                    <span class="w-4 h-4 bg-blue-100 border-2 border-blue-600 inline-block mr-2 shadow-sm"></span> Ranh giới Tỉnh
+                </label>
+                <label class="flex items-center mb-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition">
+                    <input type="checkbox" id="cb-layer-commune" checked class="mr-2 w-4 h-4 text-gray-600 rounded border-gray-300 focus:ring-gray-500" onchange="toggleGeoJSONLayers()">
+                    <span class="w-4 h-4 bg-gray-100 border border-dashed border-gray-600 inline-block mr-2 shadow-sm"></span> Ranh giới Xã/Phường
+                </label>
+
+                <div class="mt-3 border-t border-gray-200 pt-3">
+                    <p class="text-[10px] text-gray-500 mb-1 italic">Các lớp dữ liệu hành chính đã được tự động tải từ nguồn dữ liệu công khai. Bạn cũng có thể tải file khác tại đây:</p>
+                    <input type="file" id="geojson-upload" multiple accept=".geojson,.json" 
+                           class="w-full text-gray-600 file:mr-2 file:py-1.5 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer transition"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng điều khiển & Thống kê (Panel phải) -->
+        <div class="w-full md:w-1/4 lg:w-1/5 bg-white border-l border-gray-200 shadow-[-4px_0_15px_rgba(0,0,0,0.05)] flex flex-col h-full z-10 overflow-y-auto">
+            <!-- Header Panel -->
+            <div class="bg-agrigreen-600 text-white p-4 sticky top-0 z-20">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-map-location text-2xl mr-3"></i>
+                    <div>
+                        <h2 class="font-bold text-lg">Sầu Riêng Đồng Tháp</h2>
+                        <p class="text-agrigreen-100 text-xs">Hệ thống giám sát vùng trồng</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bộ lọc -->
+            <div class="p-4 border-b border-gray-100">
+                <h3 class="text-sm font-bold text-gray-700 uppercase mb-3"><i class="fa-solid fa-filter mr-1 text-agrigreen-500"></i> Tra cứu & Bộ lọc</h3>
+                
+                <!-- Ô Tìm kiếm phụ (ẩn bớt trên mobile cho đỡ rối) -->
+                <div class="mb-3 relative hidden md:block">
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Từ khóa (Xã, Phường, Tên...)</label>
+                    <div class="relative">
+                        <input type="text" id="search-farm" placeholder="Tìm xã/phường, mã lô..." class="w-full border border-gray-300 rounded text-sm p-2 pl-8 focus:outline-none focus:border-agrigreen-500 focus:ring-1 focus:ring-agrigreen-500">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Khu vực (ĐVHC Mới)</label>
+                    <select id="filter-area" class="w-full border border-gray-300 rounded text-sm p-2 focus:outline-none focus:border-agrigreen-500 focus:ring-1 focus:ring-agrigreen-500">
+                        <option value="all">Toàn tỉnh Đồng Tháp</option>
+                        <optgroup label="Bộ lọc nhanh theo Huyện/TP">
+                            <option value="tp-caolanh-all">Tất cả TP. Cao Lãnh</option>
+                            <option value="h-chauthanh-all">Tất cả H. Châu Thành</option>
+                            <option value="h-caolanh-all">Tất cả H. Cao Lãnh</option>
+                            <option value="h-laivung-all">Tất cả H. Lai Vung</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Cây trồng</label>
+                    <select class="w-full border border-gray-300 rounded text-sm p-2 focus:outline-none focus:border-agrigreen-500 bg-gray-50" disabled>
+                        <option>Sầu riêng (Ri6, Monthong...)</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-medium text-gray-500 mb-1">Trạng thái an toàn</label>
+                    <select id="filter-status" class="w-full border border-gray-300 rounded text-sm p-2 focus:outline-none focus:border-agrigreen-500">
+                        <option value="all">Tất cả nhà vườn</option>
+                        <option value="safe">Đạt chuẩn VietGAP / An toàn</option>
+                        <option value="warning">Đang chuyển đổi</option>
+                        <option value="danger">Đang bị cảnh báo rủi ro</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Thống kê sản lượng -->
+            <div class="p-4 bg-gray-50 flex-grow">
+                <h3 class="text-sm font-bold text-gray-700 uppercase mb-3"><i class="fa-solid fa-chart-pie mr-1 text-blue-500"></i> Thông tin sản lượng</h3>
+                
+                <div class="bg-white rounded border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-agrigreen-100 text-agrigreen-800 font-bold text-sm p-2 border-b border-gray-200 text-center">
+                        Cây Sầu Riêng
+                    </div>
+                    <table class="w-full text-sm">
+                        <tbody>
+                            <tr class="border-b border-gray-100">
+                                <td class="p-2 text-gray-600">Tổng diện tích</td>
+                                <td class="p-2 text-right font-bold text-gray-800">32,507 ha</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="p-2 text-gray-600">Diện tích kiến thiết</td>
+                                <td class="p-2 text-right font-bold text-gray-800">7,600 ha</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 bg-yellow-50">
+                                <td class="p-2 text-gray-600">Diện tích cho thu hoạch</td>
+                                <td class="p-2 text-right font-bold text-agrigreen-600">19,568 ha</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 text-gray-600 text-xs">Tỷ lệ áp dụng VietGAP</td>
+                                <td class="p-2 text-right font-bold text-blue-600">24.5%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Box liên kết Nhật ký -->
+                <div class="mt-6 bg-blue-50 border border-blue-100 rounded p-3 text-center">
+                    <i class="fa-solid fa-clipboard-check text-blue-500 text-2xl mb-2"></i>
+                    <p class="text-xs text-gray-600 mb-2">Dữ liệu được cập nhật tự động từ Nhật ký canh tác điện tử của nông dân.</p>
+                    <button class="text-xs font-bold text-blue-600 hover:underline">Quản lý vùng trồng (Admin)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TRÍCH XUẤT NHẬT KÝ -->
+    <div id="logModal" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-[2000] hidden flex-col items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden transform transition-transform scale-95" id="logModalContent">
+            
+            <!-- Modal Header -->
+            <div class="bg-gray-50 border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-agrigreen-100 text-agrigreen-600 rounded-full flex items-center justify-center mr-3 border border-agrigreen-200">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800 uppercase tracking-wide">Trích Lục Nhật Ký Canh Tác</h2>
+                        <p class="text-sm text-gray-500" id="modal-farm-name">Nhà vườn: --</p>
+                    </div>
+                </div>
+                <button onclick="closeLogModal()" class="text-gray-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Nội dung động) -->
+            <div class="p-6 overflow-y-auto flex-grow custom-scrollbar" id="modal-log-body">
+                <!-- Data will be injected here via JavaScript -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-between items-center">
+                <span class="text-xs text-gray-500"><i class="fa-solid fa-shield-halved mr-1"></i> Dữ liệu được xác thực trên nền tảng Nông Nghiệp Xanh</span>
+                <div>
+                    <button onclick="closeLogModal()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded hover:bg-gray-50 mr-2">Đóng</button>
+                    <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 shadow-sm flex items-center">
+                        <i class="fa-solid fa-print mr-2"></i> In Hồ Sơ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Logic -->
+    <script>
+        // 1. Logic chuyển Tab (SPA)
+        function switchTab(tabId) {
+            // Ẩn tất cả nội dung
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Bỏ active styling cho tất cả nav buttons
+            document.getElementById('nav-home').className = "nav-btn px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-agrigreen-700 hover:bg-agrigreen-50 transition";
+            document.getElementById('nav-map').className = "nav-btn px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-agrigreen-700 hover:bg-agrigreen-50 transition";
+            
+            // Hiển thị tab được chọn
+            document.getElementById('tab-' + tabId).classList.add('active');
+            // Thêm active styling
+            document.getElementById('nav-' + tabId).className = "nav-btn px-3 py-2 text-sm font-medium rounded-md text-agrigreen-700 bg-agrigreen-50";
+
+            // Resize lại map nếu chuyển sang tab map để tránh lỗi hiển thị xám của Leaflet
+            if(tabId === 'map' && map) {
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            }
+        }
+
+        // 2. Logic Bản Đồ WebGIS
+        let map;
+        let markersClusterGroup; // Biến toàn cục chứa cụm marker
+        let allFarmsData = [];   // Biến toàn cục chứa toàn bộ dữ liệu vườn
+
+        // Biến toàn cục chứa layer GeoJSON
+        let provinceLayer = null;
+        let communeLayer = null;
+
+        // BỘ DỮ LIỆU ĐẦY ĐỦ 102 ĐƠN VỊ HÀNH CHÍNH CẤP XÃ/PHƯỜNG CỦA ĐỒNG THÁP
+        const dongThapCommunes = [
+            // TP Cao Lãnh
+            { dist: 'tp-caolanh-all', name: "Phường 1" }, { dist: 'tp-caolanh-all', name: "Phường 2" }, { dist: 'tp-caolanh-all', name: "Phường 3" }, { dist: 'tp-caolanh-all', name: "Phường 4" }, { dist: 'tp-caolanh-all', name: "Phường 6" }, { dist: 'tp-caolanh-all', name: "Phường 11" }, { dist: 'tp-caolanh-all', name: "Phường Hòa Thuận" }, { dist: 'tp-caolanh-all', name: "Phường Mỹ Phú" }, { dist: 'tp-caolanh-all', name: "Xã Hòa An" }, { dist: 'tp-caolanh-all', name: "Xã Mỹ Tân" }, { dist: 'tp-caolanh-all', name: "Xã Mỹ Trà" }, { dist: 'tp-caolanh-all', name: "Xã Tân Thuận Đông" }, { dist: 'tp-caolanh-all', name: "Xã Tân Thuận Tây" }, { dist: 'tp-caolanh-all', name: "Xã Tịnh Thới" },
+            // TP Sa Đéc
+            { dist: 'tp-sadec-all', name: "Phường 1 (Sa Đéc)" }, { dist: 'tp-sadec-all', name: "Phường 2 (Sa Đéc)" }, { dist: 'tp-sadec-all', name: "Phường 3 (Sa Đéc)" }, { dist: 'tp-sadec-all', name: "Phường 4 (Sa Đéc)" }, { dist: 'tp-sadec-all', name: "Phường Tân Quy Đông" }, { dist: 'tp-sadec-all', name: "Phường An Hòa" }, { dist: 'tp-sadec-all', name: "Xã Tân Khánh Đông" }, { dist: 'tp-sadec-all', name: "Xã Tân Phú Đông" }, { dist: 'tp-sadec-all', name: "Xã Tân Quy Tây" },
+            // TP Hồng Ngự
+            { dist: 'tp-hongngu-all', name: "Phường An Lộc" }, { dist: 'tp-hongngu-all', name: "Phường An Thạnh" }, { dist: 'tp-hongngu-all', name: "Phường An Bình A" }, { dist: 'tp-hongngu-all', name: "Phường An Bình B" }, { dist: 'tp-hongngu-all', name: "Xã Bình Thạnh" }, { dist: 'tp-hongngu-all', name: "Xã Tân Hội" }, { dist: 'tp-hongngu-all', name: "Xã Bình Phú" },
+            // Huyện Cao Lãnh
+            { dist: 'h-caolanh-all', name: "TT Mỹ Thọ" }, { dist: 'h-caolanh-all', name: "Xã An Bình" }, { dist: 'h-caolanh-all', name: "Xã Ba Sao" }, { dist: 'h-caolanh-all', name: "Xã Bình Hàng Tây" }, { dist: 'h-caolanh-all', name: "Xã Bình Hàng Trung" }, { dist: 'h-caolanh-all', name: "Xã Gáo Giồng" }, { dist: 'h-caolanh-all', name: "Xã Mỹ Hiệp" }, { dist: 'h-caolanh-all', name: "Xã Mỹ Hội" }, { dist: 'h-caolanh-all', name: "Xã Mỹ Long" }, { dist: 'h-caolanh-all', name: "Xã Mỹ Thọ" }, { dist: 'h-caolanh-all', name: "Xã Mỹ Xương" }, { dist: 'h-caolanh-all', name: "Xã Nhị Mỹ" }, { dist: 'h-caolanh-all', name: "Xã Phong Mỹ" }, { dist: 'h-caolanh-all', name: "Xã Phương Thịnh" }, { dist: 'h-caolanh-all', name: "Xã Phương Trà" }, { dist: 'h-caolanh-all', name: "Xã Tân Nghĩa" },
+            // Huyện Châu Thành
+            { dist: 'h-chauthanh-all', name: "TT Cái Tàu Hạ" }, { dist: 'h-chauthanh-all', name: "Xã An Hiệp" }, { dist: 'h-chauthanh-all', name: "Xã An Nhơn" }, { dist: 'h-chauthanh-all', name: "Xã An Phú Thuận" }, { dist: 'h-chauthanh-all', name: "Xã Hòa Tân" }, { dist: 'h-chauthanh-all', name: "Xã Phú Hựu" }, { dist: 'h-chauthanh-all', name: "Xã Phú Long" }, { dist: 'h-chauthanh-all', name: "Xã Tân Bình" }, { dist: 'h-chauthanh-all', name: "Xã Tân Nhuận Đông" }, { dist: 'h-chauthanh-all', name: "Xã Tân Phú" }, { dist: 'h-chauthanh-all', name: "Xã Tân Phú Trung" },
+            // Huyện Lai Vung
+            { dist: 'h-laivung-all', name: "TT Lai Vung" }, { dist: 'h-laivung-all', name: "Xã Định Hòa" }, { dist: 'h-laivung-all', name: "Xã Hòa Long" }, { dist: 'h-laivung-all', name: "Xã Hòa Thành" }, { dist: 'h-laivung-all', name: "Xã Long Hậu" }, { dist: 'h-laivung-all', name: "Xã Long Thắng" }, { dist: 'h-laivung-all', name: "Xã Phong Hòa" }, { dist: 'h-laivung-all', name: "Xã Tân Dương" }, { dist: 'h-laivung-all', name: "Xã Tân Hòa" }, { dist: 'h-laivung-all', name: "Xã Tân Phước" }, { dist: 'h-laivung-all', name: "Xã Tân Thành" }, { dist: 'h-laivung-all', name: "Xã Vĩnh Thới" },
+            // Huyện Lấp Vò
+            { dist: 'h-lapvo-all', name: "TT Lấp Vò" }, { dist: 'h-lapvo-all', name: "Xã Bình Thành" }, { dist: 'h-lapvo-all', name: "Xã Bình Thạnh Trung" }, { dist: 'h-lapvo-all', name: "Xã Định An" }, { dist: 'h-lapvo-all', name: "Xã Định Yên" }, { dist: 'h-lapvo-all', name: "Xã Hội An Đông" }, { dist: 'h-lapvo-all', name: "Xã Long Hưng A" }, { dist: 'h-lapvo-all', name: "Xã Long Hưng B" }, { dist: 'h-lapvo-all', name: "Xã Mỹ An Hưng A" }, { dist: 'h-lapvo-all', name: "Xã Mỹ An Hưng B" }, { dist: 'h-lapvo-all', name: "Xã Tân Khánh Trung" }, { dist: 'h-lapvo-all', name: "Xã Tân Mỹ" }, { dist: 'h-lapvo-all', name: "Xã Vĩnh Thạnh" },
+            // Huyện Tháp Mười
+            { dist: 'h-thapmuoi-all', name: "TT Mỹ An" }, { dist: 'h-thapmuoi-all', name: "Xã Đốc Binh Kiều" }, { dist: 'h-thapmuoi-all', name: "Xã Hưng Thạnh" }, { dist: 'h-thapmuoi-all', name: "Xã Láng Biển" }, { dist: 'h-thapmuoi-all', name: "Xã Mỹ Đông" }, { dist: 'h-thapmuoi-all', name: "Xã Mỹ Hòa" }, { dist: 'h-thapmuoi-all', name: "Xã Mỹ Quý" }, { dist: 'h-thapmuoi-all', name: "Xã Phú Điền" }, { dist: 'h-thapmuoi-all', name: "Xã Tân Kiều" }, { dist: 'h-thapmuoi-all', name: "Xã Thạnh Lợi" }, { dist: 'h-thapmuoi-all', name: "Xã Thanh Mỹ" }, { dist: 'h-thapmuoi-all', name: "Xã Trường Xuân" },
+            // Huyện Tam Nông
+            { dist: 'h-tamnong-all', name: "TT Tràm Chim" }, { dist: 'h-tamnong-all', name: "Xã An Hòa" }, { dist: 'h-tamnong-all', name: "Xã An Long" }, { dist: 'h-tamnong-all', name: "Xã Hòa Bình" }, { dist: 'h-tamnong-all', name: "Xã Phú Cường" }, { dist: 'h-tamnong-all', name: "Xã Phú Đức" }, { dist: 'h-tamnong-all', name: "Xã Phú Hiệp" }, { dist: 'h-tamnong-all', name: "Xã Phú Ninh" }, { dist: 'h-tamnong-all', name: "Xã Phú Thành A" }, { dist: 'h-tamnong-all', name: "Xã Phú Thành B" }, { dist: 'h-tamnong-all', name: "Xã Phú Thọ" }, { dist: 'h-tamnong-all', name: "Xã Tân Công Sính" },
+            // Huyện Thanh Bình
+            { dist: 'h-thanhbinh-all', name: "TT Thanh Bình" }, { dist: 'h-thanhbinh-all', name: "Xã An Phong" }, { dist: 'h-thanhbinh-all', name: "Xã Bình Tấn" }, { dist: 'h-thanhbinh-all', name: "Xã Tân Bình" }, { dist: 'h-thanhbinh-all', name: "Xã Tân Hòa" }, { dist: 'h-thanhbinh-all', name: "Xã Tân Huề" }, { dist: 'h-thanhbinh-all', name: "Xã Tân Long" }, { dist: 'h-thanhbinh-all', name: "Xã Tân Phú" }, { dist: 'h-thanhbinh-all', name: "Xã Tân Quới" }, { dist: 'h-thanhbinh-all', name: "Xã Tân Thạnh" },
+            // Huyện Hồng Ngự
+            { dist: 'h-hongngu-all', name: "TT Thường Thới Tiền" }, { dist: 'h-hongngu-all', name: "Xã Phú Thuận A" }, { dist: 'h-hongngu-all', name: "Xã Phú Thuận B" }, { dist: 'h-hongngu-all', name: "Xã Long Thuận" }, { dist: 'h-hongngu-all', name: "Xã Long Khánh A" }, { dist: 'h-hongngu-all', name: "Xã Long Khánh B" }, { dist: 'h-hongngu-all', name: "Xã Thường Phước 1" }, { dist: 'h-hongngu-all', name: "Xã Thường Phước 2" }, { dist: 'h-hongngu-all', name: "Xã Thường Lạc" }, { dist: 'h-hongngu-all', name: "Xã Thường Thới Hậu A" },
+            // Huyện Tân Hồng
+            { dist: 'h-tanhong-all', name: "TT Sa Rài" }, { dist: 'h-tanhong-all', name: "Xã An Phước" }, { dist: 'h-tanhong-all', name: "Xã Tân Công Chí" }, { dist: 'h-tanhong-all', name: "Xã Tân Hộ Cơ" }, { dist: 'h-tanhong-all', name: "Xã Tân Phước" }, { dist: 'h-tanhong-all', name: "Xã Tân Thành A" }, { dist: 'h-tanhong-all', name: "Xã Tân Thành B" }, { dist: 'h-tanhong-all', name: "Xã Thông Bình" }
+        ];
+
+        // Tạo dữ liệu nhà vườn giả lập
+        const generateMockData = () => {
+            const farms = [];
+            const centerLat = 10.45;
+            const centerLng = 105.63;
+            
+            // Tăng số lượng điểm từ 200 lên 500 để bao phủ 102 xã phường
+            for(let i = 0; i < 500; i++) { 
+                const lat = centerLat + (Math.random() - 0.5) * 0.4;
+                const lng = centerLng + (Math.random() - 0.5) * 0.4;
+                
+                const rand = Math.random();
+                let statusCode = 'safe';
+                let statusText = 'An toàn / VietGAP';
+                let statusClass = 'status-safe';
+                let textColor = 'text-green-600';
+                let cadimiMsg = 'pH > 6.0, kiểm soát tốt.';
+                
+                if(rand > 0.6 && rand <= 0.9) {
+                    statusCode = 'warning';
+                    statusText = 'Đang chuyển đổi';
+                    statusClass = 'status-warning';
+                    textColor = 'text-yellow-600';
+                    cadimiMsg = 'Cần theo dõi lượng bón lân.';
+                } else if (rand > 0.9) {
+                    statusCode = 'danger';
+                    statusText = 'Cảnh báo rủi ro';
+                    statusClass = 'status-danger';
+                    textColor = 'text-red-600';
+                    cadimiMsg = 'Nguy cơ tồn dư Cadimi (pH < 5.0)';
+                }
+
+                // Gán ngẫu nhiên cho 1 trong 102 xã/phường
+                const randomCommune = dongThapCommunes[Math.floor(Math.random() * dongThapCommunes.length)];
+
+                farms.push({
+                    id: `SR-${1000+i}`,
+                    lat: lat,
+                    lng: lng,
+                    owner: `Nhà vườn Nông Dân ${i}`,
+                    area: (Math.random() * 2 + 0.5).toFixed(1), // 0.5 - 2.5 ha
+                    treeAge: Math.floor(Math.random() * 10) + 4, // 4-14 năm
+                    statusCode: statusCode, 
+                    statusClass: statusClass,
+                    statusText: statusText,
+                    textColor: textColor,
+                    cadimiMsg: cadimiMsg,
+                    districtCode: randomCommune.dist, 
+                    communeName: randomCommune.name 
+                });
+            }
+            return farms;
+        };
+
+        // Hàm vẽ các điểm vườn lên bản đồ
+        function renderMarkers(data) {
+            markersClusterGroup.clearLayers(); // Xóa các marker cũ
+
+            data.forEach(farm => {
+                const customIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div class="marker-pin ${farm.statusClass}">🍈</div>`,
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                });
+
+                const marker = L.marker([farm.lat, farm.lng], {icon: customIcon});
+                
+                const popupContent = `
+                    <div class="p-1 min-w-[200px]">
+                        <h3 class="font-bold text-sm text-gray-800 mb-1 border-b pb-1"><i class="fa-solid fa-house-chimney text-gray-500 mr-1"></i> ${farm.owner}</h3>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Mã lô:</strong> ${farm.id}</p>
+                        <p class="text-xs text-blue-600 font-medium mb-1"><i class="fa-solid fa-location-dot text-gray-400 mr-1"></i> ${farm.communeName}</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Diện tích:</strong> ${farm.area} ha</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Tuổi cây:</strong> ${farm.treeAge} năm</p>
+                        <p class="text-xs font-semibold mt-2 ${farm.textColor}">
+                            <i class="fa-solid fa-circle text-[10px] mr-1"></i> ${farm.statusText}
+                        </p>
+                        <p class="text-[10px] text-gray-500 italic mt-1 border-t pt-1">Cảnh báo: ${farm.cadimiMsg}</p>
+                        
+                        <button onclick="openLogModal('${farm.id}', '${farm.statusClass}', '${farm.owner}')" class="mt-3 w-full bg-agrigreen-100 hover:bg-agrigreen-200 text-agrigreen-800 text-xs font-bold py-1.5 px-2 rounded border border-agrigreen-300 transition shadow-sm">
+                            <i class="fa-solid fa-book mr-1"></i> Trích xuất Nhật Ký
+                        </button>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markersClusterGroup.addLayer(marker);
+            });
+        }
+        
+        // Hàm ẩn/hiện layer ranh giới
+        function toggleGeoJSONLayers() {
+            if (provinceLayer) {
+                if (document.getElementById('cb-layer-province').checked) map.addLayer(provinceLayer);
+                else map.removeLayer(provinceLayer);
+            }
+            if (communeLayer) {
+                if (document.getElementById('cb-layer-commune').checked) map.addLayer(communeLayer);
+                else map.removeLayer(communeLayer);
+            }
+        }
+
+        function initMap() {
+            // Khởi tạo bản đồ, tâm tại Cao Lãnh, Đồng Tháp
+            map = L.map('map', {
+                zoomControl: false // Sẽ add lại vị trí khác
+            }).setView([10.45, 105.63], 10);
+
+            // Chỉnh lại vị trí Zoom Control sang góc dưới bên phải để không bị panel che khuất (trên mobile)
+            L.control.zoom({
+                position: 'bottomright'
+            }).addTo(map);
+
+            // Thêm layer bản đồ nền (Sử dụng CARTO Voyager thay vì OSM mặc định để tránh lỗi Blocked/Referer)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Tính năng Clustering (Gom cụm)
+            markersClusterGroup = L.markerClusterGroup({
+                chunkedLoading: true,
+                maxClusterRadius: 50,
+                iconCreateFunction: function(cluster) {
+                    return L.divIcon({ 
+                        html: '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">' + cluster.getChildCount() + '</div>',
+                        className: 'marker-cluster marker-cluster-medium', 
+                        iconSize: L.point(40, 40) 
+                    });
+                }
+            });
+
+            map.addLayer(markersClusterGroup);
+
+            // Tạo dữ liệu và render lần đầu
+            allFarmsData = generateMockData();
+            renderMarkers(allFarmsData);
+
+            // --- XỬ LÝ LOAD FILE GEOJSON TRỰC TIẾP TỪ GITHUB ---
+            const urlProvince = 'https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/%C4%90%E1%BB%93ng%20Th%C3%A1p%20(t%E1%BB%89nh%20th%C3%A0nh)%20-%2034.geojson';
+            const urlCommune = 'https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/%C4%90%E1%BB%93ng%20Th%C3%A1p%20(ph%C6%B0%E1%BB%9Dng%20x%C3%A3)%20-%2034.geojson';
+
+            // Tải ranh giới cấp Tỉnh
+            fetch(urlProvince)
+                .then(res => res.json())
+                .then(data => {
+                    provinceLayer = L.geoJSON(data, {
+                        style: { color: '#2563eb', weight: 3, fillOpacity: 0.05, fillColor: '#3b82f6' }
+                    });
+                    if(document.getElementById('cb-layer-province').checked) provinceLayer.addTo(map);
+                }).catch(e => console.error("Lỗi tải ranh giới tỉnh từ GitHub:", e));
+
+            // Tải ranh giới cấp Xã / Phường
+            fetch(urlCommune)
+                .then(res => res.json())
+                .then(data => {
+                    communeLayer = L.geoJSON(data, {
+                        style: { color: '#64748b', weight: 1, dashArray: '4', fillOpacity: 0.1, fillColor: '#cbd5e1' },
+                        onEachFeature: function (feature, layer) {
+                            if (feature.properties) {
+                                let popup = '<div class="text-xs p-1">';
+                                if (feature.properties.ten_xa) popup += `<strong class="text-blue-600">${feature.properties.ten_xa}</strong><br>`;
+                                if (feature.properties.ten_tinh) popup += `Tỉnh: ${feature.properties.ten_tinh}<br>`;
+                                if (feature.properties.dtich_km2) popup += `Diện tích: ${feature.properties.dtich_km2} km²`;
+                                popup += '</div>';
+                                layer.bindPopup(popup);
+                            }
+                        }
+                    });
+                    if(document.getElementById('cb-layer-commune').checked) communeLayer.addTo(map);
+                }).catch(e => console.error("Lỗi tải ranh giới xã/phường từ GitHub:", e));
+
+
+            // Lắng nghe sự kiện Upload File GeoJSON trực tiếp từ người dùng
+            document.getElementById('geojson-upload').addEventListener('change', function(e) {
+                const files = e.target.files;
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        try {
+                            const geojson = JSON.parse(evt.target.result);
+                            // Xác định file là cấp tỉnh hay cấp xã dựa trên tên file
+                            const isCommune = file.name.toLowerCase().includes('phường') || file.name.toLowerCase().includes('xã');
+                            
+                            const layer = L.geoJSON(geojson, {
+                                style: isCommune 
+                                    ? { color: '#64748b', weight: 1, dashArray: '4', fillOpacity: 0.1, fillColor: '#cbd5e1' } // Style Xã (Xám đứt nét)
+                                    : { color: '#2563eb', weight: 3, fillOpacity: 0.05, fillColor: '#3b82f6' }, // Style Tỉnh (Xanh dương đậm)
+                                onEachFeature: function (feature, l) {
+                                    if (feature.properties) {
+                                        let content = '<div class="text-xs p-1">';
+                                        if (feature.properties.ten_xa) content += `<strong class="text-blue-600">${feature.properties.ten_xa}</strong><br>`;
+                                        if (feature.properties.ten_tinh) content += `Tỉnh: ${feature.properties.ten_tinh}<br>`;
+                                        if (feature.properties.dtich_km2) content += `Diện tích: ${feature.properties.dtich_km2} km²`;
+                                        content += '</div>';
+                                        l.bindPopup(content);
+                                    }
+                                }
+                            });
+
+                            if (isCommune) {
+                                if (communeLayer) map.removeLayer(communeLayer);
+                                communeLayer = layer;
+                                if (document.getElementById('cb-layer-commune').checked) communeLayer.addTo(map);
+                            } else {
+                                if (provinceLayer) map.removeLayer(provinceLayer);
+                                provinceLayer = layer;
+                                if (document.getElementById('cb-layer-province').checked) provinceLayer.addTo(map);
+                            }
+                            
+                            // Zoom vào đúng vùng vừa tải lên
+                            map.fitBounds(layer.getBounds());
+
+                        } catch(err) {
+                            console.error("Lỗi parse GeoJSON", err);
+                            alert("File tải lên không phải là định dạng GeoJSON hợp lệ!");
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            // Lắng nghe sự kiện lọc cho 2 ô tìm kiếm (Đồng bộ nhau)
+            const mapSearchBox = document.getElementById('map-search-box');
+            const sideSearchBox = document.getElementById('search-farm');
+            const clearBtn = document.getElementById('clear-search');
+
+            mapSearchBox.addEventListener('input', (e) => {
+                sideSearchBox.value = e.target.value;
+                toggleClearButton(e.target.value);
+                applyFilters();
+            });
+
+            sideSearchBox.addEventListener('input', (e) => {
+                mapSearchBox.value = e.target.value;
+                toggleClearButton(e.target.value);
+                applyFilters();
+            });
+
+            clearBtn.addEventListener('click', () => {
+                mapSearchBox.value = '';
+                sideSearchBox.value = '';
+                toggleClearButton('');
+                applyFilters();
+            });
+
+            document.getElementById('filter-area').addEventListener('change', applyFilters);
+            document.getElementById('filter-status').addEventListener('change', () => syncFilters('dropdown'));
+        }
+
+        // Hàm ẩn hiện nút Xóa (Clear) tìm kiếm
+        function toggleClearButton(val) {
+            const clearBtn = document.getElementById('clear-search');
+            if(val.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+        }
+
+        // Hàm xử lý logic lọc dữ liệu
+        function applyFilters() {
+            // Lấy giá trị từ thanh tìm kiếm nổi trên bản đồ làm chuẩn
+            const searchText = document.getElementById('map-search-box').value.toLowerCase().trim();
+            const areaVal = document.getElementById('filter-area').value;
+            
+            // Đọc trạng thái từ các checkbox ở Legend
+            const showSafe = document.getElementById('cb-safe').checked;
+            const showWarning = document.getElementById('cb-warning').checked;
+            const showDanger = document.getElementById('cb-danger').checked;
+
+            const filteredData = allFarmsData.filter(farm => {
+                // 1. Lọc theo chữ (Tên chủ vườn, Mã lô HOẶC Tên Xã/Phường - ĐÃ NÂNG CẤP)
+                const matchSearch = farm.owner.toLowerCase().includes(searchText) || 
+                                    farm.id.toLowerCase().includes(searchText) ||
+                                    farm.communeName.toLowerCase().includes(searchText);
+                
+                // 2. Lọc theo khu vực (Dropdown)
+                let matchArea = false;
+                if (areaVal === 'all') {
+                    matchArea = true;
+                } else if (areaVal.endsWith('-all')) {
+                    matchArea = (farm.districtCode === areaVal);
+                }
+
+                // 3. Lọc theo trạng thái Rủi ro (Dựa vào Checkbox)
+                let matchStatus = false;
+                if (farm.statusCode === 'safe' && showSafe) matchStatus = true;
+                if (farm.statusCode === 'warning' && showWarning) matchStatus = true;
+                if (farm.statusCode === 'danger' && showDanger) matchStatus = true;
+
+                return matchSearch && matchArea && matchStatus;
+            });
+
+            // Vẽ lại bản đồ với dữ liệu đã lọc
+            renderMarkers(filteredData);
+        }
+
+        // Hàm đồng bộ giữa Dropdown và Checkbox trên Legend
+        function syncFilters(source) {
+            if (source === 'dropdown') {
+                const val = document.getElementById('filter-status').value;
+                document.getElementById('cb-safe').checked = (val === 'all' || val === 'safe');
+                document.getElementById('cb-warning').checked = (val === 'all' || val === 'warning');
+                document.getElementById('cb-danger').checked = (val === 'all' || val === 'danger');
+            } else if (source === 'checkbox') {
+                const safe = document.getElementById('cb-safe').checked;
+                const warning = document.getElementById('cb-warning').checked;
+                const danger = document.getElementById('cb-danger').checked;
+                
+                if (safe && !warning && !danger) document.getElementById('filter-status').value = 'safe';
+                else if (!safe && warning && !danger) document.getElementById('filter-status').value = 'warning';
+                else if (!safe && !warning && danger) document.getElementById('filter-status').value = 'danger';
+                else document.getElementById('filter-status').value = 'all';
+            }
+            applyFilters();
+        }
+
+        // 3. Logic Modal Trích Xuất Nhật Ký
+        function openLogModal(farmId, statusClass, ownerName) {
+            document.getElementById('modal-farm-name').innerText = `${ownerName} (Mã lô: ${farmId})`;
+            
+            const logBody = document.getElementById('modal-log-body');
+            logBody.innerHTML = generateLogHTML(statusClass);
+
+            const modal = document.getElementById('logModal');
+            const modalContent = document.getElementById('logModalContent');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // Timeout để tạo hiệu ứng popup mượt
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeLogModal() {
+            const modal = document.getElementById('logModal');
+            const modalContent = document.getElementById('logModalContent');
+            
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        // Hàm giả lập dữ liệu nội dung Nhật ký siêu thực tế
+        function generateLogHTML(statusClass) {
+            let statusBadge = '';
+            let logData = '';
+            let analysis = '';
+
+            // NGÀY GIẢ LẬP: Tính từ hiện tại (Tháng 4/2026) ngược về trước
+            
+            if (statusClass === 'status-safe') {
+                statusBadge = `<span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full border border-green-200"><i class="fa-solid fa-check-circle mr-1"></i> ĐẠT CHUẨN VIETGAP / AN TOÀN</span>`;
+                analysis = `
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-r text-sm">
+                        <p class="font-bold text-green-800 mb-1">Kết quả phân tích tự động:</p>
+                        <ul class="list-disc ml-5 text-green-700">
+                            <li><strong>Chỉ số Cadimi:</strong> An toàn. Độ pH duy trì ở mức 6.2 - 6.5, sử dụng 100% lân hữu cơ vi sinh, không có rủi ro tích lũy kim loại nặng.</li>
+                            <li><strong>Thời gian cách ly (PHI):</strong> An toàn. Lần phun thuốc sâu cuối cùng cách đây 24 ngày (Vượt chuẩn 14 ngày). Đủ điều kiện cắt trái.</li>
+                        </ul>
+                    </div>`;
+                logData = `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3">15/03/2026</td>
+                        <td class="p-3 font-medium text-blue-600">Bón phân</td>
+                        <td class="p-3">Hữu cơ vi sinh Đầu Trâu</td>
+                        <td class="p-3">10 kg/gốc</td>
+                        <td class="p-3 text-green-600 text-xs"><i class="fa-solid fa-shield-check"></i> Rất an toàn</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3">20/03/2026</td>
+                        <td class="p-3 font-medium text-gray-600">Đo pH Đất</td>
+                        <td class="p-3">Sử dụng máy đo cầm tay</td>
+                        <td class="p-3">pH = 6.4</td>
+                        <td class="p-3 text-green-600 text-xs"><i class="fa-solid fa-check"></i> Đất trung tính, Cadimi bị khóa chặt</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3">25/03/2026</td>
+                        <td class="p-3 font-medium text-red-500">Phun thuốc</td>
+                        <td class="p-3">Thuốc sinh học Abamectin (Trừ nhện)</td>
+                        <td class="p-3">20ml / bình 25L</td>
+                        <td class="p-3 text-green-600 text-xs"><i class="fa-solid fa-clock"></i> Đã qua 14 ngày (PHI: 7 ngày)</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3">05/04/2026</td>
+                        <td class="p-3 font-medium text-purple-600">Bón thúc</td>
+                        <td class="p-3">Kali trắng (K2SO4) lên cơm</td>
+                        <td class="p-3">0.3 kg/gốc</td>
+                        <td class="p-3 text-gray-500 text-xs">Không chứa đạm dư thừa</td>
+                    </tr>
+                `;
+            } 
+            else if (statusClass === 'status-warning') {
+                statusBadge = `<span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full border border-yellow-200"><i class="fa-solid fa-triangle-exclamation mr-1"></i> VƯỜN ĐANG CHUYỂN ĐỔI / CẦN THEO DÕI</span>`;
+                analysis = `
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6 rounded-r text-sm">
+                        <p class="font-bold text-yellow-800 mb-1">Kết quả phân tích tự động:</p>
+                        <ul class="list-disc ml-5 text-yellow-700">
+                            <li><strong>Chỉ số Cadimi:</strong> Có rủi ro nhẹ. Vườn bón lân nung chảy lượng vừa phải (2kg/gốc). Độ pH đo được 5.6 (hơi chua). Nông dân đã bón vôi khắc phục. Đề nghị test mẫu đất trước thu hoạch.</li>
+                            <li><strong>Thời gian cách ly (PHI):</strong> Chú ý. Lần phun thuốc cuối ngày 02/04 (cách đây 6 ngày). Không được thu hoạch trong vòng 8 ngày tới.</li>
+                        </ul>
+                    </div>`;
+                logData = `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3">10/03/2026</td>
+                        <td class="p-3 font-medium text-blue-600">Bón phân</td>
+                        <td class="p-3">Lân Nung Chảy (Vô cơ)</td>
+                        <td class="p-3">2 kg/gốc</td>
+                        <td class="p-3 text-yellow-600 text-xs"><i class="fa-solid fa-triangle-exclamation"></i> Chứa Cadimi tự nhiên</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3">22/03/2026</td>
+                        <td class="p-3 font-medium text-gray-600">Đo pH Đất</td>
+                        <td class="p-3 text-red-500">pH = 5.2 (Chua)</td>
+                        <td class="p-3">Rải 1kg vôi/gốc</td>
+                        <td class="p-3 text-yellow-600 text-xs">Đang cải tạo nâng pH lên > 6.0</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3">02/04/2026</td>
+                        <td class="p-3 font-medium text-red-500">Phun thuốc</td>
+                        <td class="p-3">Imidacloprid (Trừ rầy phấn trắng)</td>
+                        <td class="p-3">15ml / bình 25L</td>
+                        <td class="p-3 text-yellow-600 text-xs"><i class="fa-solid fa-clock"></i> Chưa đủ PHI (Yêu cầu 14 ngày)</td>
+                    </tr>
+                `;
+            } 
+            else if (statusClass === 'status-danger') {
+                statusBadge = `<span class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full border border-red-200"><i class="fa-solid fa-skull-crossbones mr-1"></i> CẢNH BÁO RỦI RO CAO / TỪ CHỐI XUẤT KHẨU</span>`;
+                analysis = `
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r text-sm">
+                        <p class="font-bold text-red-800 mb-1">Kết quả phân tích tự động:</p>
+                        <ul class="list-disc ml-5 text-red-700">
+                            <li><strong>Chỉ số Cadimi:</strong> <span class="font-bold underline">BÁO ĐỘNG ĐỎ.</span> Lạm dụng Super Lân (4kg/gốc). Độ pH đất tụt xuống 4.5 (Rất chua), môi trường cực kỳ lý tưởng để rễ hút Cadimi vào trái. Yêu cầu khóa mã vùng trồng, bắt buộc test mẫu lab.</li>
+                            <li><strong>Thời gian cách ly (PHI):</strong> Vi phạm. Vừa phun Hexaconazole cách đây 2 ngày. Tuyệt đối cấm cắt trái.</li>
+                        </ul>
+                    </div>`;
+                logData = `
+                    <tr class="border-b hover:bg-gray-50 bg-red-50/30">
+                        <td class="p-3">05/03/2026</td>
+                        <td class="p-3 font-medium text-blue-600">Bón phân</td>
+                        <td class="p-3 font-bold">Super Lân (Lân đơn vô cơ)</td>
+                        <td class="p-3 text-red-600 font-bold">4 kg/gốc</td>
+                        <td class="p-3 text-red-600 text-xs"><i class="fa-solid fa-ban"></i> Nguy cơ nhiễm kim loại nặng cực cao</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50 bg-red-50/30">
+                        <td class="p-3">28/03/2026</td>
+                        <td class="p-3 font-medium text-gray-600">Đo pH Đất</td>
+                        <td class="p-3 text-red-600 font-bold">pH = 4.5 (Đất chết)</td>
+                        <td class="p-3">-</td>
+                        <td class="p-3 text-red-600 text-xs">Chưa có hành động bón vôi khắc phục</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50 bg-red-50/30">
+                        <td class="p-3">06/04/2026</td>
+                        <td class="p-3 font-medium text-red-500">Phun thuốc</td>
+                        <td class="p-3">Hexaconazole (Trị nấm xì mủ)</td>
+                        <td class="p-3">50g / bình 25L</td>
+                        <td class="p-3 text-red-600 font-bold text-xs"><i class="fa-solid fa-clock"></i> MỚI PHUN (PHI: 14 ngày)</td>
+                    </tr>
+                `;
+            }
+
+            return `
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="font-bold text-gray-700">Trạng thái đánh giá tự động:</h3>
+                    ${statusBadge}
+                </div>
+                
+                ${analysis}
+
+                <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Lịch sử tác động gần nhất (30 ngày qua)</h3>
+                <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+                    <table class="w-full text-left text-sm text-gray-600">
+                        <thead class="bg-gray-100 text-gray-700 text-xs uppercase font-semibold">
+                            <tr>
+                                <th class="p-3 w-24">Ngày</th>
+                                <th class="p-3 w-28">Hoạt động</th>
+                                <th class="p-3">Vật tư / Thuốc / Kết quả</th>
+                                <th class="p-3 w-32">Liều lượng</th>
+                                <th class="p-3 w-48">Phân tích Hệ thống</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${logData}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Chạy initMap khi tải trang xong
+        window.onload = () => {
+            initMap();
+        };
+
+    </script>
+</body>
+</html>
