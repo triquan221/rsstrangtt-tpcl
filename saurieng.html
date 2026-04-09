@@ -86,7 +86,7 @@
 
     <!-- HEADER / NAVBAR -->
     <header class="bg-white shadow-md relative z-10 h-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div class="w-full px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex justify-between items-center h-full">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="switchTab('home')">
@@ -109,7 +109,7 @@
                 <!-- Action Button -->
                 <div>
                     <button class="bg-agrigreen-600 hover:bg-agrigreen-700 text-white px-4 py-2 rounded-md text-sm font-medium shadow transition flex items-center">
-                        <i class="fa-solid fa-qrcode mr-2"></i> <span>Truy xuất QR</span>
+                        <i class="fa-solid fa-qrcode mr-2"></i> <span class="hidden sm:inline">Truy xuất QR</span>
                     </button>
                 </div>
             </div>
@@ -197,51 +197,58 @@
     <!-- TAB 2: BẢN ĐỒ WEBGIS -->
     <div id="tab-map" class="tab-content relative flex flex-col md:flex-row w-full" style="height: calc(100vh - 64px);">
         
-        <!-- Khu vực hiển thị bản đồ -->
-        <div id="map-area" class="w-full md:w-3/4 lg:w-4/5 h-full relative z-0">
-            <div id="map"></div>
+        <!-- Khu vực hiển thị bản đồ: Dùng flex-1 để tự động chiếm trọn không gian trống -->
+        <div id="map-area" class="flex-1 h-full relative z-0 min-w-0">
+            <div id="map" class="w-full h-full"></div>
 
             <!-- BẢNG THÔNG TIN XÃ PHƯỜNG & NÚT HOME NỔI TRÊN BẢN ĐỒ -->
-            <div id="map-commune-info" class="absolute top-4 left-4 z-[1000] w-80 bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl border border-agrigreen-200 p-5 hidden slide-in-left">
+            <div id="map-commune-info" class="absolute top-24 md:top-4 left-4 z-[900] w-80 bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl border border-agrigreen-200 p-5 hidden slide-in-left">
                 <div class="flex justify-between items-start mb-3 border-b border-gray-200 pb-3">
                     <div class="overflow-hidden pr-2">
                         <h3 class="font-bold text-agrigreen-800 uppercase text-lg leading-tight truncate" id="map-info-title">Tên Xã</h3>
                         <div id="map-info-status" class="mt-1"></div>
                     </div>
-                    <button onclick="clearCommuneFilter()" class="bg-red-50 hover:bg-red-500 text-red-500 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition shadow-sm border border-red-100 shrink-0 group" title="Trở về toàn Tỉnh">
+                    <button onclick="clearSearchAndFilters()" class="bg-red-50 hover:bg-red-500 text-red-500 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition shadow-sm border border-red-100 shrink-0 group" title="Bỏ lọc / Trở về toàn Tỉnh">
                         <i class="fa-solid fa-house group-hover:scale-110 transition-transform"></i>
                     </button>
                 </div>
                 
-                <p class="text-[10px] text-gray-500 uppercase tracking-wide mb-2"><i class="fa-solid fa-chart-pie mr-1"></i> Thống kê diện tích Sầu Riêng</p>
-                <div class="grid grid-cols-2 gap-2 text-center">
-                    <div class="bg-agrigreen-50 rounded p-2 border border-agrigreen-100 col-span-2">
-                        <p class="text-[10px] text-gray-500 uppercase">Tổng diện tích (ha)</p>
-                        <p class="font-bold text-agrigreen-700 text-lg" id="map-info-total">--</p>
-                    </div>
-                    <div class="bg-blue-50 rounded p-2 border border-blue-100">
-                        <p class="text-[10px] text-gray-500 uppercase">Kiến thiết</p>
-                        <p class="font-bold text-blue-700" id="map-info-basic">--</p>
-                    </div>
-                    <div class="bg-yellow-50 rounded p-2 border border-yellow-100">
-                        <p class="text-[10px] text-gray-500 uppercase">Thu hoạch</p>
-                        <p class="font-bold text-yellow-700" id="map-info-harvest">--</p>
+                <div id="map-info-stats-container">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-wide mb-2"><i class="fa-solid fa-chart-pie mr-1"></i> Thống kê diện tích Sầu Riêng</p>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="bg-agrigreen-50 rounded p-2 border border-agrigreen-100 col-span-2">
+                            <p class="text-[10px] text-gray-500 uppercase">Tổng diện tích (ha)</p>
+                            <p class="font-bold text-agrigreen-700 text-lg" id="map-info-total">--</p>
+                        </div>
+                        <div class="bg-blue-50 rounded p-2 border border-blue-100">
+                            <p class="text-[10px] text-gray-500 uppercase">Kiến thiết</p>
+                            <p class="font-bold text-blue-700" id="map-info-basic">--</p>
+                        </div>
+                        <div class="bg-yellow-50 rounded p-2 border border-yellow-100">
+                            <p class="text-[10px] text-gray-500 uppercase">Thu hoạch</p>
+                            <p class="font-bold text-yellow-700" id="map-info-harvest">--</p>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- THANH TÌM KIẾM NỔI TRÊN BẢN ĐỒ (Cho Điểm Vườn) -->
-            <div class="absolute top-4 left-1/2 transform -translate-x-1/2 z-[900] w-11/12 max-w-md transition-all">
-                <div class="bg-white rounded-lg shadow-md border border-gray-200 flex items-center overflow-hidden">
+            <!-- THANH TÌM KIẾM ĐA NĂNG (OMNIBOX) NỔI TRÊN BẢN ĐỒ -->
+            <div class="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] w-11/12 max-w-lg transition-all" id="main-search-wrapper">
+                <div class="bg-white rounded-xl shadow-lg border border-gray-200 flex items-center overflow-hidden focus-within:ring-2 focus-within:ring-agrigreen-500 transition-shadow">
                     <div class="pl-4 pr-2 text-agrigreen-600">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                    <input type="text" id="map-search-box" placeholder="Tìm kiếm mã lô, tên nhà vườn..." 
-                           class="w-full py-3 px-2 text-sm text-gray-700 focus:outline-none focus:bg-gray-50 placeholder-gray-400">
-                    <button id="clear-search" class="px-4 text-gray-400 hover:text-red-500 hidden transition">
-                        <i class="fa-solid fa-xmark"></i>
+                    <input type="text" id="map-search-box" autocomplete="off" placeholder="Tìm xã/phường, tên nhà vườn, mã lô..." 
+                           class="w-full py-3 px-2 text-sm text-gray-700 focus:outline-none focus:bg-transparent placeholder-gray-400">
+                    <button id="clear-search" onclick="clearSearchAndFilters()" class="px-4 text-gray-400 hover:text-red-500 hidden transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
                 </div>
+                
+                <!-- Dropdown Gợi ý chung (Cả Xã và Nhà vườn) -->
+                <ul id="unified-dropdown-list" class="absolute z-[2000] w-full bg-white border border-gray-200 rounded-lg shadow-2xl mt-1 max-h-80 overflow-y-auto hidden custom-scrollbar">
+                    <!-- JS sẽ điền dữ liệu vào đây -->
+                </ul>
             </div>
 
             <!-- Chú thích bản đồ (Legend) -->
@@ -280,8 +287,8 @@
             </div>
         </div>
 
-        <!-- Bảng điều khiển (Panel phải) -->
-        <div class="w-full md:w-1/4 lg:w-1/5 bg-white border-l border-gray-200 shadow-[-4px_0_15px_rgba(0,0,0,0.05)] flex flex-col h-full z-10 overflow-y-auto shrink-0 custom-scrollbar">
+        <!-- Bảng điều khiển (Panel phải): Cố định chiều rộng để chống layout break -->
+        <div class="w-full md:w-80 lg:w-[360px] bg-white border-l border-gray-200 shadow-[-4px_0_15px_rgba(0,0,0,0.05)] flex flex-col h-full z-10 overflow-y-auto shrink-0 custom-scrollbar">
             
             <div class="bg-agrigreen-600 text-white p-4 sticky top-0 z-20 shrink-0">
                 <div class="flex items-center">
@@ -293,30 +300,9 @@
                 </div>
             </div>
 
-            <!-- TÌM KIẾM ĐỊA GIỚI -->
-            <div class="p-4 border-b border-gray-100 bg-blue-50/50 overflow-visible shrink-0">
-                <h3 class="text-sm font-bold text-blue-800 uppercase mb-2"><i class="fa-solid fa-crosshairs mr-1"></i> Định vị Hành chính</h3>
-                <label class="block text-xs font-medium text-gray-500 mb-1">Tìm xã/phường để bay tới</label>
-                
-                <div class="relative w-full" id="dropdown-wrapper">
-                    <div class="flex items-center border border-blue-300 rounded bg-white overflow-hidden focus-within:ring-2 focus-within:ring-blue-500">
-                        <i class="fa-solid fa-location-dot text-blue-400 pl-3"></i>
-                        <input type="text" id="zoom-commune-input" autocomplete="off" placeholder="Ví dụ: Mỹ Thọ, An Bình..." 
-                               class="w-full text-sm p-2 outline-none">
-                        <button id="btn-zoom-enter" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-2 transition" title="Tìm và Zoom">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </div>
-                    <ul id="commune-dropdown-list" class="absolute z-[2000] w-full bg-white border border-gray-300 rounded-md shadow-2xl mt-1 max-h-56 overflow-y-auto hidden custom-scrollbar top-full left-0"></ul>
-                </div>
-                <p class="text-[10px] text-gray-500 mt-2 italic text-blue-600" id="zoom-status-text">
-                    * Gõ không dấu, ấn Enter hoặc <b>Click trực tiếp</b> vào xã trên bản đồ.
-                </p>
-            </div>
-
             <!-- Bộ lọc Điểm Vườn -->
             <div class="p-4 border-b border-gray-100 shrink-0">
-                <h3 class="text-sm font-bold text-gray-700 uppercase mb-3"><i class="fa-solid fa-filter mr-1 text-agrigreen-500"></i> Lọc Nhà Vườn</h3>
+                <h3 class="text-sm font-bold text-gray-700 uppercase mb-3"><i class="fa-solid fa-filter mr-1 text-agrigreen-500"></i> Lọc Khu Vực</h3>
                 
                 <div class="mb-3">
                     <label class="block text-xs font-medium text-gray-500 mb-1">Khu vực (Huyện/TP)</label>
@@ -544,8 +530,15 @@
             document.getElementById('nav-map').className = "nav-btn px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-agrigreen-700 hover:bg-agrigreen-50 transition";
             document.getElementById('tab-' + tabId).classList.add('active');
             document.getElementById('nav-' + tabId).className = "nav-btn px-3 py-2 text-sm font-medium rounded-md text-agrigreen-700 bg-agrigreen-50";
-            if(tabId === 'map' && map) setTimeout(() => map.invalidateSize(), 100);
+            if(tabId === 'map' && map) {
+                setTimeout(() => { map.invalidateSize(); window.dispatchEvent(new Event('resize')); }, 50);
+                setTimeout(() => map.invalidateSize(), 200);
+            }
         }
+
+        window.addEventListener('resize', function() {
+            if(map) map.invalidateSize();
+        });
 
         function switchModalTab(tabId) {
             document.querySelectorAll('.modal-tab-content').forEach(el => el.classList.remove('active'));
@@ -562,10 +555,12 @@
         let map;
         let markersClusterGroup; 
         let allFarmsData = [];   
+        let unifiedSearchData = []; // Dữ liệu chung cho Omnibox
         let provinceLayer = null;
         let communeLayer = null;
         let highlightedCommune = null; 
         let currentCommuneFilter = null; 
+        let currentFarmFilter = null;
         let dynamicDurianMap = {};       
 
         const docxDataPool = [
@@ -599,10 +594,9 @@
             const urlProvince = 'https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/%C4%90%E1%BB%93ng%20Th%C3%A1p%20(t%E1%BB%89nh%20th%C3%A0nh)%20-%2034.geojson';
             const urlCommune = 'https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/%C4%90%E1%BB%93ng%20Th%C3%A1p%20(ph%C6%B0%E1%BB%9Dng%20x%C3%A3)%20-%2034.geojson';
 
-            let communeSearchData = [];
-            const zoomInput = document.getElementById('zoom-commune-input');
-            const dropdownList = document.getElementById('commune-dropdown-list');
-            const btnZoomEnter = document.getElementById('btn-zoom-enter');
+            const zoomInput = document.getElementById('map-search-box');
+            const dropdownList = document.getElementById('unified-dropdown-list');
+            const clearBtn = document.getElementById('clear-search');
 
             fetch(urlProvince).then(res => res.json()).then(data => {
                 provinceLayer = L.geoJSON(data, { style: { color: '#2563eb', weight: 3, fillOpacity: 0.05, fillColor: '#3b82f6' } });
@@ -611,6 +605,7 @@
 
             fetch(urlCommune).then(res => res.json()).then(data => {
                 allFarmsData = []; 
+                unifiedSearchData = [];
                 
                 let allUniqueCommunes = [];
                 data.features.forEach(f => {
@@ -653,24 +648,53 @@
                             let fullName = loai && !ten_xa.toLowerCase().includes(loai.toLowerCase()) ? loai + ' ' + ten_xa : ten_xa;
                             
                             const searchKey = normalizeString(fullName);
-                            communeSearchData.push({ name: fullName, searchKey: searchKey, layer: layer });
-
                             const farmData = dynamicDurianMap[searchKey];
-                            
-                            if (farmData) {
-                                generateFarmsInCommune(feature, layer, fullName, farmData.total);
-                            }
 
-                            layer.on('click', function() {
-                                document.getElementById('zoom-commune-input').value = fullName;
-                                window.executeGeoJSONZoom(fullName);
-                            });
+                            if (farmData) {
+                                // Đưa Xã vào danh sách tìm kiếm chung
+                                unifiedSearchData.push({
+                                    type: 'commune',
+                                    name: fullName,
+                                    subtext: `Tổng diện tích: ${farmData.total.toLocaleString('vi-VN')} ha`,
+                                    searchKey: searchKey,
+                                    data: { layer: layer, fullName: fullName, farmData: farmData }
+                                });
+                                
+                                generateFarmsInCommune(feature, layer, fullName, farmData.total);
+                                
+                                // Click trực tiếp trên bản đồ
+                                layer.on('click', function() {
+                                    zoomInput.value = fullName;
+                                    clearBtn.classList.remove('hidden');
+                                    handleSelection({
+                                        type: 'commune',
+                                        data: { layer: layer, fullName: fullName, farmData: farmData }
+                                    });
+                                });
+                            } else {
+                                layer.bindPopup(`
+                                    <div class="text-xs p-2">
+                                        <h4 class="font-bold text-gray-600 uppercase border-b pb-1 mb-2">${fullName}</h4>
+                                        <p class="text-gray-500 italic">Không có dữ liệu trồng sầu riêng</p>
+                                    </div>
+                                `);
+                            }
                         }
                     }
                 });
 
-                communeSearchData.sort((a, b) => a.name.localeCompare(b.name));
                 if(document.getElementById('cb-layer-commune').checked) communeLayer.addTo(map);
+
+                // Sau khi sinh nhà vườn xong, đưa luôn nhà vườn vào danh sách tìm kiếm chung
+                allFarmsData.forEach(farm => {
+                    unifiedSearchData.push({
+                        type: 'farm',
+                        name: farm.owner,
+                        subtext: `Mã lô: ${farm.id} • ${farm.communeName}`,
+                        searchKey: normalizeString(farm.owner + " " + farm.id + " " + farm.communeName),
+                        data: farm
+                    });
+                });
 
                 renderMarkers(allFarmsData);
 
@@ -712,32 +736,26 @@
                         certStatus: '', certClass: '', cadimi: '', cadimiClass: '', supplyStatus: ''
                     };
 
-                    const imgPhan = "https://wasi.org.vn/wp-content/uploads/2025/11/image001.png";
-                    const imgThuoc = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXO_7QX8VVXJcCkI9nqIo8NBbmlFnhQBbJ_A&s";
-
                     if (statusCode === 'safe') {
                         trace.certStatus = 'Đủ tiêu chuẩn xuất khẩu'; trace.certClass = 'text-green-600'; trace.cadimi = 'KĐ (< 0.05 mg/kg)'; trace.cadimiClass = 'text-green-600';
                         trace.supplyStatus = '<li>Đang chăm sóc tại vườn (Chưa thu hoạch).</li><li>Đã liên kết bao tiêu với Hợp tác xã.</li>';
                         logs = [
-                            { date: '15/03/2026', time: '08:30', action: 'Bón phân', actionCls: 'bg-blue-100 text-blue-800', material: 'Phân Hữu cơ Vi sinh', detail: 'Cải tạo đất, tăng mùn', note: 'Chuẩn VietGAP', noteCls: 'text-green-600', amount: '10 kg/gốc', img: imgPhan },
-                            { date: '20/03/2026', time: '10:00', action: 'Đo pH Đất', actionCls: 'bg-gray-200 text-gray-800', material: 'Test nhanh tại vườn', detail: 'Kết quả: pH = 6.4', note: 'Đất trung tính, tốt', noteCls: 'text-green-600', amount: '-', img: '' },
-                            { date: '25/03/2026', time: '16:00', action: 'Phun thuốc', actionCls: 'bg-purple-100 text-purple-800', material: 'Chế phẩm sinh học Abamectin', detail: 'Phòng trừ nhện đỏ', note: 'Đã qua 14 ngày cách ly', noteCls: 'text-green-600', amount: '20ml/bình 25L', img: imgThuoc }
+                            { date: '15/03/2026', time: '08:30', action: 'Bón phân', actionCls: 'bg-blue-100 text-blue-800', material: 'Phân Hữu cơ Vi sinh', detail: 'Cải tạo đất, tăng mùn', note: 'Chuẩn VietGAP', noteCls: 'text-green-600', amount: '10 kg/gốc', img: "https://wasi.org.vn/wp-content/uploads/2025/11/image001.png" },
+                            { date: '25/03/2026', time: '16:00', action: 'Phun thuốc', actionCls: 'bg-purple-100 text-purple-800', material: 'Sinh học Abamectin', detail: 'Phòng trừ nhện đỏ', note: 'Đã qua 14 ngày cách ly', noteCls: 'text-green-600', amount: '20ml/bình', img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXO_7QX8VVXJcCkI9nqIo8NBbmlFnhQBbJ_A&s" }
                         ];
                     } else if (statusCode === 'warning') {
                         trace.certStatus = 'Đang chờ đánh giá lại'; trace.certClass = 'text-yellow-600'; trace.cadimi = '0.04 mg/kg (Sát ngưỡng)'; trace.cadimiClass = 'text-yellow-600';
                         trace.supplyStatus = '<li>Đang theo dõi kỹ thuật canh tác.</li><li>Yêu cầu test lại mẫu đất trước khi cắt trái.</li>';
                         logs = [
-                            { date: '10/03/2026', time: '09:00', action: 'Bón phân', actionCls: 'bg-blue-100 text-blue-800', material: 'Lân Nung Chảy (Vô cơ)', detail: 'Kích rễ', note: 'Chứa Cadimi tự nhiên', noteCls: 'text-yellow-600', amount: '2 kg/gốc', img: imgPhan },
-                            { date: '22/03/2026', time: '14:30', action: 'Đo pH Đất', actionCls: 'bg-gray-200 text-gray-800', material: 'Test lab', detail: 'Kết quả: pH = 5.2', note: 'Đất hơi chua', noteCls: 'text-yellow-600', amount: '-', img: '' },
-                            { date: '02/04/2026', time: '17:00', action: 'Phun thuốc', actionCls: 'bg-purple-100 text-purple-800', material: 'Thuốc hóa học Imidacloprid', detail: 'Trừ rầy phấn trắng', note: 'Chưa đủ thời gian cách ly', noteCls: 'text-yellow-600', amount: '15ml/bình', img: imgThuoc }
+                            { date: '10/03/2026', time: '09:00', action: 'Bón phân', actionCls: 'bg-blue-100 text-blue-800', material: 'Lân Nung Chảy', detail: 'Kích rễ', note: 'Chứa Cadimi tự nhiên', noteCls: 'text-yellow-600', amount: '2 kg/gốc', img: "https://wasi.org.vn/wp-content/uploads/2025/11/image001.png" },
+                            { date: '02/04/2026', time: '17:00', action: 'Phun thuốc', actionCls: 'bg-purple-100 text-purple-800', material: 'Imidacloprid', detail: 'Trừ rầy phấn trắng', note: 'Chưa đủ thời gian cách ly', noteCls: 'text-yellow-600', amount: '15ml/bình', img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXO_7QX8VVXJcCkI9nqIo8NBbmlFnhQBbJ_A&s" }
                         ];
                     } else {
                         trace.certStatus = 'ĐÌNH CHỈ THU HOẠCH'; trace.certClass = 'text-red-600 font-extrabold'; trace.cadimi = '0.08 mg/kg (Vượt mức cho phép)'; trace.cadimiClass = 'text-red-600 font-bold';
                         trace.supplyStatus = '<li>Vi phạm nghiêm trọng thời gian cách ly thuốc BVTV.</li><li>Tạm thời khóa mã vùng trồng, cấm xuất khẩu.</li>';
                         logs = [
-                            { date: '05/03/2026', time: '08:00', action: 'Bón phân', actionCls: 'bg-blue-100 text-blue-800', material: 'Phân Super Lân', detail: 'Bón thúc liều cao', note: 'Nguy cơ tồn dư kim loại', noteCls: 'text-red-600', amount: '4 kg/gốc', img: imgPhan },
-                            { date: '28/03/2026', time: '11:00', action: 'Đo pH Đất', actionCls: 'bg-gray-200 text-gray-800', material: 'Sở NN kiểm tra', detail: 'Kết quả: pH = 4.5', note: 'Đất cực chua, rễ hút độc', noteCls: 'text-red-600', amount: '-', img: '' },
-                            { date: '07/04/2026', time: '16:30', action: 'Phun thuốc', actionCls: 'bg-purple-100 text-purple-800', material: 'Thuốc trị nấm Hexaconazole', detail: 'Phun trực tiếp lên trái', note: 'MỚI PHUN - CẤM THU HOẠCH', noteCls: 'text-red-600 font-bold', amount: '50g/bình', img: imgThuoc }
+                            { date: '05/03/2026', time: '08:00', action: 'Bón phân', actionCls: 'bg-blue-100 text-blue-800', material: 'Super Lân', detail: 'Bón thúc liều cao', note: 'Nguy cơ tồn dư kim loại', noteCls: 'text-red-600', amount: '4 kg/gốc', img: "https://wasi.org.vn/wp-content/uploads/2025/11/image001.png" },
+                            { date: '07/04/2026', time: '16:30', action: 'Phun thuốc', actionCls: 'bg-purple-100 text-purple-800', material: 'Hexaconazole', detail: 'Trị nấm xì mủ', note: 'MỚI PHUN - CẤM THU HOẠCH', noteCls: 'text-red-600 font-bold', amount: '50g/bình', img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXO_7QX8VVXJcCkI9nqIo8NBbmlFnhQBbJ_A&s" }
                         ];
                     }
 
@@ -751,18 +769,33 @@
                 }
             }
 
-            // Xử lý Search Autocomplete
-            function renderDropdown(items) {
+            // --- XỬ LÝ THANH TÌM KIẾM ĐA NĂNG (OMNIBOX) ---
+            function renderUnifiedDropdown(items) {
                 dropdownList.innerHTML = '';
                 if(items.length === 0) {
-                    dropdownList.innerHTML = '<li class="px-4 py-3 text-sm text-gray-500 italic text-center">Không tìm thấy địa điểm</li>'; return;
+                    dropdownList.innerHTML = '<li class="px-4 py-3 text-sm text-gray-500 italic text-center">Không tìm thấy kết quả</li>';
+                    return;
                 }
                 items.forEach(item => {
                     const li = document.createElement('li');
-                    li.className = 'px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 cursor-pointer border-b border-gray-100 last:border-0 flex items-center transition';
-                    li.innerHTML = `<i class="fa-solid fa-location-dot text-gray-400 mr-2 w-4"></i> ${item.name}`;
+                    li.className = 'px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-0 flex items-start transition';
+                    
+                    const icon = item.type === 'commune' ? '<i class="fa-solid fa-map-location-dot text-blue-500 mt-0.5 mr-3 text-lg w-5 text-center"></i>' : '<i class="fa-solid fa-house-chimney text-agrigreen-600 mt-0.5 mr-3 text-lg w-5 text-center"></i>';
+                    
+                    li.innerHTML = `
+                        ${icon}
+                        <div class="flex-grow overflow-hidden">
+                            <p class="font-bold text-gray-800 truncate">${item.name}</p>
+                            <p class="text-[10px] text-gray-500 truncate mt-0.5">${item.subtext}</p>
+                        </div>
+                    `;
+                    
                     li.onmousedown = (e) => {
-                        e.preventDefault(); zoomInput.value = item.name; dropdownList.classList.add('hidden'); window.executeGeoJSONZoom(item.name);
+                        e.preventDefault(); 
+                        zoomInput.value = item.name; 
+                        dropdownList.classList.add('hidden'); 
+                        clearBtn.classList.remove('hidden');
+                        handleSelection(item);
                     };
                     dropdownList.appendChild(li);
                 });
@@ -771,13 +804,34 @@
             zoomInput.addEventListener('focus', () => {
                 dropdownList.classList.remove('hidden');
                 const val = normalizeString(zoomInput.value);
-                renderDropdown(val ? communeSearchData.filter(c => c.searchKey.includes(val)) : communeSearchData);
+                if (!val) {
+                    // Hiển thị một số xã nổi bật khi vừa nhấp vào
+                    const initCommunes = unifiedSearchData.filter(i => i.type === 'commune').slice(0, 5);
+                    renderUnifiedDropdown(initCommunes);
+                } else {
+                    zoomInput.dispatchEvent(new Event('input'));
+                }
             });
 
             zoomInput.addEventListener('input', (e) => {
-                dropdownList.classList.remove('hidden');
                 const val = normalizeString(e.target.value);
-                renderDropdown(communeSearchData.filter(c => c.searchKey.includes(val)));
+                if (val.length > 0) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+                
+                dropdownList.classList.remove('hidden');
+                
+                // Mọi lúc gõ phím mới, reset lại bộ lọc để map hiển thị tự do
+                currentCommuneFilter = null;
+                currentFarmFilter = null;
+                document.getElementById('map-commune-info').classList.add('hidden');
+                if (highlightedCommune) { communeLayer.resetStyle(highlightedCommune); highlightedCommune = null; }
+                applyFilters();
+
+                const matchedCommunes = unifiedSearchData.filter(i => i.type === 'commune' && i.searchKey.includes(val));
+                const matchedFarms = unifiedSearchData.filter(i => i.type === 'farm' && i.searchKey.includes(val));
+                
+                // Trộn kết quả: Ưu tiên Xã trước, Nhà vườn sau. Giới hạn hiển thị để UI mượt.
+                renderUnifiedDropdown([...matchedCommunes.slice(0, 4), ...matchedFarms.slice(0, 10)]);
             });
 
             zoomInput.addEventListener('keypress', (e) => {
@@ -785,93 +839,84 @@
                     e.preventDefault(); dropdownList.classList.add('hidden');
                     const val = normalizeString(zoomInput.value);
                     if (!val) return;
-                    const match = communeSearchData.find(c => c.searchKey === val || c.searchKey.includes(val));
-                    if (match) { zoomInput.value = match.name; window.executeGeoJSONZoom(match.name); } 
+                    
+                    const match = unifiedSearchData.find(c => c.searchKey === val || c.searchKey.includes(val));
+                    if (match) { 
+                        zoomInput.value = match.name; 
+                        handleSelection(match); 
+                    } 
                 }
             });
 
-            btnZoomEnter.addEventListener('click', (e) => { e.preventDefault(); zoomInput.dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'})); });
-            document.addEventListener('mousedown', (e) => { if (!document.getElementById('dropdown-wrapper').contains(e.target)) dropdownList.classList.add('hidden'); });
+            document.addEventListener('mousedown', (e) => { if (!document.getElementById('main-search-wrapper').contains(e.target)) dropdownList.classList.add('hidden'); });
 
-            // --- HÀM TÌM KIẾM, LỌC MARKERS VÀ HIỆU ỨNG ZOOM ---
-            window.executeGeoJSONZoom = function(searchValueOverride) {
-                const searchValue = typeof searchValueOverride === 'string' ? searchValueOverride : zoomInput.value.trim();
-                const valNorm = normalizeString(searchValue); 
-                if (!valNorm || !communeLayer) return;
+            // --- XỬ LÝ KHI CHỌN TỪ DROPDOWN HOẶC BẢN ĐỒ ---
+            function handleSelection(item) {
+                if (item.type === 'commune') {
+                    const layer = item.data.layer;
+                    const fullNameFound = item.data.fullName;
+                    const farmData = item.data.farmData;
 
-                let foundLayer = null;
-                let fullNameFound = '';
-                
-                communeLayer.eachLayer(l => communeLayer.resetStyle(l));
-
-                communeLayer.eachLayer(layer => {
-                    if(!layer.feature || !layer.feature.properties) return;
-                    
-                    let ten_xa = layer.feature.properties.ten_xa || '';
-                    let loai = layer.feature.properties.loai || '';
-                    let fullName = loai && !ten_xa.toLowerCase().includes(loai.toLowerCase()) ? loai + ' ' + ten_xa : ten_xa;
-                    
-                    const fullNorm = normalizeString(fullName);
-                    const tenXaNorm = normalizeString(ten_xa);
-                    
-                    if (fullNorm === valNorm || tenXaNorm === valNorm || fullNorm.includes(valNorm)) {
-                        if (!foundLayer) {
-                            foundLayer = layer; 
-                            fullNameFound = fullName;
-                        }
-                    }
-                });
-
-                if (foundLayer) {
+                    // Lọc bản đồ chỉ hiện Marker của xã này
                     currentCommuneFilter = fullNameFound;
+                    currentFarmFilter = null;
                     applyFilters();
 
-                    // Mở Bảng Thông tin (Nổi trên bản đồ)
+                    // Hiện bảng thông tin
                     const mapInfoCard = document.getElementById('map-commune-info');
                     document.getElementById('map-info-title').innerText = fullNameFound;
-                    
-                    const farmData = dynamicDurianMap[normalizeString(fullNameFound)];
-                    if (farmData) {
-                        document.getElementById('map-info-total').innerText = farmData.total.toLocaleString('vi-VN');
-                        document.getElementById('map-info-basic').innerText = farmData.basic.toLocaleString('vi-VN');
-                        document.getElementById('map-info-harvest').innerText = farmData.harvest.toLocaleString('vi-VN');
-                        document.getElementById('map-info-status').innerHTML = '<span class="text-agrigreen-600 bg-agrigreen-100 px-2 py-1 rounded text-xs font-bold">Vùng Trọng Điểm</span>';
-                    } else {
-                        document.getElementById('map-info-total').innerText = '0';
-                        document.getElementById('map-info-basic').innerText = '0';
-                        document.getElementById('map-info-harvest').innerText = '0';
-                        document.getElementById('map-info-status').innerHTML = '<span class="text-gray-500 bg-gray-100 px-2 py-1 rounded text-xs font-bold">Chưa có dữ liệu trồng</span>';
-                    }
+                    document.getElementById('map-info-total').innerText = farmData.total.toLocaleString('vi-VN');
+                    document.getElementById('map-info-basic').innerText = farmData.basic.toLocaleString('vi-VN');
+                    document.getElementById('map-info-harvest').innerText = farmData.harvest.toLocaleString('vi-VN');
+                    document.getElementById('map-info-status').innerHTML = '<span class="text-agrigreen-600 bg-agrigreen-100 px-2 py-1 rounded text-xs font-bold">Vùng Trọng Điểm</span>';
                     mapInfoCard.classList.remove('hidden');
 
                     if (!map.hasLayer(communeLayer)) { map.addLayer(communeLayer); document.getElementById('cb-layer-commune').checked = true; }
 
-                    const statusText = document.getElementById('zoom-status-text');
-                    btnZoomEnter.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-                    statusText.innerHTML = `<i class="fa-solid fa-plane"></i> Đang bay đến ${fullNameFound}...`;
-
-                    map.flyToBounds(foundLayer.getBounds(), { padding: [30, 30], maxZoom: 13, duration: 1.5 });
-
+                    if (highlightedCommune) communeLayer.resetStyle(highlightedCommune);
+                    
+                    // Bay và Tô Sáng
+                    map.flyToBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 13, duration: 1.5 });
                     setTimeout(() => {
-                        foundLayer.setStyle({ color: '#ef4444', weight: 4, fillColor: '#fca5a5', fillOpacity: 0.6 });
-                        foundLayer.bringToFront(); 
-                        highlightedCommune = foundLayer;
-                        
-                        btnZoomEnter.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i>';
-                        statusText.innerHTML = `<span class="text-green-600"><i class="fa-solid fa-check"></i> Đã định vị thành công!</span>`;
+                        layer.setStyle({ color: '#ef4444', weight: 4, fillColor: '#fca5a5', fillOpacity: 0.5 });
+                        layer.bringToFront(); 
+                        highlightedCommune = layer;
                         zoomInput.blur();
                     }, 1500);
-                } else {
-                    alert("Không tìm thấy ranh giới địa lý cho từ khóa: " + searchValue);
+
+                } else if (item.type === 'farm') {
+                    const farm = item.data;
+                    
+                    // Bỏ filter commune để đảm bảo farm này hiển thị
+                    currentCommuneFilter = null;
+                    currentFarmFilter = farm.id;
+                    document.getElementById('map-commune-info').classList.add('hidden');
+                    if (highlightedCommune) { communeLayer.resetStyle(highlightedCommune); highlightedCommune = null; }
+                    
+                    applyFilters();
+
+                    // Bay tới Farm
+                    map.flyTo([farm.lat, farm.lng], 16, {duration: 1.5});
+                    
+                    // Mở popup sau khi hạ cánh
+                    setTimeout(() => {
+                        if (farm.markerRef) {
+                            markersClusterGroup.zoomToShowLayer(farm.markerRef, () => {
+                                farm.markerRef.openPopup();
+                            });
+                        }
+                        zoomInput.blur();
+                    }, 1600);
                 }
-            };
+            }
 
             // Hàm xóa bộ lọc và quay lại view Tỉnh
-            window.clearCommuneFilter = function() {
+            window.clearSearchAndFilters = function() {
                 currentCommuneFilter = null;
-                document.getElementById('zoom-commune-input').value = '';
+                currentFarmFilter = null;
+                zoomInput.value = '';
+                document.getElementById('clear-search').classList.add('hidden');
                 document.getElementById('map-commune-info').classList.add('hidden');
-                document.getElementById('zoom-status-text').innerHTML = '* Gõ không dấu, ấn Enter hoặc <b>Click trực tiếp</b> vào xã trên bản đồ.';
                 
                 if (highlightedCommune) {
                     communeLayer.resetStyle(highlightedCommune);
@@ -882,8 +927,7 @@
                 applyFilters();
             };
 
-            // Lọc Marker chung
-            document.getElementById('map-search-box').addEventListener('input', applyFilters);
+            // Lọc Sidebar
             document.getElementById('filter-area').addEventListener('change', applyFilters);
             document.getElementById('filter-status').addEventListener('change', () => {
                 const val = document.getElementById('filter-status').value;
@@ -894,7 +938,7 @@
             });
         }
 
-        // Render Marker vào Map (Fix text width)
+        // Render Marker vào Map và Gắn Reference
         function renderMarkers(data) {
             markersClusterGroup.clearLayers();
             data.forEach(farm => {
@@ -905,6 +949,8 @@
                 });
                 const marker = L.marker([farm.lat, farm.lng], {icon});
                 
+                farm.markerRef = marker; // Gắn reference để có thể mở popup từ bên ngoài
+
                 marker.bindPopup(`
                     <div class="p-1">
                         <div class="flex items-center mb-3 border-b pb-2">
@@ -922,7 +968,7 @@
                         </div>
                         <button onclick="openLogModal('${farm.id}')" class="w-full bg-agrigreen-50 hover:bg-agrigreen-100 text-agrigreen-800 text-xs font-bold py-2 px-1 rounded transition border border-agrigreen-200 shadow-sm flex items-center justify-center">
                             <i class="fa-solid fa-file-invoice mr-1.5 shrink-0 text-sm"></i> 
-                            <span class="whitespace-nowrap">Trích xuất nhật ký canh tác</span>
+                            <span class="whitespace-nowrap truncate">Trích xuất nhật ký canh tác</span>
                         </button>
                     </div>
                 `, { minWidth: 270, maxWidth: 300 });
@@ -931,23 +977,44 @@
         }
 
         function applyFilters() {
-            const searchText = document.getElementById('map-search-box').value.toLowerCase().trim();
             const areaVal = document.getElementById('filter-area').value;
             const showSafe = document.getElementById('cb-safe').checked;
             const showWarning = document.getElementById('cb-warning').checked;
             const showDanger = document.getElementById('cb-danger').checked;
 
             const filteredData = allFarmsData.filter(farm => {
-                const matchSearch = farm.owner.toLowerCase().includes(searchText) || farm.id.toLowerCase().includes(searchText);
+                // Lọc Sidebar
                 let matchArea = (areaVal === 'all') || (areaVal.endsWith('-all') && farm.districtCode === areaVal);
                 let matchStatus = (farm.statusCode === 'safe' && showSafe) || (farm.statusCode === 'warning' && showWarning) || (farm.statusCode === 'danger' && showDanger);
                 
-                // Lọc Marker thuộc xã đang chọn
-                let matchCommune = currentCommuneFilter ? (farm.communeName === currentCommuneFilter) : true;
+                // Lọc Theo Search Tự Động (Commune / Farm ID)
+                let matchLogic = true;
+                if (currentCommuneFilter) matchLogic = (farm.communeName === currentCommuneFilter);
+                else if (currentFarmFilter) matchLogic = (farm.id === currentFarmFilter);
+                else {
+                    // Nếu người dùng đang gõ dở một chuỗi văn bản (Chưa ấn Enter)
+                    const rawText = document.getElementById('map-search-box').value.toLowerCase().trim();
+                    if(rawText) {
+                        matchLogic = farm.owner.toLowerCase().includes(rawText) || 
+                                     farm.id.toLowerCase().includes(rawText) || 
+                                     farm.communeName.toLowerCase().includes(rawText);
+                    }
+                }
 
-                return matchSearch && matchArea && matchStatus && matchCommune;
+                return matchArea && matchStatus && matchLogic;
             });
             renderMarkers(filteredData);
+        }
+
+        function syncFilters() {
+            const safe = document.getElementById('cb-safe').checked;
+            const warning = document.getElementById('cb-warning').checked;
+            const danger = document.getElementById('cb-danger').checked;
+            if (safe && !warning && !danger) document.getElementById('filter-status').value = 'safe';
+            else if (!safe && warning && !danger) document.getElementById('filter-status').value = 'warning';
+            else if (!safe && !warning && danger) document.getElementById('filter-status').value = 'danger';
+            else document.getElementById('filter-status').value = 'all';
+            applyFilters();
         }
 
         // --- 5. LOGIC MODAL NHẬT KÝ CHI TIẾT ---
