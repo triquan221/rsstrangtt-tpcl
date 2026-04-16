@@ -43,6 +43,12 @@
             letter-spacing: 1px;
         }
 
+        .subtitle {
+            margin-top: 8px;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
         .table-responsive {
             overflow-x: auto;
             width: 100%;
@@ -51,11 +57,11 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px; /* Đảm bảo bảng không bị co quá nhỏ trên mobile */
+            min-width: 800px;
         }
 
         thead {
-            background-color: #00456b; /* Màu đậm hơn một chút cho header bảng */
+            background-color: #00456b;
             color: white;
         }
 
@@ -98,6 +104,9 @@
             h1 {
                 font-size: 18px;
             }
+            .subtitle {
+                font-size: 14px;
+            }
             body {
                 padding: 10px;
             }
@@ -112,6 +121,7 @@
     <div class="container">
         <header>
             <h1>Danh Sách Lãnh Đạo Hội Đồng Nhân Dân Phường Cao Lãnh</h1>
+            <div class="subtitle">Khóa II, Nhiệm kỳ 2026 - 2031</div>
         </header>
 
         <div class="table-responsive">
@@ -121,73 +131,66 @@
                         <th>STT</th>
                         <th>Họ và tên</th>
                         <th>Chức vụ</th>
-                        <th>Ngày sinh</th>
-                        <th>Quê quán</th>
-                        <th>Trình độ chuyên môn</th>
-                        <th>Lý luận chính trị</th>
                         <th>Số điện thoại</th>
+                        <th>Email</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>01</td>
                         <td>Nguyễn Hùng Tráng</td>
-                        <td>Bí thư Đảng ủy/ Chủ tịch HĐND</td>
-                        <td>26/11/1969</td>
-                        <td>Ấp Thượng, xã Thường Phước, tỉnh Đồng Tháp</td>
-                        <td>Cử nhân Luật</td>
-                        <td>Cao cấp</td>
+                        <td>Tỉnh uỷ viên, Bí thư Đảng uỷ, Chủ tịch HĐND</td>
                         <td>0944 999 303</td>
+                        <td>hungtrangbthuhn@gmail.com</td>
                     </tr>
                     <tr>
                         <td>02</td>
                         <td>Phan Thị Hồng Thanh</td>
-                        <td>UV BTV Đảng ủy/ Phó Chủ tịch HĐND</td>
-                        <td>21/12/1979</td>
-                        <td>Xã Thạch Lâm, huyện Thạch Hà, tỉnh Hà Tĩnh</td>
-                        <td>Đại học Quản trị kinh doanh; Thạc sĩ Chính trị học</td>
-                        <td>Cao cấp</td>
+                        <td>Uỷ viên Ban Thường vụ Đảng uỷ, Phó Chủ tịch HĐND</td>
                         <td>0908 525 697</td>
+                        <td>hongthanhphan@gmail.com</td>
                     </tr>
                     <tr>
                         <td>03</td>
                         <td>Phan Thanh Bình</td>
-                        <td>UV BTV/ Chủ nhiệm UBKT Đảng ủy/ Trưởng Ban Kinh tế - Ngân sách HĐND</td>
-                        <td>15/05/1973</td>
-                        <td>Xã Thường Phước, tỉnh Đồng Tháp</td>
-                        <td>Cử nhân Luật</td>
-                        <td>Cao cấp</td>
+                        <td>Uỷ viên Ban Thường vụ Đảng uỷ, Trưởng Ban Kinh tế - Ngân sách HĐND</td>
                         <td>0919 090 933</td>
+                        <td>ptbinh.pcl@dongthap.dcs.vn</td>
                     </tr>
                     <tr>
                         <td>04</td>
                         <td>Nguyễn Thị Thu Hiền</td>
-                        <td>UV BTV/ Trưởng Ban Xây dựng Đảng/ Trưởng Ban Văn hóa – Xã hội HĐND</td>
-                        <td>19/07/1979</td>
-                        <td>Xã Phong Mỹ, tỉnh Đồng Tháp</td>
-                        <td>Cử nhân Kinh tế Chính trị</td>
-                        <td>Cao cấp</td>
+                        <td>Ủy viên Ban Thường vụ Đảng uỷ, Trưởng Ban Văn hoá - Xã hội HĐND</td>
                         <td>0939 899 234</td>
+                        <td>thuhienkt2@gmail.com</td>
                     </tr>
                     <tr>
                         <td>05</td>
-                        <td>Lê Văn Nhiên</td>
-                        <td>Phó Trưởng Ban Kinh tế - Ngân sách HĐND</td>
-                        <td>27/05/1984</td>
-                        <td>Phường Mỹ Trà, tỉnh Đồng Tháp</td>
-                        <td>Đại học Hành chính</td>
-                        <td>Trung cấp</td>
-                        <td>0939 935 287</td>
+                        <td>Phan Văn Lưỡng</td>
+                        <td>Ủy viên Ban Chấp hành Đảng bộ, Phó trưởng Ban chuyên trách Ban Kinh tế - Ngân sách HĐND</td>
+                        <td>0913 864 898</td>
+                        <td>phanvanluongtpcl@gmail.com</td>
                     </tr>
                     <tr>
                         <td>06</td>
-                        <td>Lê Việt Mỹ</td>
-                        <td>Đảng ủy viên/ Phó Trưởng Ban Văn hóa – Xã hội HĐND</td>
-                        <td>10/07/1976</td>
-                        <td>Phường Mỹ Ngãi, tỉnh Đồng Tháp</td>
-                        <td>Cử nhân Luật</td>
-                        <td>Cao cấp</td>
-                        <td>0989 627 759</td>
+                        <td>Nguyễn Văn Tuấn</td>
+                        <td>Ủy viên Ban Chấp hành Đảng bộ, Phó trưởng Ban kiêm nhiệm Ban Kinh tế - Ngân sách HĐND</td>
+                        <td>0913 571 359</td>
+                        <td>tuanmttqndcaolanh@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>07</td>
+                        <td>Lê Thị Duy Linh</td>
+                        <td>Ủy viên Ban Chấp hành Đảng bộ, Phó trưởng Ban chuyên trách Ban Văn hóa - Xã hội HĐND</td>
+                        <td>0366 492 499</td>
+                        <td>lethiduylinhtpcl@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>08</td>
+                        <td>Võ Văn Cường</td>
+                        <td>Ủy viên Ban Chấp hành Đảng bộ, Phó trưởng Ban kiêm nhiệm Ban Văn hóa – Xã hội HĐND</td>
+                        <td>0368 246 094</td>
+                        <td>cuongchinhtri@gmail.com</td>
                     </tr>
                 </tbody>
             </table>
