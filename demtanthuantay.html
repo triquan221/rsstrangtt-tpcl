@@ -1,319 +1,221 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thư viện ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây"</title>
-    <style>
-        /* --- CẤU HÌNH GIAO DIỆN --- */
-        :root {
-            --primary-color: #c0392b; /* Màu đỏ đất */
-            --bg-color: #fff7ef;      /* MÀU NỀN KEM */
-            --text-color: #5d4037;    /* Màu nâu */
-            --card-shadow: 0 10px 30px rgba(93, 64, 55, 0.15);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body, html {
-            width: 100%; height: 100%;
-            background-color: var(--bg-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; 
-        }
-
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            padding: 10px;
-            align-items: center;
-        }
-
-        /* --- TIÊU ĐỀ --- */
-        .header-title {
-            width: 100%;
-            text-align: center;
-            padding: 5px 0 10px 0;
-            flex-shrink: 0; 
-        }
-
-        .header-title h1 {
-            color: var(--primary-color);
-            font-size: 22px; 
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 5px;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
-        }
-
-        .header-deco {
-            width: 80px; height: 3px;
-            background-color: var(--text-color);
-            margin: 0 auto;
-            border-radius: 2px;
-            opacity: 0.3;
-        }
-
-        /* --- KHUNG SLIDE --- */
-        .gallery-card {
-            flex: 1; 
-            width: 100%;
-            max-width: 1000px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-            border: 4px solid #fff;
-        }
-
-        /* Màn hình hiển thị ảnh lớn */
-        .main-stage {
-            flex: 1;
-            position: relative;
-            background-color: #fafafa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .main-stage img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            opacity: 0;
-            transform: scale(1.05);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-            position: absolute;
-        }
-
-        .main-stage img.active {
-            opacity: 1;
-            transform: scale(1);
-            z-index: 2;
-        }
-
-        /* --- CHÚ THÍCH (CAPTION) - ĐÃ SỬA --- */
-        .caption-overlay {
-            position: absolute;
-            bottom: 0; left: 0; width: 100%;
-            /* Nền gradient đen mờ để chữ trắng luôn nổi bật */
-            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
-            padding: 50px 20px 20px 20px; /* Padding trên cao để gradient mềm mại */
-            color: white;
-            text-align: center;
-            font-size: 18px; /* Chữ to hơn một chút cho rõ */
-            font-weight: 500;
-            z-index: 5;
-            
-            /* SỬA: Luôn hiện (Opacity 1), không cần hover */
-            opacity: 1; 
-            transition: all 0.3s ease;
-            pointer-events: none; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Đổ bóng chữ cho dễ đọc */
-        }
-        
-        /* Nút điều hướng */
-        .nav-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            width: 40px; height: 40px;
-            border-radius: 50%; border: none;
-            background: rgba(255,255,255,0.9);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            cursor: pointer; color: var(--primary-color);
-            font-size: 20px; z-index: 10;
-            transition: all 0.2s;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .nav-btn:hover { background: var(--primary-color); color: white; }
-        .prev-btn { left: 15px; }
-        .next-btn { right: 15px; }
-
-        /* --- THANH THUMBNAIL --- */
-        .thumb-strip-container {
-            height: 80px;
-            background: #fff;
-            border-top: 1px solid #f0f0f0;
-            padding: 10px;
-            width: 100%;
-        }
-
-        .thumb-strip {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto; 
-            scroll-behavior: smooth;
-            height: 100%;
-            align-items: center;
-            scrollbar-width: none; 
-        }
-        .thumb-strip::-webkit-scrollbar { display: none; }
-
-        .thumb {
-            height: 100%;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-            border-radius: 6px;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-            flex-shrink: 0; 
-        }
-
-        .thumb:hover { opacity: 1; }
-        .thumb.selected {
-            opacity: 1;
-            border-color: var(--primary-color);
-            transform: scale(0.95);
-        }
-
-    </style>
+<title>Page Title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-    <div class="wrapper">
-        <div class="header-title">
-            <h1>Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây"</h1>
-            <div class="header-deco"></div>
-        </div>
+<div class="slider-wrapper-pcl">
+  <h2 class="slider-title-pcl">Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây"</h2>
 
-        <div class="gallery-card">
-            <div class="main-stage" id="mainStage">
-                <button class="nav-btn prev-btn" onclick="changeSlide(-1)">❮</button>
-                <button class="nav-btn next-btn" onclick="changeSlide(1)">❯</button>
-                
-                <div class="caption-overlay">
-                    <span id="captionText">Loading...</span>
-                </div>
-            </div>
-
-            <div class="thumb-strip-container">
-                <div class="thumb-strip" id="thumbStrip">
-                    </div>
-            </div>
-        </div>
+  <div class="slider-container-pcl">
+    <div class="slides-pcl">
+      <img src="https://lh3.googleusercontent.com/d/11mlIsH5sNLKFfhysas8UrmNUWNuYhUfT=s0" class="active-pcl">
+      <img src="https://lh3.googleusercontent.com/d/12b7Mrh2msQDmI18syLwjHeOv8DQFp9Kt=s0">
+      <img src="https://lh3.googleusercontent.com/d/148kzYn99E8s746kDbZ2jMbY7mH-q-4_S=s0">
+      <img src="https://lh3.googleusercontent.com/d/14OTYNam5EIDVTlJbdsQdUql-6Ar5vhUq=s0">
+      <img src="https://lh3.googleusercontent.com/d/159Of__3PFqgkLvP1onu6ZWU3U7gcNoXd=s0">
+      <img src="https://lh3.googleusercontent.com/d/16jDQHIbs8oDZhiALK4XPCap6LO1SVe0u=s0">
+      <img src="https://lh3.googleusercontent.com/d/17ufBDgEY3Woq4GRru-MTGCTb0ETnDPGz=s0">
+      <img src="https://lh3.googleusercontent.com/d/1E8A9Ll-7eAO2I6FY1AkFPNKGIpsr1Gpe=s0">
+      <img src="https://lh3.googleusercontent.com/d/1FLP6sVDfE8NZv-BWJ_XQygcngdfONRBh=s0">
+      <img src="https://lh3.googleusercontent.com/d/1GsxfK2x--RobslM0r7svWjYwHl5h6KZ5=s0">
+      <img src="https://lh3.googleusercontent.com/d/1R4uLabCKY0kxsL3DUM_l8jZFRqph5nAz=s0">
+      <img src="https://lh3.googleusercontent.com/d/1RuDscMWPTy4jKMiISC0CCD8LeDlHOQg4=s0">
+      <img src="https://lh3.googleusercontent.com/d/1Upj9BvvGqOdtX1X7TE9FFf8i01ejJw4p=s0">
+      <img src="https://lh3.googleusercontent.com/d/1_zqqy4-Rq2PJjcaKYfoWqGrAn4GP6z_K=s0">
+      <img src="https://lh3.googleusercontent.com/d/1bOhpJg9txemwUkLyZDY9bTH3UD59q3g7=s0">
+      <img src="https://lh3.googleusercontent.com/d/1bWYUg16df9Y30R-6CcZLV1Z18mLsGNqu=s0">
+      <img src="https://lh3.googleusercontent.com/d/1e97aLx1efyL4atbqHp8JTLyeeIa8CMkI=s0">
+      <img src="https://lh3.googleusercontent.com/d/1ekNKvPUDyZTRJYs95PaHMA5EMJFqQtmk=s0">
+      <img src="https://lh3.googleusercontent.com/d/1gEgAFMvLl2NNZRTvXy-nwmUjsLf4qOGi=s0">
+      <img src="https://lh3.googleusercontent.com/d/1h7BDJZFwHtZX-e6j3izmd1UUUKjiHPLn=s0">
+      <img src="https://lh3.googleusercontent.com/d/1hVOX9ff8wzEbrUOG7BFpx4gMHSBn3tUm=s0">
+      <img src="https://lh3.googleusercontent.com/d/1ij45Nf8-C5fgbATv34GMNUlopewIBXD2=s0">
+      <img src="https://lh3.googleusercontent.com/d/1jY2teCM6NQQrusxKxYKKOyGG5Xk3pR93=s0">
+      <img src="https://lh3.googleusercontent.com/d/1jhjwMlVTQhbMSJoip2ZxPNMbKui6Q2oL=s0">
+      <img src="https://lh3.googleusercontent.com/d/1osdOtJRa61C5xX1X2iL4_LU5TldOmGyL=s0">
+      <img src="https://lh3.googleusercontent.com/d/1pd6ybBKKgvsTkVQKEfHQ93nrttnwf_4v=s0">
+      <img src="https://lh3.googleusercontent.com/d/1uj-ZZsEMGWvU4_OQqy4PbGG1emw7fb0p=s0">
     </div>
 
-    <script>
-        // --- DỮ LIỆU ẢNH VÀ CHÚ THÍCH ---
-    const slideData = [
-            { url: "https://lh3.googleusercontent.com/d/11mlIsH5sNLKFfhysas8UrmNUWNuYhUfT=s0", text: "Trải nghiệm nhà cổ 100 năm tuổi" },
-            { url: "https://lh3.googleusercontent.com/d/12b7Mrh2msQDmI18syLwjHeOv8DQFp9Kt=s0", text: "Du khách tham quan" },
-            { url: "https://lh3.googleusercontent.com/d/148kzYn99E8s746kDbZ2jMbY7mH-q-4_S=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/14OTYNam5EIDVTlJbdsQdUql-6Ar5vhUq=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/159Of__3PFqgkLvP1onu6ZWU3U7gcNoXd=s0", text: "Hoạt động vui chơi giải trí" },
-            { url: "https://lh3.googleusercontent.com/d/16jDQHIbs8oDZhiALK4XPCap6LO1SVe0u=s0", text: "Du khách tham quan chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/17ufBDgEY3Woq4GRru-MTGCTb0ETnDPGz=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/1E8A9Ll-7eAO2I6FY1AkFPNKGIpsr1Gpe=s0", text: "Trải nghiệm làm bánh dân gian" },
-            { url: "https://lh3.googleusercontent.com/d/1FLP6sVDfE8NZv-BWJ_XQygcngdfONRBh=s0", text: "Hoạt động vui chơi giải trí" },
-            { url: "https://lh3.googleusercontent.com/d/1GsxfK2x--RobslM0r7svWjYwHl5h6KZ5=s0", text: "Du khách tham quan chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/1R4uLabCKY0kxsL3DUM_l8jZFRqph5nAz=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/1RuDscMWPTy4jKMiISC0CCD8LeDlHOQg4=s0", text: "Hoạt động vui chơi giải trí" },
-            { url: "https://lh3.googleusercontent.com/d/1Upj9BvvGqOdtX1X7TE9FFf8i01ejJw4p=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/1_zqqy4-Rq2PJjcaKYfoWqGrAn4GP6z_K=s0", text: "Trải nghiệm làm bánh dân gian" },
-            { url: "https://lh3.googleusercontent.com/d/1bOhpJg9txemwUkLyZDY9bTH3UD59q3g7=s0", text: "Biểu diễn đờn ca tài tử" },
-            { url: "https://lh3.googleusercontent.com/d/1bWYUg16df9Y30R-6CcZLV1Z18mLsGNqu=s0", text: "Du khách tham quan" },
-            { url: "https://lh3.googleusercontent.com/d/1e97aLx1efyL4atbqHp8JTLyeeIa8CMkI=s0", text: "Du khách tham quan" },
-            { url: "https://lh3.googleusercontent.com/d/1ekNKvPUDyZTRJYs95PaHMA5EMJFqQtmk=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/1gEgAFMvLl2NNZRTvXy-nwmUjsLf4qOGi=s0", text: "Trải nghiệm làm bánh dân gian" },
-            { url: "https://lh3.googleusercontent.com/d/1h7BDJZFwHtZX-e6j3izmd1UUUKjiHPLn=s0", text: "Hoạt động trải nghiệm cất vó" },
-            { url: "https://lh3.googleusercontent.com/d/1hVOX9ff8wzEbrUOG7BFpx4gMHSBn3tUm=s0", text: "Hoạt động dỡ chà" },
-            { url: "https://lh3.googleusercontent.com/d/1ij45Nf8-C5fgbATv34GMNUlopewIBXD2=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/1jY2teCM6NQQrusxKxYKKOyGG5Xk3pR93=s0", text: "Hoạt động dỡ chà" },
-            { url: "https://lh3.googleusercontent.com/d/1jhjwMlVTQhbMSJoip2ZxPNMbKui6Q2oL=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/1osdOtJRa61C5xX1X2iL4_LU5TldOmGyL=s0", text: "Không gian ẩm thực chợ quê" },
-            { url: "https://lh3.googleusercontent.com/d/1pd6ybBKKgvsTkVQKEfHQ93nrttnwf_4v=s0", text: "Trải nghiệm nhà cổ 100 năm tuổi" },
-            { url: "https://lh3.googleusercontent.com/d/1uj-ZZsEMGWvU4_OQqy4PbGG1emw7fb0p=s0", text: "Trải nghiệm làm bánh dân gian" }
-        ];
+    <div class="thumbnails-pcl">
+      <!-- dùng cùng danh sách link như slides -->
+      <img src="https://lh3.googleusercontent.com/d/11mlIsH5sNLKFfhysas8UrmNUWNuYhUfT=s0" class="active-pcl">
+      <img src="https://lh3.googleusercontent.com/d/12b7Mrh2msQDmI18syLwjHeOv8DQFp9Kt=s0">
+      <img src="https://lh3.googleusercontent.com/d/148kzYn99E8s746kDbZ2jMbY7mH-q-4_S=s0">
+      <img src="https://lh3.googleusercontent.com/d/14OTYNam5EIDVTlJbdsQdUql-6Ar5vhUq=s0">
+      <img src="https://lh3.googleusercontent.com/d/159Of__3PFqgkLvP1onu6ZWU3U7gcNoXd=s0">
+      <img src="https://lh3.googleusercontent.com/d/16jDQHIbs8oDZhiALK4XPCap6LO1SVe0u=s0">
+      <img src="https://lh3.googleusercontent.com/d/17ufBDgEY3Woq4GRru-MTGCTb0ETnDPGz=s0">
+      <img src="https://lh3.googleusercontent.com/d/1E8A9Ll-7eAO2I6FY1AkFPNKGIpsr1Gpe=s0">
+      <img src="https://lh3.googleusercontent.com/d/1FLP6sVDfE8NZv-BWJ_XQygcngdfONRBh=s0">
+      <img src="https://lh3.googleusercontent.com/d/1GsxfK2x--RobslM0r7svWjYwHl5h6KZ5=s0">
+      <img src="https://lh3.googleusercontent.com/d/1R4uLabCKY0kxsL3DUM_l8jZFRqph5nAz=s0">
+      <img src="https://lh3.googleusercontent.com/d/1RuDscMWPTy4jKMiISC0CCD8LeDlHOQg4=s0">
+      <img src="https://lh3.googleusercontent.com/d/1Upj9BvvGqOdtX1X7TE9FFf8i01ejJw4p=s0">
+      <img src="https://lh3.googleusercontent.com/d/1_zqqy4-Rq2PJjcaKYfoWqGrAn4GP6z_K=s0">
+      <img src="https://lh3.googleusercontent.com/d/1bOhpJg9txemwUkLyZDY9bTH3UD59q3g7=s0">
+      <img src="https://lh3.googleusercontent.com/d/1bWYUg16df9Y30R-6CcZLV1Z18mLsGNqu=s0">
+      <img src="https://lh3.googleusercontent.com/d/1e97aLx1efyL4atbqHp8JTLyeeIa8CMkI=s0">
+      <img src="https://lh3.googleusercontent.com/d/1ekNKvPUDyZTRJYs95PaHMA5EMJFqQtmk=s0">
+      <img src="https://lh3.googleusercontent.com/d/1gEgAFMvLl2NNZRTvXy-nwmUjsLf4qOGi=s0">
+      <img src="https://lh3.googleusercontent.com/d/1h7BDJZFwHtZX-e6j3izmd1UUUKjiHPLn=s0">
+      <img src="https://lh3.googleusercontent.com/d/1hVOX9ff8wzEbrUOG7BFpx4gMHSBn3tUm=s0">
+      <img src="https://lh3.googleusercontent.com/d/1ij45Nf8-C5fgbATv34GMNUlopewIBXD2=s0">
+      <img src="https://lh3.googleusercontent.com/d/1jY2teCM6NQQrusxKxYKKOyGG5Xk3pR93=s0">
+      <img src="https://lh3.googleusercontent.com/d/1jhjwMlVTQhbMSJoip2ZxPNMbKui6Q2oL=s0">
+      <img src="https://lh3.googleusercontent.com/d/1osdOtJRa61C5xX1X2iL4_LU5TldOmGyL=s0">
+      <img src="https://lh3.googleusercontent.com/d/1pd6ybBKKgvsTkVQKEfHQ93nrttnwf_4v=s0">
+      <img src="https://lh3.googleusercontent.com/d/1uj-ZZsEMGWvU4_OQqy4PbGG1emw7fb0p=s0">
+    </div>
+  </div>
 
-        let currentIndex = 0;
-        let autoPlayTimer;
-        const mainStage = document.getElementById('mainStage');
-        const thumbStrip = document.getElementById('thumbStrip');
-        const captionText = document.getElementById('captionText');
+  <div class="caption-pcl">Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây"</div>
+</div>
+<style>
+  .slider-wrapper-pcl {
+    max-width: 1014px;
+    width: 100%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background: rgba(93,169,233,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 3px solid rgba(93,169,233,0.4);
+    border-radius: 10px;
+  }
 
-        function initGallery() {
-            slideData.forEach((item, index) => {
-                // 1. Ảnh lớn
-                const img = document.createElement('img');
-                img.src = item.url;
-                img.id = `slide-${index}`;
-                img.onerror = function() { this.src = "https://via.placeholder.com/800x600/eee/999?text=Đang+cập+nhật"; };
-                if (index === 0) img.classList.add('active');
-                mainStage.appendChild(img);
+  .slider-title-pcl {
+    margin: 0;
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+    background-color: #1d5c9a;
+    color: #fff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
 
-                // 2. Thumbnail
-                const thumb = document.createElement('img');
-                thumb.src = item.url;
-                thumb.className = 'thumb';
-                thumb.onerror = function() { this.src = "https://via.placeholder.com/100/eee/999?text=Err"; };
-                
-                if (index === 0) thumb.classList.add('selected');
-                
-                thumb.onclick = () => {
-                    goToSlide(index);
-                    resetAutoPlay();
-                };
-                thumbStrip.appendChild(thumb);
-            });
-            
-            // Set caption đầu tiên
-            captionText.innerText = slideData[0].text;
-            startAutoPlay();
-        }
+  .slides-pcl {
+    position: relative;
+    width: 100%;
+    height: 527px;
+    background: rgba(93,169,233,0.1);
+    overflow: hidden;
+    border-bottom: 2px solid rgba(93,169,233,0.4);
+  }
 
-        function goToSlide(index) {
-            // Xóa active cũ
-            document.getElementById(`slide-${currentIndex}`).classList.remove('active');
-            thumbStrip.children[currentIndex].classList.remove('selected');
+  .slides-pcl img {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    border-radius: 6px;
+  }
 
-            currentIndex = index;
-            if (currentIndex >= slideData.length) currentIndex = 0;
-            if (currentIndex < 0) currentIndex = slideData.length - 1;
+  .slides-pcl img.active-pcl {
+    display: block;
+    animation: fadeInPcl 1.2s ease-in-out;
+  }
 
-            // Set active mới
-            document.getElementById(`slide-${currentIndex}`).classList.add('active');
-            const activeThumb = thumbStrip.children[currentIndex];
-            activeThumb.classList.add('selected');
-            
-            // Cuộn thanh thumbnail (không cuộn trang web)
-            const containerWidth = thumbStrip.offsetWidth;
-            const thumbLeft = activeThumb.offsetLeft;
-            const thumbWidth = activeThumb.offsetWidth;
-            
-            thumbStrip.scrollTo({
-                left: thumbLeft - (containerWidth / 2) + (thumbWidth / 2),
-                behavior: 'smooth'
-            });
+  @keyframes fadeInPcl {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(1.02); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
 
-            // Update Caption
-            captionText.innerText = slideData[currentIndex].text;
-        }
+  .thumbnails-pcl {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px;
+    overflow-x: auto;
+    background: rgba(93,169,233,0.1);
+    border-top: 2px solid rgba(93,169,233,0.4);
+    border-bottom: 2px solid rgba(93,169,233,0.4);
+  }
 
-        function changeSlide(direction) {
-            goToSlide(currentIndex + direction);
-            resetAutoPlay();
-        }
+  .thumbnails-pcl img {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.6;
+    border-radius: 4px;
+    transition: opacity 0.3s, transform 0.3s, box-shadow 0.3s;
+    border: 2px solid transparent;
+  }
 
-        function startAutoPlay() {
-            autoPlayTimer = setInterval(() => changeSlide(1), 4000);
-        }
+  .thumbnails-pcl img.active-pcl,
+  .thumbnails-pcl img:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 0 6px rgba(93,169,233,0.6);
+    border-color: rgba(93,169,233,0.5);
+  }
 
-        function resetAutoPlay() {
-            clearInterval(autoPlayTimer);
-            startAutoPlay();
-        }
+  .caption-pcl {
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    background: rgba(93,169,233,0.08);
+    border-top: 2px solid rgba(93,169,233,0.4);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+</style>
 
-        document.querySelector('.gallery-card').addEventListener('mouseenter', () => clearInterval(autoPlayTimer));
-        document.querySelector('.gallery-card').addEventListener('mouseleave', startAutoPlay);
+<script>
+(function(){
+  let indexPcl = 0;
+  const slidesPcl = document.querySelectorAll(".slides-pcl img");
+  const thumbsPcl = document.querySelectorAll(".thumbnails-pcl img");
+  const captionPcl = document.querySelector(".caption-pcl");
 
-        initGallery();
-    </script>
+  const captionsPcl = [
+    "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 01", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 02", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 03",
+    "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 04", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 05", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 06",
+    "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 07", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 08", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 09",
+    "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 10", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 11", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 12",
+    "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 13", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 14", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 15",
+    "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 16", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 17", "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 18",
+    "Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" 19"
+  ];
+
+  function showSlidePcl(i) {
+    slidesPcl.forEach((img, idx) => img.classList.toggle("active-pcl", idx === i));
+    thumbsPcl.forEach((img, idx) => img.classList.toggle("active-pcl", idx === i));
+    captionPcl.textContent = captionsPcl[i];
+    indexPcl = i;
+  }
+
+  thumbsPcl.forEach((thumb, i) => {
+    thumb.addEventListener("click", () => {
+      clearTimeout(timerPcl);
+      showSlidePcl(i);
+      autoSlidePcl();
+    });
+  });
+
+  let timerPcl;
+  function autoSlidePcl() {
+    clearTimeout(timerPcl);
+    timerPcl = setTimeout(() => {
+      let next = (indexPcl + 1) % slidesPcl.length;
+      showSlidePcl(next);
+      autoSlidePcl();
+    }, 5000);
+  }
+
+  showSlidePcl(indexPcl);
+  autoSlidePcl();
+})();
+</script>
+
+
 </body>
 </html>
