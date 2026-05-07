@@ -10,9 +10,9 @@
     width: 100%;
     margin: 0 auto;
     font-family: Arial, sans-serif;
-    background: rgba(93,169,233,0.08);
+    background: rgba(246, 148, 13, 0.05); /* Màu nền nhạt từ #f6940d */
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border: 3px solid rgba(93,169,233,0.4);
+    border: 3px solid rgba(194, 65, 12, 0.4); /* Viền màu từ #c2410c */
     border-radius: 10px;
   }
 
@@ -21,7 +21,7 @@
     padding: 10px;
     font-size: 20px;
     text-align: center;
-    background-color: #1d5c9a;
+    background: linear-gradient(135deg, #c2410c, #f6940d); /* Gradient kết hợp 2 màu */
     color: #fff;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -31,9 +31,9 @@
     position: relative;
     width: 100%;
     height: 527px;
-    background: rgba(93,169,233,0.1);
+    background: rgba(246, 148, 13, 0.1);
     overflow: hidden;
-    border-bottom: 2px solid rgba(93,169,233,0.4);
+    border-bottom: 2px solid rgba(194, 65, 12, 0.4);
   }
 
   .slides-pcl img {
@@ -63,23 +63,24 @@
     gap: 6px;
     padding: 6px;
     overflow-x: auto;
-    background: rgba(93,169,233,0.1);
-    border-top: 2px solid rgba(93,169,233,0.4);
-    border-bottom: 2px solid rgba(93,169,233,0.4);
+    background: rgba(246, 148, 13, 0.05);
+    border-top: 2px solid rgba(194, 65, 12, 0.4);
+    border-bottom: 2px solid rgba(194, 65, 12, 0.4);
     /* Cải thiện hiển thị thanh cuộn ngang */
     scrollbar-width: thin;
-    scrollbar-color: rgba(93,169,233,0.8) rgba(93,169,233,0.2);
+    scrollbar-color: #f6940d rgba(246, 148, 13, 0.2);
+    scroll-behavior: smooth; /* Thêm smooth scroll cho container */
   }
 
   .thumbnails-pcl::-webkit-scrollbar {
     height: 8px;
   }
   .thumbnails-pcl::-webkit-scrollbar-track {
-    background: rgba(93,169,233,0.2);
+    background: rgba(246, 148, 13, 0.2);
     border-radius: 4px;
   }
   .thumbnails-pcl::-webkit-scrollbar-thumb {
-    background: rgba(93,169,233,0.8);
+    background: #f6940d;
     border-radius: 4px;
   }
 
@@ -99,16 +100,16 @@
   .thumbnails-pcl img:hover {
     opacity: 1;
     transform: scale(1.05);
-    box-shadow: 0 0 6px rgba(93,169,233,0.6);
-    border-color: rgba(93,169,233,0.5);
+    box-shadow: 0 0 6px rgba(246, 148, 13, 0.8);
+    border-color: #c2410c;
   }
 
   .caption-pcl {
     padding: 10px;
     text-align: center;
     font-size: 14px;
-    background: rgba(93,169,233,0.08);
-    border-top: 2px solid rgba(93,169,233,0.4);
+    background: rgba(246, 148, 13, 0.08);
+    border-top: 2px solid rgba(194, 65, 12, 0.4);
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
@@ -164,14 +165,20 @@
     'Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây" ' + (i + 1).toString().padStart(2, '0')
   );
 
+  const thumbnailsContainer = document.querySelector(".thumbnails-pcl");
+
   function showSlidePcl(i) {
     slidesPcl.forEach((img, idx) => img.classList.toggle("active-pcl", idx === i));
     thumbsPcl.forEach((img, idx) => img.classList.toggle("active-pcl", idx === i));
     
-    // Cuộn thumbnail đang active vào vùng nhìn thấy an toàn
+    // Khắc phục lỗi trôi trang: Chỉ tính toán và cuộn phần thanh thumbnail bên trong thay vì cuộn toàn trang
     const activeThumb = thumbsPcl[i];
-    if(activeThumb) {
-        activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    if(activeThumb && thumbnailsContainer) {
+        const scrollLeftPos = activeThumb.offsetLeft - (thumbnailsContainer.clientWidth / 2) + (activeThumb.clientWidth / 2);
+        thumbnailsContainer.scrollTo({
+            left: scrollLeftPos,
+            behavior: 'smooth'
+        });
     }
 
     captionPcl.textContent = captionsPcl[i] || 'Ảnh đẹp Không gian trải nghiệm "Đêm Tân Thuận Tây"';
