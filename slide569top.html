@@ -6,7 +6,7 @@
   body, html {
     margin: 0 !important;
     padding: 0 !important;
-    overflow: hidden;
+    overflow-x: hidden; /* Chỉ ẩn thanh cuộn ngang để tránh lỗi layout */
     background: transparent;
     width: 100%;
     height: 100%;
@@ -14,8 +14,8 @@
 
   .banner-slider-pcl {
     position: relative;
-    width: 100vw;   /* Ép lấp đầy 100% chiều rộng iframe */
-    height: 100vh;  /* Ép lấp đầy 100% chiều cao iframe */
+    width: 100%;    /* Đã sửa từ 100vw thành 100% để không bị phình qua bên phải */
+    height: 100vh;
     overflow: hidden;
     border: none;
     margin: 0;
@@ -41,7 +41,8 @@
   .banner-slides-pcl img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Phủ kín toàn bộ khung, triệt để xóa viền trắng */
+    object-fit: contain; /* Đã sửa thành contain để hiển thị trọn vẹn 100% hình ảnh */
+    object-position: center;
     display: block;
   }
 
