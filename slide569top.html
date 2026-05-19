@@ -6,7 +6,7 @@
   body, html {
     margin: 0 !important;
     padding: 0 !important;
-    overflow-x: hidden; /* Chỉ ẩn thanh cuộn ngang để tránh lỗi layout */
+    overflow-x: hidden;
     background: transparent;
     width: 100%;
     height: 100%;
@@ -14,8 +14,10 @@
 
   .banner-slider-pcl {
     position: relative;
-    width: 100%;    /* Đã sửa từ 100vw thành 100% để không bị phình qua bên phải */
-    height: 100vh;
+    width: 100%;
+    /* Khóa cố định tỷ lệ khung theo đúng kích thước ảnh thật 1017x604 */
+    aspect-ratio: 1017 / 604; 
+    height: auto; /* Xóa 100vh để khung không bị ép theo chiều cao màn hình */
     overflow: hidden;
     border: none;
     margin: 0;
@@ -29,6 +31,8 @@
 
   .banner-slides-pcl a {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: none;
@@ -41,57 +45,9 @@
   .banner-slides-pcl img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Đã sửa thành contain để hiển thị trọn vẹn 100% hình ảnh */
-    object-position: center;
+    /* Khung đã đúng tỷ lệ, nên dùng cover hay contain thì ảnh vẫn sẽ ôm trọn 100% không bị cắt */
+    object-fit: contain; 
     display: block;
-  }
-
-  /* Nút điều khiển trái/phải */
-  .banner-prev-pcl,
-  .banner-next-pcl {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 42px;
-    height: 42px;
-    background: rgba(0,0,0,0.35);
-    color: white;
-    border: none;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
-  }
-
-  .banner-prev-pcl:hover,
-  .banner-next-pcl:hover {
-    background: rgba(0,0,0,0.6);
-  }
-
-  .banner-prev-pcl { left: 12px; }
-  .banner-next-pcl { right: 12px; }
-
-  /* Responsive cho nút bấm */
-  @media (max-width: 768px) {
-    .banner-prev-pcl,
-    .banner-next-pcl {
-      width: 34px;
-      height: 34px;
-      font-size: 16px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .banner-prev-pcl,
-    .banner-next-pcl {
-      width: 26px;
-      height: 26px;
-      font-size: 13px;
-    }
   }
 </style>
 
@@ -99,20 +55,15 @@
   <div class="banner-slides-pcl">
 
     <a href="https://caolanh.dongthap.gov.vn/" target="_blank" rel="noopener noreferrer">
-      <img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/195-pdf-1a.png" alt="Kỷ niệm 136 năm">
+      <img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/195-pdf-1a.png" alt="Kỷ niệm 136 năm Ngày sinh Chủ tịch Hồ Chí Minh">
     </a>
-
-  </div>
-
-  <button class="banner-prev-pcl">&#10094;</button>
-  <button class="banner-next-pcl">&#10095;</button>
+    
+    </div>
 </div>
 
 <script>
   const slidesPcl = document.querySelectorAll(".banner-slides-pcl a");
-  const prevPcl = document.querySelector(".banner-prev-pcl");
-  const nextPcl = document.querySelector(".banner-next-pcl");
-
+  
   let indexPcl = 0;
   let timerPcl;
 
@@ -128,29 +79,14 @@
     showSlidePcl(next);
   }
 
-  function prevSlidePcl() {
-    let prev = (indexPcl - 1 + slidesPcl.length) % slidesPcl.length;
-    showSlidePcl(prev);
-  }
-
-  // Bắt sự kiện click cho 2 nút
-  nextPcl.addEventListener("click", () => {
-    clearInterval(timerPcl);
-    nextSlidePcl();
-    autoSlidePcl();
-  });
-
-  prevPcl.addEventListener("click", () => {
-    clearInterval(timerPcl);
-    prevSlidePcl();
-    autoSlidePcl();
-  });
-
   function autoSlidePcl() {
+    // Tự động chuyển ảnh sau 5 giây
     timerPcl = setInterval(nextSlidePcl, 5000);
   }
 
   // Khởi tạo
-  showSlidePcl(indexPcl);
-  autoSlidePcl();
+  if (slidesPcl.length > 0) {
+    showSlidePcl(indexPcl);
+    autoSlidePcl();
+  }
 </script>
