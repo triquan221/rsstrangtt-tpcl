@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lễ hội Sen Đồng Tháp lần thứ III năm 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Thêm SortableJS cho tính năng kéo thả -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #fcf9fc;
+            background-image: url('https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/bglehoisen.png');
+            background-size: cover;
+            background-position: center top;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #4ade80, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-box {
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            cursor: move; /* Thêm con trỏ báo hiệu có thể kéo thả */
+            position: relative;
+            flex: 0 0 auto;
+            border: 2px solid #ec4899;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Phân cấp kích thước logo */
+        .logo-diamond { width: 200px !important; height: 100px !important; }
+        .logo-gold { width: 160px !important; height: 90px !important; }
+        .logo-silver { width: 160px !important; height: 90px !important; }
+        .logo-base { width: 130px !important; height: 75px !important; }
+
+        /* Hiệu ứng nổi bật khi hover vào ô logo (Đã bỏ hiệu ứng scale/transform) */
+        .logo-box:hover {
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
+            border-color: #ec4899;
+            z-index: 10;
+        }
+
+        .header-nav {
+            background-color: #ec4899;
+        }
+        
+        .header-nav a {
+            position: relative;
+        }
+        
+        .header-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .header-nav a:hover::after {
+            width: 100%;
+        }
+
+        .footer-decoration {
+            background-image: url('');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            min-height: 200px;
+            position: relative;
+            z-index: 10;
+            margin-top: 2rem;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header Navigation -->
+    <nav class="header-nav text-white py-2 px-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center space-x-2 mb-2 md:mb-0">
+                <div class="bg-white p-1 rounded">
+                   <i class="fa-solid fa-leaf text-pink-500 text-xl"></i>
+                </div>
+            </div>
+            
+            <div class="flex-grow flex flex-wrap justify-center md:justify-start items-center gap-3 md:gap-4 text-sm font-semibold uppercase ml-0 md:ml-4">
+                <a href="https://www.facebook.com/lehoisendongthap" target="_blank" class="hover:text-pink-100 transition">Fanpage chính thức Lễ Hội Sen</a>
+                <span class="text-white/70">|</span>
+                <a href="https://caolanh.dongthap.gov.vn" target="_blank" class="hover:text-pink-100 transition">Khung hoạt động</a>
+                <span class="text-white/70">|</span>
+                <a href="https://caolanh.dongthap.gov.vn" target="_blank" class="hover:text-pink-100 transition">Về chúng tôi</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 relative z-20 group/poster">
+        
+        <!-- Main Title Area -->
+        <div class="relative flex flex-col items-center justify-center mb-10 w-full min-h-[100px]">
+            <!-- Logo Lễ Hội & Địa Phương -->
+            <div class="xl:absolute xl:left-0 xl:top-1/2 xl:-translate-y-1/2 flex items-center justify-center gap-6 mb-6 xl:mb-0 z-10">
+                <div class="w-24 md:w-28 flex flex-col items-center">
+                    <img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/LOGOLEHOISEN-removebg-preview.png" alt="Logo Lễ Hội Sen" class="max-w-full max-h-20 md:max-h-24 object-contain drop-shadow-md">
+                </div>
+                <div class="w-24 md:w-28 flex flex-col items-center">
+                    <img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/LGO%20CAO%20LANH%20(NEW).png" alt="Logo TP Cao Lãnh" class="max-w-full max-h-20 md:max-h-24 object-contain drop-shadow-md">
+                </div>
+            </div>
+
+            <!-- Titles -->
+            <div class="text-center flex flex-col items-center relative z-0 w-full px-2">
+                <div class="relative group inline-block">
+                    <h1 class="font-black uppercase text-[#78C44C] tracking-wide mb-2 drop-shadow-sm leading-tight text-2xl md:text-3xl lg:text-4xl">
+                        Lễ hội Sen Đồng Tháp lần thứ III năm 2026
+                    </h1>
+                </div>
+                <h2 class="text-lg md:text-xl lg:text-2xl font-bold text-[#EE2C35] uppercase tracking-widest drop-shadow-sm bg-white/80 inline-block px-6 py-1.5 rounded-full border border-pink-100">
+                    Trân trọng cảm ơn các đơn vị tài trợ
+                </h2>
+            </div>
+        </div>
+
+        <!-- Bố cục Logo Sponsors (Chia tỉ lệ cột tối ưu cho 3 ô Kim Cương) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-[1400px] mx-auto">
+            
+            <!-- CỘT TRÁI: Kim Cương, Vàng, Bạc (Chiếm phần lớn hơn) -->
+            <div class="lg:col-span-7 flex flex-col gap-8">
+                <!-- Đồng hành Kim Cương (3 ô) -->
+                <div>
+                    <h3 class="text-center text-[#ED309C] font-bold uppercase mb-5 text-xl drop-shadow-sm">Đơn vị đồng hành Kim Cương</h3>
+                    <div id="diamond-grid" class="flex flex-wrap justify-center gap-4">
+                        <div class="logo-box logo-diamond"></div>
+                        <div class="logo-box logo-diamond"></div>
+                        <div class="logo-box logo-diamond"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_kimcuong_phumy.png" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                    </div>
+                </div>
+
+                <!-- Đồng hành Vàng (9 ô) -->
+                <div>
+                    <h3 class="text-center text-[#ED309C] font-bold uppercase mb-5 text-xl drop-shadow-sm">Đơn vị đồng hành Vàng</h3>
+                    <div id="gold-grid" class="flex flex-wrap justify-center gap-4">
+                        <div class="logo-box logo-gold"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_vang_bidv.jpg" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-gold"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_vang_vinhhoan.png" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-gold"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_vang_xskt.jpg" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-gold"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_kimcuong_vpbank.png" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-gold"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_vang_pvoil.png" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-gold"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_vang_vcb.jpg" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-gold"></div><div class="logo-box logo-gold"></div><div class="logo-box logo-gold"></div>
+                    </div>
+                </div>
+                
+                <!-- Đồng hành Bạc (3 ô) -->
+                <div>
+                    <h3 class="text-center text-[#ED309C] font-bold uppercase mb-5 text-xl drop-shadow-sm">Đơn vị đồng hành Bạc</h3>
+                    <div id="silver-grid" class="flex flex-wrap justify-center gap-4">
+                        <div class="logo-box logo-silver"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_bac_baohiemaaa.png" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-silver"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_bac_hungca.png" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-silver"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: Đồng, Hỗ trợ -->
+            <div class="lg:col-span-5 flex flex-col gap-8">
+                <!-- Đồng hành Đồng (11 ô) -->
+                <div class="h-fit">
+                    <h3 class="text-center text-[#ED309C] font-bold uppercase mb-5 text-xl drop-shadow-sm">Đơn vị đồng hành Đồng</h3>
+                    <div id="bronze-grid" class="flex flex-wrap justify-center gap-4">
+                        <div class="logo-box logo-base"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_dong_Thabico.jpg" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-base"></div><div class="logo-box logo-base"></div><div class="logo-box logo-base"></div>
+                        <div class="logo-box logo-base"></div><div class="logo-box logo-base"></div><div class="logo-box logo-base"></div><div class="logo-box logo-base"></div>
+                        <div class="logo-box logo-base"></div><div class="logo-box logo-base"></div><div class="logo-box logo-base"></div>
+                    </div>
+                </div>
+
+                <!-- Đơn vị hỗ trợ (5 ô) -->
+                <div class="h-fit">
+                    <h3 class="text-center text-[#ED309C] font-bold uppercase mb-5 text-xl drop-shadow-sm">Đơn vị hỗ trợ</h3>
+                    <div id="support-grid" class="flex flex-wrap justify-center gap-4 mx-auto" style="max-width: 450px;">
+                        <div class="logo-box logo-base"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_hotro_thapnhatphong.jpg" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-base"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_hotro_vietnga.png" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-base"><img src="https://raw.githubusercontent.com/triquan221/rsstrangtt-tpcl/main/sen_hotro_chienthang.jpg" class="max-w-full max-h-full object-contain p-2" alt="Sponsor"></div>
+                        <div class="logo-box logo-base"></div><div class="logo-box logo-base"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Decorative Area -->
+    <div class="footer-decoration hidden md:block"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Khởi tạo tính năng kéo thả mượt mà qua lại giữa tất cả các cấp độ tài trợ
+            const grids = ['diamond-grid', 'gold-grid', 'silver-grid', 'bronze-grid', 'support-grid'];
+            grids.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) {
+                    new Sortable(el, {
+                        group: 'sponsors', // Cùng tên group để cho phép kéo thả xuyên khối
+                        animation: 150,
+                        ghostClass: 'opacity-50' // Hiệu ứng làm mờ khi đang nhấc ô logo lên
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
